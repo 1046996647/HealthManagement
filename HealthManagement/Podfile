@@ -1,5 +1,5 @@
 target 'HealthManagement' do
 
 	pod 'BaiduMapKit' #百度地图SDK
-
+    pod 'SDWebImage'
 end

@@ -10,12 +10,15 @@
 #import "NavigationController.h"
 
 #import "HomeVC.h"
-#import "NearbyRestaurantVC.h"
-#import "DietRecommendationVC.h"
-#import "SportSleepVC.h"
+#import "SleepVC.h"
+#import "DietArticleVC.h"
+#import "SportVC.h"
 #import "PersonalCenterVC.h"
 
-@interface TabBarController ()
+@interface TabBarController ()<UITabBarControllerDelegate>
+
+@property(nonatomic,strong) UIButton *btn;
+
 
 @end
 
@@ -31,25 +34,41 @@
     
     NSMutableDictionary * selectedTabDic=[NSMutableDictionary dictionary];
     selectedTabDic[NSFontAttributeName] = [UIFont systemFontOfSize:11];
-    selectedTabDic[NSForegroundColorAttributeName] = [UIColor colorWithHexString:@"#9f70c0"];
+    selectedTabDic[NSForegroundColorAttributeName] = [UIColor colorWithHexString:@"#59A43A"];
     
     UITabBarItem *item=[UITabBarItem appearance];
     [item setTitleTextAttributes:tabDic forState:(UIControlStateNormal)];
     [item setTitleTextAttributes:selectedTabDic forState:(UIControlStateSelected)];
     
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBar.barTintColor = [UIColor colorWithHexString:@"#FEFEFE"];
+    self.tabBar.barStyle = UIBarStyleBlack;
+    self.delegate = self;
     
-    
-    [self setChildViewController:[[HomeVC alloc]init] Title:@"首页" Image:@"附近" SelectedImage:@"附近S"];
-    [self setChildViewController:[[NearbyRestaurantVC alloc]init] Title:@"附近餐厅" Image:@"好友" SelectedImage:@"好友S"];
-    [self setChildViewController:[[DietRecommendationVC alloc]init] Title:@"饮食推荐" Image:@"消息" SelectedImage:@"消息S"];
-    [self setChildViewController:[[SportSleepVC alloc]init] Title:@"运动睡眠" Image:@"我的" SelectedImage:@"我的S"];
-    [self setChildViewController:[[SportSleepVC alloc]init] Title:@"个人中心" Image:@"我的" SelectedImage:@"我的S"];
+    [self setChildViewController:[[PersonalCenterVC alloc]init] Title:@"我的" Image:@"logo_9" SelectedImage:@"logo_10"];
+    [self setChildViewController:[[DietArticleVC alloc]init] Title:@"饮食文章" Image:@"logo_5" SelectedImage:@"logo_6"];
+    [self setChildViewController:[[HomeVC alloc]init] Title:@"首页" Image:@"" SelectedImage:@""];
+    [self setChildViewController:[[SportVC alloc]init] Title:@"运动" Image:@"logo_7" SelectedImage:@"logo_8"];
+    [self setChildViewController:[[SleepVC alloc]init] Title:@"睡眠" Image:@"logo_3" SelectedImage:@"logo_4"];
  
+    // 首页选项
+    CGFloat width = 35;
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake((kScreen_Width-width)/2, 49-width-15-8, width, width);
+    btn.selected = YES;
+    [btn setImage:[UIImage imageNamed:@"logo_2"] forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:@"logo_1"] forState:UIControlStateSelected];
+    [self.tabBar addSubview:btn];
+    self.btn = btn;
+    
+    [self selectController:2];
     
 }
+
+
 - (void)selectController:(NSInteger)index{
     self.selectedIndex=index;
 }
@@ -62,17 +81,30 @@
     /**
      *  添加 tabBarItem 上的文字和图片
      */
-    childVC.tabBarItem.title=title;
+    childVC.title=title;
     childVC.tabBarItem.image=[UIImage imageNamed:image];
     childVC.tabBarItem.selectedImage=[[UIImage imageNamed:selectedImage]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     NavigationController *nav = [[NavigationController alloc]initWithRootViewController:childVC];
     [self addChildViewController:nav];
-//    [nav didMoveToParentViewController:self];
 
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark-UITabBarControllerDelegate
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    viewController = (UINavigationController*)viewController.childViewControllers[0];
+    if ([viewController isKindOfClass:[HomeVC class]]) {
+        self.btn.selected = YES;
+
+    }
+    else {
+        self.btn.selected = NO;
+
+    }
 }
 
 /*

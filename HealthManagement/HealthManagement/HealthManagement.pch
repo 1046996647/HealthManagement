@@ -18,6 +18,7 @@
 //#import "UrlHelp.h"
 #import "Toast+UIView.h"
 #import "InfoCache.h"
-//#import "UIImageView+WebCache.h"
+#import "HelpMac.h"
+#import "UIImageView+WebCache.h"
 
 #endif /* HealthManagement_pch */

@@ -19,10 +19,30 @@
 		F737E2461F01F389000B5738 /* InfoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2451F01F389000B5738 /* InfoCache.m */; };
 		F737E24A1F01F6C5000B5738 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2491F01F6C5000B5738 /* Toast+UIView.m */; };
 		F737E24E1F01F8D2000B5738 /* HomeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E24D1F01F8D2000B5738 /* HomeVC.m */; };
-		F737E2511F01F907000B5738 /* NearbyRestaurantVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2501F01F907000B5738 /* NearbyRestaurantVC.m */; };
-		F737E2541F01F99A000B5738 /* DietRecommendationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2531F01F99A000B5738 /* DietRecommendationVC.m */; };
-		F737E2571F01FAA0000B5738 /* SportSleepVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2561F01FAA0000B5738 /* SportSleepVC.m */; };
+		F737E2511F01F907000B5738 /* DietArticleVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2501F01F907000B5738 /* DietArticleVC.m */; };
+		F737E2541F01F99A000B5738 /* SportVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2531F01F99A000B5738 /* SportVC.m */; };
+		F737E2571F01FAA0000B5738 /* SleepVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2561F01FAA0000B5738 /* SleepVC.m */; };
 		F737E25A1F01FB30000B5738 /* PersonalCenterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2591F01FB30000B5738 /* PersonalCenterVC.m */; };
+		F743716A1F14BD3500332D21 /* NearbyRestaurantVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74371691F14BD3500332D21 /* NearbyRestaurantVC.m */; };
+		F743716D1F14C0E100332D21 /* NearbyRestaurantTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F743716C1F14C0E100332D21 /* NearbyRestaurantTableView.m */; };
+		F74371701F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F743716F1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m */; };
+		F74FF5C41F15B91300C84034 /* RecommendDietTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5C31F15B91300C84034 /* RecommendDietTableView.m */; };
+		F74FF5C71F15BB2200C84034 /* RecommendDietCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5C61F15BB2200C84034 /* RecommendDietCell.m */; };
+		F74FF5CB1F15FC1900C84034 /* HXTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5CA1F15FC1900C84034 /* HXTagsView.m */; };
+		F74FF5D11F160FB700C84034 /* DietArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5D01F160FB700C84034 /* DietArticleCell.m */; };
+		F74FF5D41F161FAA00C84034 /* DietRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5D31F161FAA00C84034 /* DietRecordView.m */; };
+		F774B91B1F13244C00A60166 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B91A1F13244C00A60166 /* HeaderView.m */; };
+		F774B92C1F13271000A60166 /* TAAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B91F1F13271000A60166 /* TAAbstractDotView.m */; };
+		F774B92D1F13271000A60166 /* TAAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B9211F13271000A60166 /* TAAnimatedDotView.m */; };
+		F774B92E1F13271000A60166 /* TADotView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B9231F13271000A60166 /* TADotView.m */; };
+		F774B92F1F13271000A60166 /* TAPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B9251F13271000A60166 /* TAPageControl.m */; };
+		F774B9301F13271000A60166 /* SDCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B9271F13271000A60166 /* SDCollectionViewCell.m */; };
+		F774B9311F13271000A60166 /* SDCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B9291F13271000A60166 /* SDCycleScrollView.m */; };
+		F774B9321F13271000A60166 /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B92B1F13271000A60166 /* UIView+SDExtension.m */; };
+		F774B9351F13528100A60166 /* NearbyResView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B9341F13528100A60166 /* NearbyResView.m */; };
+		F774B93B1F13750C00A60166 /* RecommendDietView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B93A1F13750C00A60166 /* RecommendDietView.m */; };
+		F780229C1F0F802400017D5C /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F780229B1F0F802400017D5C /* BaseViewController.m */; };
+		F78022A21F0F8BA300017D5C /* DietRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F78022A11F0F8BA300017D5C /* DietRecordCell.m */; };
 		F7933AAE1F0096F20069DBF7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F7933AAD1F0096F20069DBF7 /* main.m */; };
 		F7933AB11F0096F20069DBF7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F7933AB01F0096F20069DBF7 /* AppDelegate.m */; };
 		F7933AB71F0096F20069DBF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7933AB51F0096F20069DBF7 /* Main.storyboard */; };
@@ -75,14 +95,55 @@
 		F737E24B1F01F780000B5738 /* HealthManagement.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthManagement.pch; sourceTree = "<group>"; };
 		F737E24C1F01F8D2000B5738 /* HomeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeVC.h; sourceTree = "<group>"; };
 		F737E24D1F01F8D2000B5738 /* HomeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeVC.m; sourceTree = "<group>"; };
-		F737E24F1F01F907000B5738 /* NearbyRestaurantVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyRestaurantVC.h; sourceTree = "<group>"; };
-		F737E2501F01F907000B5738 /* NearbyRestaurantVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyRestaurantVC.m; sourceTree = "<group>"; };
-		F737E2521F01F99A000B5738 /* DietRecommendationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DietRecommendationVC.h; sourceTree = "<group>"; };
-		F737E2531F01F99A000B5738 /* DietRecommendationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietRecommendationVC.m; sourceTree = "<group>"; };
-		F737E2551F01FAA0000B5738 /* SportSleepVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportSleepVC.h; sourceTree = "<group>"; };
-		F737E2561F01FAA0000B5738 /* SportSleepVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportSleepVC.m; sourceTree = "<group>"; };
+		F737E24F1F01F907000B5738 /* DietArticleVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DietArticleVC.h; sourceTree = "<group>"; };
+		F737E2501F01F907000B5738 /* DietArticleVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietArticleVC.m; sourceTree = "<group>"; };
+		F737E2521F01F99A000B5738 /* SportVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportVC.h; sourceTree = "<group>"; };
+		F737E2531F01F99A000B5738 /* SportVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportVC.m; sourceTree = "<group>"; };
+		F737E2551F01FAA0000B5738 /* SleepVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepVC.h; sourceTree = "<group>"; };
+		F737E2561F01FAA0000B5738 /* SleepVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepVC.m; sourceTree = "<group>"; };
 		F737E2581F01FB30000B5738 /* PersonalCenterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterVC.h; sourceTree = "<group>"; };
 		F737E2591F01FB30000B5738 /* PersonalCenterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterVC.m; sourceTree = "<group>"; };
+		F74371681F14BD3500332D21 /* NearbyRestaurantVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyRestaurantVC.h; sourceTree = "<group>"; };
+		F74371691F14BD3500332D21 /* NearbyRestaurantVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyRestaurantVC.m; sourceTree = "<group>"; };
+		F743716B1F14C0E100332D21 /* NearbyRestaurantTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyRestaurantTableView.h; sourceTree = "<group>"; };
+		F743716C1F14C0E100332D21 /* NearbyRestaurantTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyRestaurantTableView.m; sourceTree = "<group>"; };
+		F743716E1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyRestaurantTableViewCell.h; sourceTree = "<group>"; };
+		F743716F1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyRestaurantTableViewCell.m; sourceTree = "<group>"; };
+		F74FF5C21F15B91300C84034 /* RecommendDietTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendDietTableView.h; sourceTree = "<group>"; };
+		F74FF5C31F15B91300C84034 /* RecommendDietTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendDietTableView.m; sourceTree = "<group>"; };
+		F74FF5C51F15BB2200C84034 /* RecommendDietCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendDietCell.h; sourceTree = "<group>"; };
+		F74FF5C61F15BB2200C84034 /* RecommendDietCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendDietCell.m; sourceTree = "<group>"; };
+		F74FF5C91F15FC1900C84034 /* HXTagsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HXTagsView.h; sourceTree = "<group>"; };
+		F74FF5CA1F15FC1900C84034 /* HXTagsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HXTagsView.m; sourceTree = "<group>"; };
+		F74FF5CF1F160FB700C84034 /* DietArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DietArticleCell.h; sourceTree = "<group>"; };
+		F74FF5D01F160FB700C84034 /* DietArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietArticleCell.m; sourceTree = "<group>"; };
+		F74FF5D21F161FAA00C84034 /* DietRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DietRecordView.h; sourceTree = "<group>"; };
+		F74FF5D31F161FAA00C84034 /* DietRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietRecordView.m; sourceTree = "<group>"; };
+		F774B9191F13244C00A60166 /* HeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderView.h; sourceTree = "<group>"; };
+		F774B91A1F13244C00A60166 /* HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderView.m; sourceTree = "<group>"; };
+		F774B91E1F13271000A60166 /* TAAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAbstractDotView.h; sourceTree = "<group>"; };
+		F774B91F1F13271000A60166 /* TAAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAAbstractDotView.m; sourceTree = "<group>"; };
+		F774B9201F13271000A60166 /* TAAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAnimatedDotView.h; sourceTree = "<group>"; };
+		F774B9211F13271000A60166 /* TAAnimatedDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAAnimatedDotView.m; sourceTree = "<group>"; };
+		F774B9221F13271000A60166 /* TADotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TADotView.h; sourceTree = "<group>"; };
+		F774B9231F13271000A60166 /* TADotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TADotView.m; sourceTree = "<group>"; };
+		F774B9241F13271000A60166 /* TAPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAPageControl.h; sourceTree = "<group>"; };
+		F774B9251F13271000A60166 /* TAPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAPageControl.m; sourceTree = "<group>"; };
+		F774B9261F13271000A60166 /* SDCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDCollectionViewCell.h; sourceTree = "<group>"; };
+		F774B9271F13271000A60166 /* SDCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCollectionViewCell.m; sourceTree = "<group>"; };
+		F774B9281F13271000A60166 /* SDCycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDCycleScrollView.h; sourceTree = "<group>"; };
+		F774B9291F13271000A60166 /* SDCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCycleScrollView.m; sourceTree = "<group>"; };
+		F774B92A1F13271000A60166 /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
+		F774B92B1F13271000A60166 /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		F774B9331F13528100A60166 /* NearbyResView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyResView.h; sourceTree = "<group>"; };
+		F774B9341F13528100A60166 /* NearbyResView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyResView.m; sourceTree = "<group>"; };
+		F774B9391F13750C00A60166 /* RecommendDietView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendDietView.h; sourceTree = "<group>"; };
+		F774B93A1F13750C00A60166 /* RecommendDietView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendDietView.m; sourceTree = "<group>"; };
+		F78022951F0F66B600017D5C /* HelpMac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpMac.h; sourceTree = "<group>"; };
+		F780229A1F0F802400017D5C /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		F780229B1F0F802400017D5C /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		F78022A01F0F8BA300017D5C /* DietRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DietRecordCell.h; sourceTree = "<group>"; };
+		F78022A11F0F8BA300017D5C /* DietRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietRecordCell.m; sourceTree = "<group>"; };
 		F7933AA91F0096F20069DBF7 /* HealthManagement.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HealthManagement.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7933AAD1F0096F20069DBF7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F7933AAF1F0096F20069DBF7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -146,46 +207,48 @@
 		F737E2221F01EFF4000B5738 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
-				F737E24C1F01F8D2000B5738 /* HomeVC.h */,
-				F737E24D1F01F8D2000B5738 /* HomeVC.m */,
+				F780229F1F0F89DB00017D5C /* Controller */,
+				F780229E1F0F89D800017D5C /* View */,
+				F780229D1F0F89D100017D5C /* Model */,
 			);
 			name = "首页";
 			sourceTree = "<group>";
 		};
-		F737E2251F01F01A000B5738 /* 个人中心 */ = {
+		F737E2251F01F01A000B5738 /* 我的 */ = {
 			isa = PBXGroup;
 			children = (
 				F737E2581F01FB30000B5738 /* PersonalCenterVC.h */,
 				F737E2591F01FB30000B5738 /* PersonalCenterVC.m */,
 			);
-			name = "个人中心";
+			name = "我的";
 			sourceTree = "<group>";
 		};
-		F737E2261F01F041000B5738 /* 附近餐厅 */ = {
+		F737E2261F01F041000B5738 /* 饮食文章 */ = {
 			isa = PBXGroup;
 			children = (
-				F737E24F1F01F907000B5738 /* NearbyRestaurantVC.h */,
-				F737E2501F01F907000B5738 /* NearbyRestaurantVC.m */,
+				F74FF5CE1F160F7500C84034 /* Controller */,
+				F74FF5CD1F160F7300C84034 /* View */,
+				F74FF5CC1F160F6F00C84034 /* Model */,
 			);
-			name = "附近餐厅";
+			name = "饮食文章";
 			sourceTree = "<group>";
 		};
-		F737E2271F01F055000B5738 /* 饮食推荐 */ = {
+		F737E2271F01F055000B5738 /* 运动 */ = {
 			isa = PBXGroup;
 			children = (
-				F737E2521F01F99A000B5738 /* DietRecommendationVC.h */,
-				F737E2531F01F99A000B5738 /* DietRecommendationVC.m */,
+				F737E2521F01F99A000B5738 /* SportVC.h */,
+				F737E2531F01F99A000B5738 /* SportVC.m */,
 			);
-			name = "饮食推荐";
+			name = "运动";
 			sourceTree = "<group>";
 		};
-		F737E2281F01F063000B5738 /* 运动睡眠 */ = {
+		F737E2281F01F063000B5738 /* 睡眠 */ = {
 			isa = PBXGroup;
 			children = (
-				F737E2551F01FAA0000B5738 /* SportSleepVC.h */,
-				F737E2561F01FAA0000B5738 /* SportSleepVC.m */,
+				F737E2551F01FAA0000B5738 /* SleepVC.h */,
+				F737E2561F01FAA0000B5738 /* SleepVC.m */,
 			);
-			name = "运动睡眠";
+			name = "睡眠";
 			sourceTree = "<group>";
 		};
 		F737E2291F01F086000B5738 /* 注册登录 */ = {
@@ -198,6 +261,8 @@
 		F737E22A1F01F305000B5738 /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
+				F74FF5C81F15FC1900C84034 /* 标签 */,
+				F774B91C1F13271000A60166 /* SDCycleScrollView */,
 				F737E2471F01F6BE000B5738 /* Toast */,
 				F737E2431F01F37F000B5738 /* InfoCache */,
 				F737E23F1F01F331000B5738 /* UIColorEx */,
@@ -258,6 +323,119 @@
 			path = Toast;
 			sourceTree = "<group>";
 		};
+		F74371641F14A03500332D21 /* CustomClass */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CustomClass;
+			sourceTree = "<group>";
+		};
+		F74FF5C81F15FC1900C84034 /* 标签 */ = {
+			isa = PBXGroup;
+			children = (
+				F74FF5C91F15FC1900C84034 /* HXTagsView.h */,
+				F74FF5CA1F15FC1900C84034 /* HXTagsView.m */,
+			);
+			path = "标签";
+			sourceTree = "<group>";
+		};
+		F74FF5CC1F160F6F00C84034 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		F74FF5CD1F160F7300C84034 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F74FF5CF1F160FB700C84034 /* DietArticleCell.h */,
+				F74FF5D01F160FB700C84034 /* DietArticleCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		F74FF5CE1F160F7500C84034 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F737E24F1F01F907000B5738 /* DietArticleVC.h */,
+				F737E2501F01F907000B5738 /* DietArticleVC.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		F774B91C1F13271000A60166 /* SDCycleScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				F774B91D1F13271000A60166 /* PageControl */,
+				F774B9261F13271000A60166 /* SDCollectionViewCell.h */,
+				F774B9271F13271000A60166 /* SDCollectionViewCell.m */,
+				F774B9281F13271000A60166 /* SDCycleScrollView.h */,
+				F774B9291F13271000A60166 /* SDCycleScrollView.m */,
+				F774B92A1F13271000A60166 /* UIView+SDExtension.h */,
+				F774B92B1F13271000A60166 /* UIView+SDExtension.m */,
+			);
+			path = SDCycleScrollView;
+			sourceTree = "<group>";
+		};
+		F774B91D1F13271000A60166 /* PageControl */ = {
+			isa = PBXGroup;
+			children = (
+				F774B91E1F13271000A60166 /* TAAbstractDotView.h */,
+				F774B91F1F13271000A60166 /* TAAbstractDotView.m */,
+				F774B9201F13271000A60166 /* TAAnimatedDotView.h */,
+				F774B9211F13271000A60166 /* TAAnimatedDotView.m */,
+				F774B9221F13271000A60166 /* TADotView.h */,
+				F774B9231F13271000A60166 /* TADotView.m */,
+				F774B9241F13271000A60166 /* TAPageControl.h */,
+				F774B9251F13271000A60166 /* TAPageControl.m */,
+			);
+			path = PageControl;
+			sourceTree = "<group>";
+		};
+		F780229D1F0F89D100017D5C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		F780229E1F0F89D800017D5C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F78022A01F0F8BA300017D5C /* DietRecordCell.h */,
+				F78022A11F0F8BA300017D5C /* DietRecordCell.m */,
+				F774B9191F13244C00A60166 /* HeaderView.h */,
+				F774B91A1F13244C00A60166 /* HeaderView.m */,
+				F774B9331F13528100A60166 /* NearbyResView.h */,
+				F774B9341F13528100A60166 /* NearbyResView.m */,
+				F774B9391F13750C00A60166 /* RecommendDietView.h */,
+				F774B93A1F13750C00A60166 /* RecommendDietView.m */,
+				F74FF5D21F161FAA00C84034 /* DietRecordView.h */,
+				F74FF5D31F161FAA00C84034 /* DietRecordView.m */,
+				F743716B1F14C0E100332D21 /* NearbyRestaurantTableView.h */,
+				F743716C1F14C0E100332D21 /* NearbyRestaurantTableView.m */,
+				F743716E1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.h */,
+				F743716F1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m */,
+				F74FF5C21F15B91300C84034 /* RecommendDietTableView.h */,
+				F74FF5C31F15B91300C84034 /* RecommendDietTableView.m */,
+				F74FF5C51F15BB2200C84034 /* RecommendDietCell.h */,
+				F74FF5C61F15BB2200C84034 /* RecommendDietCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		F780229F1F0F89DB00017D5C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F737E24C1F01F8D2000B5738 /* HomeVC.h */,
+				F737E24D1F01F8D2000B5738 /* HomeVC.m */,
+				F74371681F14BD3500332D21 /* NearbyRestaurantVC.h */,
+				F74371691F14BD3500332D21 /* NearbyRestaurantVC.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		F7933AA01F0096F20069DBF7 = {
 			isa = PBXGroup;
 			children = (
@@ -284,18 +462,21 @@
 		F7933AAB1F0096F20069DBF7 /* HealthManagement */ = {
 			isa = PBXGroup;
 			children = (
+				F74371641F14A03500332D21 /* CustomClass */,
 				F7933AAF1F0096F20069DBF7 /* AppDelegate.h */,
 				F7933AB01F0096F20069DBF7 /* AppDelegate.m */,
 				F737E21F1F01EF91000B5738 /* NavigationController.h */,
 				F737E2201F01EF91000B5738 /* NavigationController.m */,
+				F780229A1F0F802400017D5C /* BaseViewController.h */,
+				F780229B1F0F802400017D5C /* BaseViewController.m */,
 				F737E21C1F01EC01000B5738 /* TabBarController.h */,
 				F737E21D1F01EC01000B5738 /* TabBarController.m */,
 				F737E2291F01F086000B5738 /* 注册登录 */,
 				F737E2221F01EFF4000B5738 /* 首页 */,
-				F737E2261F01F041000B5738 /* 附近餐厅 */,
-				F737E2271F01F055000B5738 /* 饮食推荐 */,
-				F737E2281F01F063000B5738 /* 运动睡眠 */,
-				F737E2251F01F01A000B5738 /* 个人中心 */,
+				F737E2261F01F041000B5738 /* 饮食文章 */,
+				F737E2271F01F055000B5738 /* 运动 */,
+				F737E2281F01F063000B5738 /* 睡眠 */,
+				F737E2251F01F01A000B5738 /* 我的 */,
 				F7933AB51F0096F20069DBF7 /* Main.storyboard */,
 				F7933AB81F0096F20069DBF7 /* Assets.xcassets */,
 				F7933ABA1F0096F20069DBF7 /* LaunchScreen.storyboard */,
@@ -309,6 +490,7 @@
 			isa = PBXGroup;
 			children = (
 				F7933AAD1F0096F20069DBF7 /* main.m */,
+				F78022951F0F66B600017D5C /* HelpMac.h */,
 				F737E24B1F01F780000B5738 /* HealthManagement.pch */,
 			);
 			name = "Supporting Files";
@@ -519,22 +701,42 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F774B9351F13528100A60166 /* NearbyResView.m in Sources */,
+				F743716D1F14C0E100332D21 /* NearbyRestaurantTableView.m in Sources */,
 				F737E2211F01EF91000B5738 /* NavigationController.m in Sources */,
+				F780229C1F0F802400017D5C /* BaseViewController.m in Sources */,
 				F737E23E1F01F32A000B5738 /* UIViewExt.m in Sources */,
 				F737E24E1F01F8D2000B5738 /* HomeVC.m in Sources */,
+				F774B93B1F13750C00A60166 /* RecommendDietView.m in Sources */,
+				F74371701F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m in Sources */,
+				F774B9321F13271000A60166 /* UIView+SDExtension.m in Sources */,
 				F737E21E1F01EC01000B5738 /* TabBarController.m in Sources */,
-				F737E2571F01FAA0000B5738 /* SportSleepVC.m in Sources */,
-				F737E2541F01F99A000B5738 /* DietRecommendationVC.m in Sources */,
+				F74FF5D11F160FB700C84034 /* DietArticleCell.m in Sources */,
+				F74FF5D41F161FAA00C84034 /* DietRecordView.m in Sources */,
+				F774B92F1F13271000A60166 /* TAPageControl.m in Sources */,
+				F737E2571F01FAA0000B5738 /* SleepVC.m in Sources */,
+				F74FF5C71F15BB2200C84034 /* RecommendDietCell.m in Sources */,
+				F737E2541F01F99A000B5738 /* SportVC.m in Sources */,
 				F737E25A1F01FB30000B5738 /* PersonalCenterVC.m in Sources */,
+				F743716A1F14BD3500332D21 /* NearbyRestaurantVC.m in Sources */,
 				F7933AB11F0096F20069DBF7 /* AppDelegate.m in Sources */,
 				F737E2421F01F331000B5738 /* UIColor+Expend.m in Sources */,
+				F774B92D1F13271000A60166 /* TAAnimatedDotView.m in Sources */,
+				F774B92E1F13271000A60166 /* TADotView.m in Sources */,
+				F774B92C1F13271000A60166 /* TAAbstractDotView.m in Sources */,
 				F737E2461F01F389000B5738 /* InfoCache.m in Sources */,
+				F74FF5C41F15B91300C84034 /* RecommendDietTableView.m in Sources */,
+				F774B91B1F13244C00A60166 /* HeaderView.m in Sources */,
 				F7933AAE1F0096F20069DBF7 /* main.m in Sources */,
+				F774B9311F13271000A60166 /* SDCycleScrollView.m in Sources */,
 				F737E23D1F01F32A000B5738 /* UIViewController+UIViewControllerExt.m in Sources */,
+				F74FF5CB1F15FC1900C84034 /* HXTagsView.m in Sources */,
+				F774B9301F13271000A60166 /* SDCollectionViewCell.m in Sources */,
 				F737E23C1F01F32A000B5738 /* UIView+UIViewController.m in Sources */,
 				F737E24A1F01F6C5000B5738 /* Toast+UIView.m in Sources */,
-				F737E2511F01F907000B5738 /* NearbyRestaurantVC.m in Sources */,
+				F737E2511F01F907000B5738 /* DietArticleVC.m in Sources */,
 				F737E23B1F01F32A000B5738 /* NSStringExt.m in Sources */,
+				F78022A21F0F8BA300017D5C /* DietRecordCell.m in Sources */,
 				F737E22E1F01F31C000B5738 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

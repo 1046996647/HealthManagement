@@ -25,8 +25,11 @@
      */
     UINavigationBar *bar = [UINavigationBar appearance];
     bar.translucent = NO;
-    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbarBW"] forBarMetrics:UIBarMetricsDefault];
-    [bar setTitleTextAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:17],NSForegroundColorAttributeName : [UIColor colorWithHexString:@"#9f70c0"]}];
+    bar.barTintColor = [UIColor whiteColor];
+    //消除底部横线
+    [bar setShadowImage:[[UIImage alloc] init]];
+//    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbarBW"] forBarMetrics:UIBarMetricsDefault];
+//    [bar setTitleTextAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:17],NSForegroundColorAttributeName : [UIColor colorWithHexString:@"#59A43A"]}];
     
 }
 - (void)viewDidLoad {
@@ -45,7 +48,7 @@
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setTitle:@"返回" forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"navigationReturn"] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"navigationReturnClick"] forState:UIControlStateHighlighted];
+//        [button setImage:[UIImage imageNamed:@"navigationReturnClick"] forState:UIControlStateHighlighted];
         CGRect frame = button.frame;
         frame.size = CGSizeMake(60, 30);
         button.frame = frame;
