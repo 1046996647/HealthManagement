@@ -19,6 +19,8 @@
 
 @property(nonatomic,strong) HXTagsView *tagsView;
 @property(nonatomic,strong) UIImageView *imgView;
+@property (nonatomic,strong) UIScrollView *scrollView;
+@property (nonatomic,strong) UIButton *btn4;
 
 
 @end
@@ -29,8 +31,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.scrollView.backgroundColor = [UIColor whiteColor];
     self.title = @"支付";
+    
+    // 滑动视图
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-64)];
+    //    scrollView.pagingEnabled = YES;
+    //    scrollView.delegate = self;
+    scrollView.backgroundColor = [UIColor whiteColor];
+    scrollView.showsVerticalScrollIndicator = NO;
+    //    scrollView.contentSize = CGSizeMake(kScreen_Width*3, kWidth+10+20);
+    [self.view addSubview:scrollView];
+    self.scrollView = scrollView;
     
     _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(12, 12, 100, 20)];
     _lab1.font = [UIFont systemFontOfSize:14];
@@ -38,7 +50,7 @@
     _lab1.textColor = [UIColor blackColor];
     _lab1.textAlignment = NSTextAlignmentLeft;
     //        _lab1.backgroundColor = [UIColor redColor];
-    [self.view addSubview:_lab1];
+    [self.scrollView addSubview:_lab1];
     
     // 体质
     NSArray *bodyArr = @[@"temperament_1",@"temperament_2",@"temperament_3"];
@@ -47,7 +59,7 @@
         UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12+i*(30+5), _lab1.bottom+15, 30, 10)];
         //        imgView.backgroundColor = [UIColor redColor];
         imgView.image = [UIImage imageNamed:bodyArr[i]];
-        [self.view  addSubview:imgView];
+        [self.scrollView  addSubview:imgView];
         
     }
     
@@ -59,7 +71,7 @@
     moneyLab.textAlignment = NSTextAlignmentRight;
     //    moneyLab.backgroundColor = [UIColor whiteColor];
 //    moneyLab.backgroundColor = [UIColor colorWithHexString:@"#F97A23"];
-    [self.view addSubview:moneyLab];
+    [self.scrollView addSubview:moneyLab];
     
     UILabel *countLab = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width-100-12, moneyLab.bottom+15, 100, 20)];
     countLab.font = [UIFont boldSystemFontOfSize:12];
@@ -68,12 +80,12 @@
     countLab.textAlignment = NSTextAlignmentRight;
     //    moneyLab.backgroundColor = [UIColor whiteColor];
     //    moneyLab.backgroundColor = [UIColor colorWithHexString:@"#F97A23"];
-    [self.view addSubview:countLab];
+    [self.scrollView addSubview:countLab];
     
     UIImageView *tagImg = [[UIImageView alloc] initWithFrame:CGRectMake(_lab1.left, countLab.bottom+15, 16, 16)];
     tagImg.image = [UIImage imageNamed:@"tag"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:tagImg];
+    [self.scrollView addSubview:tagImg];
     
     //单行滚动  ===============
     NSArray *tagAry = @[@"红烧",@"油闷",@"清蒸"];
@@ -90,7 +102,7 @@
     _tagsView.backgroundColor = [UIColor clearColor];
     _tagsView.borderColor = [UIColor grayColor];
     [_tagsView setTagAry:tagAry delegate:nil];
-    [self.view addSubview:_tagsView];
+    [self.scrollView addSubview:_tagsView];
     
     NSString *str1 = @"88";
     //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
@@ -105,7 +117,7 @@
     fitLab.textColor = [UIColor grayColor];
     //        fitLab.backgroundColor = [UIColor yellowColor];
     fitLab.attributedText = attStr;
-    [self.view addSubview:fitLab];
+    [self.scrollView addSubview:fitLab];
     
     //CollectionView
     [self initCollectionView];
@@ -127,11 +139,11 @@
     collectionView.showsHorizontalScrollIndicator = NO;
     [collectionView registerClass:[ResDetailCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
     collectionView.contentInset = UIEdgeInsetsMake(0, 12, 0, 12);
-    [self.view addSubview:collectionView];
+    [self.scrollView addSubview:collectionView];
     
     UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, collectionView.bottom+15, kScreen_Width, 10)];
     view1.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.view addSubview:view1];
+    [self.scrollView addSubview:view1];
     
     _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12, view1.bottom+15, 70, 70)];
     _imgView.image = [UIImage imageNamed:@"food"];
@@ -139,44 +151,44 @@
     _imgView.layer.cornerRadius = 6;
     _imgView.layer.masksToBounds = YES;
     _imgView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:_imgView];
+    [self.scrollView addSubview:_imgView];
     
     _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.right+12, _imgView.top+5,kScreen_Width-(_imgView.right+12)-12, 16)];
     _lab2.font = [UIFont systemFontOfSize:14];
     _lab2.text = @"必胜（城北店万达店）";
     //        _lab1.textColor = [UIColor grayColor];
-    [self.view addSubview:_lab2];
+    [self.scrollView addSubview:_lab2];
     
     _lab3 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+12, _lab2.width, 12)];
     _lab3.font = [UIFont systemFontOfSize:12];
     _lab3.text = @"中餐 1.1km";
     _lab3.textColor = [UIColor grayColor];
-    [self.view addSubview:_lab3];
+    [self.scrollView addSubview:_lab3];
     
     _lab5 = [[UILabel alloc] initWithFrame:CGRectMake(40, _imgView.bottom+15, kScreen_Width-40-80, 30)];
     _lab5.font = [UIFont systemFontOfSize:12];
     _lab5.text = @"拱墅区祥园路28号";
     //        _lab2.textAlignment = NSTextAlignmentRight;
     //        _lab5.textColor = [UIColor grayColor];
-    [self.view addSubview:_lab5];
+    [self.scrollView addSubview:_lab5];
     
     UIImageView *addrssImg = [[UIImageView alloc] initWithFrame:CGRectMake(12, _lab5.center.y-8, 16, 16)];
     addrssImg.image = [UIImage imageNamed:@"address"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:addrssImg];
+    [self.scrollView addSubview:addrssImg];
     
     UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     btn2.frame = CGRectMake(kScreen_Width-20-12, _imgView.bottom+15, 20, 20);
     [btn2 setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
-    [self.view addSubview:btn2];
+    [self.scrollView addSubview:btn2];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(btn2.left-12-1, btn2.center.y-15, 1, 30)];
     line.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.view addSubview:line];
+    [self.scrollView addSubview:line];
     
     UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(0, line.bottom+20, kScreen_Width, 10)];
     view2.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.view addSubview:view2];
+    [self.scrollView addSubview:view2];
     
     UIButton *btn3 = [UIButton buttonWithType:UIButtonTypeCustom];
     btn3.frame = CGRectMake(0, view2.bottom, kScreen_Width, 50);
@@ -186,7 +198,7 @@
     btn3.titleLabel.font = [UIFont systemFontOfSize:14];
     [btn3 setTitle:@"  选择到店时间" forState:UIControlStateNormal];
     btn3.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:btn3];
+    [self.scrollView addSubview:btn3];
     
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-12-12, (50-12)/2.0, 12, 15)];
     //            imgView.backgroundColor = [UIColor redColor];
@@ -202,7 +214,7 @@
     
     UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(0, btn3.bottom, kScreen_Width, 10)];
     view3.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.view addSubview:view3];
+    [self.scrollView addSubview:view3];
     
     NSArray *payArr = @[@"pay_2",@"pay_1"];
     NSArray *titleArr = @[@"到店支付",@"在线支付"];
@@ -217,15 +229,19 @@
         btn4.titleLabel.font = [UIFont systemFontOfSize:18];
         [btn4 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btn4 setTitle:titleArr[i] forState:UIControlStateNormal];
-        [self.view addSubview:btn4];
+        [self.scrollView addSubview:btn4];
         
         if (i == 0) {
             UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(kScreen_Width/2, 10, 1, 130)];
             view3.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
             [btn4 addSubview:view3];
+            self.btn4 = btn4;
         }
         
     }
+    
+    self.scrollView.contentSize = CGSizeMake(kScreen_Width, self.btn4.bottom+12);
+
 
 }
 

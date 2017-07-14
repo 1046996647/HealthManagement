@@ -138,7 +138,7 @@
     //    sportView.backgroundColor = [UIColor redColor];
     [baseView addSubview:disView];
     
-    UIImageView *disImg = [[UIImageView alloc] initWithFrame:CGRectMake((disView.width-16)/2.0, 0, 25, 16)];
+    UIImageView *disImg = [[UIImageView alloc] initWithFrame:CGRectMake((disView.width-25)/2.0, 0, 25, 16)];
     disImg.image = [UIImage imageNamed:@"sport_3"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [disView addSubview:disImg];
