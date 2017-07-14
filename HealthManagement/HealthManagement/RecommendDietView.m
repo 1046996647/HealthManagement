@@ -7,6 +7,7 @@
 //
 
 #import "RecommendDietView.h"
+#import "RecommendDietVC.h"
 
 @implementation RecommendDietView
 
@@ -45,27 +46,28 @@
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(kScreen_Width-50, 0, 50, 50);
     [btn setImage:[UIImage imageNamed:@"assistor"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
     btn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
 //    btn.backgroundColor = [UIColor redColor];
     [self addSubview:btn];
     
     // 小图
-    CGFloat height = kWidth+40;
+    CGFloat height = kRWidth+40;
     for (int i=0; i<4; i++) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+kBigWidth+5+i%2*(kWidth+5), btn.bottom+i/2*(height+5), kWidth, height)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+kBigWidth+5+i%2*(kRWidth+5), btn.bottom+i/2*(height+5), kRWidth, height)];
         view.layer.borderWidth = .5;
         view.layer.borderColor = [UIColor colorWithHexString:@"#efeff4"].CGColor;
         view.layer.cornerRadius = 5;
         view.layer.masksToBounds = YES;
         [self addSubview:view];
         
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kWidth)];
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kRWidth, kRWidth)];
 //        imgView.backgroundColor = [UIColor redColor];
         imgView.tag = 100+i;
         imgView.image = [UIImage imageNamed:@"food"];
         [view addSubview:imgView];
         
-        UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, imgView.bottom, kWidth-10, 20)];
+        UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, imgView.bottom, kRWidth-10, 20)];
         titleLab.font = [UIFont systemFontOfSize:14];
         titleLab.text = @"桂花莲子";
         titleLab.tag = 101+i;
@@ -73,7 +75,7 @@
         //    lab.textColor = [UIColor colorWithHexString:@"#868788"];
         [view addSubview:titleLab];
         
-        UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom, kWidth/3, 14)];
+        UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom, kRWidth/3, 14)];
         moneyLab.font = [UIFont systemFontOfSize:12];
 //        moneyLab.textAlignment = NSTextAlignmentRight;
         moneyLab.text = @"￥25";
@@ -88,7 +90,7 @@
         NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"匹配度%@%%",str1]];
         NSRange range1 = {3,[str1 length]};
         [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#107909"] range:range1];
-        UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kWidth-kWidth*2/3+5, titleLab.bottom, kWidth*2/3-5, 14)];
+        UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kRWidth-kRWidth*2/3+5, titleLab.bottom, kRWidth*2/3-5, 14)];
         fitLab.font = [UIFont systemFontOfSize:12];
         fitLab.textAlignment = NSTextAlignmentRight;
 //        fitLab.text = @"";
@@ -153,6 +155,13 @@
     
     self.height = _bigView.bottom+10;
 
+}
+
+// 跳转附近餐厅
+- (void)btnAction
+{
+    RecommendDietVC *vc = [[RecommendDietVC alloc] init];
+    [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)setModelArr:(NSArray *)modelArr

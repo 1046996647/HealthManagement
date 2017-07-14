@@ -24,6 +24,7 @@
     // Override point for customization after application launch.
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     [self.window makeKeyAndVisible];
     
     // 要使用百度地图，请先启动BaiduMapManager

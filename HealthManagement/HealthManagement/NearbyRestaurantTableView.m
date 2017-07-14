@@ -8,6 +8,7 @@
 
 #import "NearbyRestaurantTableView.h"
 #import "NearbyRestaurantTableViewCell.h"
+#import "ResDetailVC.h"
 
 
 @implementation NearbyRestaurantTableView
@@ -62,7 +63,7 @@
                 btn.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
 
                 _imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(width/2+15, (baseView.height-10)/2, 10, 10)];
-                _imgView1.image = [UIImage imageNamed:@"Restaurant_12"];
+                _imgView1.image = [UIImage imageNamed:@"arrow"];
                 //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
                 [btn addSubview:_imgView1];
             }
@@ -73,7 +74,6 @@
 
             }
         }
-        
         
         // 表视图
         [self addSubview:self.tableView];
@@ -107,7 +107,7 @@
         
     }
     else if (btn.tag == 103) {
-        _imgView1.image = [UIImage imageNamed:@"Restaurant_11"];
+//        _imgView1.image = [UIImage imageNamed:@"Restaurant_11"];
 
     }
 }
@@ -123,6 +123,14 @@
     return 20;
 }
 
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    ResDetailVC *vc = [[ResDetailVC alloc] init];
+    [self.viewController.navigationController pushViewController:vc animated:YES];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     

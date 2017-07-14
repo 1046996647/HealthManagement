@@ -29,6 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
     
     self.title = @"附近餐厅";
     
@@ -39,7 +40,7 @@
     // 附近餐厅按钮
     _nearbyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _nearbyBtn.frame = CGRectMake(0, baseView.top, kScreen_Width/2.0, 50);
-    [_nearbyBtn setImage:[UIImage imageNamed:@"home_3"] forState:UIControlStateNormal];
+    [_nearbyBtn setImage:[UIImage imageNamed:@"icon_shop"] forState:UIControlStateNormal];
     [_nearbyBtn setImage:[UIImage imageNamed:@"Restaurant_1"] forState:UIControlStateSelected];
     //    _nearbyBtn.backgroundColor = [UIColor redColor];
     _nearbyBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0);
@@ -57,7 +58,7 @@
     _recommendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _recommendBtn.frame = CGRectMake(kScreen_Width/2.0, baseView.top, kScreen_Width/2.0, 50);
     [_recommendBtn setImage:[UIImage imageNamed:@"Restaurant_2"] forState:UIControlStateNormal];
-    [_recommendBtn setImage:[UIImage imageNamed:@"home_3"] forState:UIControlStateSelected];
+    [_recommendBtn setImage:[UIImage imageNamed:@"diet_2"] forState:UIControlStateSelected];
     //    _nearbyBtn.backgroundColor = [UIColor redColor];
     //    _btn.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
     _recommendBtn.titleLabel.font = [UIFont systemFontOfSize:16];
@@ -131,9 +132,10 @@
 - (void)exchangeAction:(UIButton *)btn
 {
     if (btn.tag == 100) {
-//        _nearbyBtn.selected = YES;
-//        _recommendBtn.selected = NO;
-        
+        _nearbyBtn.selected = YES;
+        _recommendBtn.selected = NO;
+        self.title = @"附近餐厅";
+
         [UIView animateWithDuration:.35 animations:^{
             _bottomLine.left = 0;
             self.scrollView.contentOffset = CGPointMake(0, 0);
@@ -142,9 +144,10 @@
         
     }
     else {
-//        _nearbyBtn.selected = NO;
-//        _recommendBtn.selected = YES;
-        
+        _nearbyBtn.selected = NO;
+        _recommendBtn.selected = YES;
+        self.title = @"推荐饮食";
+
         [UIView animateWithDuration:.35 animations:^{
             _bottomLine.left = kScreen_Width/2;
 
@@ -162,8 +165,10 @@
 //    NSLog(@"%d",(int)scrollView.contentOffset.x);
     if ((int)scrollView.contentOffset.x/kScreen_Width == 0) {
         
-        //        _nearbyBtn.selected = YES;
-        //        _recommendBtn.selected = NO;
+        _nearbyBtn.selected = YES;
+        _recommendBtn.selected = NO;
+        self.title = @"附近餐厅";
+
         [UIView animateWithDuration:.35 animations:^{
             _bottomLine.left = 0;
             
@@ -172,8 +177,10 @@
     }
     else if ((int)scrollView.contentOffset.x/kScreen_Width == 1) {
         
-        //        _nearbyBtn.selected = NO;
-        //        _recommendBtn.selected = YES;
+        _nearbyBtn.selected = NO;
+        _recommendBtn.selected = YES;
+        self.title = @"推荐饮食";
+
         [UIView animateWithDuration:.35 animations:^{
             _bottomLine.left = kScreen_Width/2;
             

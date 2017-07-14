@@ -121,25 +121,20 @@
     locationView.image = [UIImage imageNamed:@"home_1"];
     [self addSubview:locationView];
     
-    _userLocationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _userLocationBtn.frame = CGRectMake(locationView.right, 20, kScreen_Width-(locationView.right+10)-12-150-12, 20);
-//    [_userLocationBtn setImage:[UIImage imageNamed:@"home_1"] forState:UIControlStateNormal];
-//    _userLocationBtn.backgroundColor = [UIColor redColor];
-    _userLocationBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
-    _userLocationBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [_userLocationBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _userLocationBtn.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    //    [_btn setTitle:@"杭州" forState:UIControlStateNormal];
-    [self addSubview:_userLocationBtn];
+    _userLocationLab = [[UILabel alloc] initWithFrame:CGRectMake(locationView.right, 20, kScreen_Width-(locationView.right+10)-12-150-12, 20)];
+//    _userLocationLab.backgroundColor = [UIColor redColor];
+    _userLocationLab.font = [UIFont systemFontOfSize:16];
+    _userLocationLab.textColor = [UIColor whiteColor];
+    [self addSubview:_userLocationLab];
     
     
-//    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(_userLocationBtn.right+10, _userLocationBtn.center.y-40/2, kScreen_Width-(_userLocationBtn.right+10)-12, 40)];
+//    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(_userLocationLab.right+10, _userLocationLab.center.y-40/2, kScreen_Width-(_userLocationLab.right+10)-12, 40)];
     //-----------搜索-----------
     UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
     leftView.contentMode = UIViewContentModeScaleAspectFit;
     leftView.image = [UIImage imageNamed:@"home_2"];
     
-    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(kScreen_Width-12-150, _userLocationBtn.center.y-40/2, 150, 40)];
+    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(kScreen_Width-12-150, _userLocationLab.center.y-40/2, 150, 40)];
     tf.layer.cornerRadius = tf.height/2.0;
     //    tf.delegate = self;
     //    [tf addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventEditingChanged];

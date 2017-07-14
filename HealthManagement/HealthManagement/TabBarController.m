@@ -15,7 +15,7 @@
 #import "SportVC.h"
 #import "PersonalCenterVC.h"
 
-@interface TabBarController ()<UITabBarControllerDelegate>
+@interface TabBarController ()<UITabBarControllerDelegate,UINavigationControllerDelegate>
 
 @property(nonatomic,strong) UIButton *btn;
 
@@ -48,7 +48,7 @@
     self.tabBar.barStyle = UIBarStyleBlack;
     self.delegate = self;
     
-    [self setChildViewController:[[PersonalCenterVC alloc]init] Title:@"我的" Image:@"logo_9" SelectedImage:@"logo_10"];
+    [self setChildViewController:[[PersonalCenterVC alloc]init] Title:@"我的" Image:@"logo_9" SelectedImage:@"icon_geren"];
     [self setChildViewController:[[DietArticleVC alloc]init] Title:@"饮食文章" Image:@"logo_5" SelectedImage:@"logo_6"];
     [self setChildViewController:[[HomeVC alloc]init] Title:@"首页" Image:@"" SelectedImage:@""];
     [self setChildViewController:[[SportVC alloc]init] Title:@"运动" Image:@"logo_7" SelectedImage:@"logo_8"];
@@ -85,6 +85,7 @@
     childVC.tabBarItem.image=[UIImage imageNamed:image];
     childVC.tabBarItem.selectedImage=[[UIImage imageNamed:selectedImage]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     NavigationController *nav = [[NavigationController alloc]initWithRootViewController:childVC];
+//    nav.delegate = self;
     [self addChildViewController:nav];
 
 }
@@ -96,7 +97,8 @@
 #pragma mark-UITabBarControllerDelegate
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    viewController = (UINavigationController*)viewController.childViewControllers[0];
+    viewController = (UINavigationController
+                      *)viewController.childViewControllers[0];
     if ([viewController isKindOfClass:[HomeVC class]]) {
         self.btn.selected = YES;
 
@@ -106,6 +108,12 @@
 
     }
 }
+//#pragma mark - UINavigationControllerDelegate
+//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+//    BOOL isHomePage = [viewController isKindOfClass:[self class]];
+//    
+//    [navigationController setNavigationBarHidden:isHomePage animated:YES];
+//}
 
 /*
 #pragma mark - Navigation

@@ -11,9 +11,9 @@
 
 @interface DietArticleVC ()<UITableViewDelegate,UITableViewDataSource>
 
-@property(nonatomic,strong) UIButton *bodyBtn;
-@property(nonatomic,strong) UIButton *fitBtn;
-@property(nonatomic,strong) UIButton *possibleBtn;
+@property(nonatomic,strong) UILabel *bodyLab;
+@property(nonatomic,strong) UILabel *fitLab;
+@property(nonatomic,strong) UILabel *possibleLab;
 @property(nonatomic,strong) UIView *headerView;
 @property(nonatomic,strong) UITableView *tableView;
 
@@ -26,7 +26,7 @@
 {
     if (!_tableView) {
         //列表
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.headerView.bottom, kScreen_Width, kScreen_Height-49-64-self.headerView.height)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-49-64-25)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -42,51 +42,54 @@
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 0)];
     headerView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:headerView];
+//    [self.view addSubview:headerView];
     self.headerView = headerView;
     
     UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 6)];
     line1.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     [headerView addSubview:line1];
     
-    _bodyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _bodyBtn.frame = CGRectMake(12, line1.bottom+12, kScreen_Width-12-12, 20);
-    [_bodyBtn setImage:[UIImage imageNamed:@"text_1"] forState:UIControlStateNormal];
-    //    _nearbyBtn.backgroundColor = [UIColor redColor];
-    _bodyBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0);
-    _bodyBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -8);
-    _bodyBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [_bodyBtn setTitleColor:[UIColor colorWithHexString:@"#58595A"] forState:UIControlStateNormal];
-    [_bodyBtn setTitle:@"您的体质是XXXX" forState:UIControlStateNormal];
-    [headerView addSubview:_bodyBtn];
+    UIImageView *imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(12, line1.bottom+12, 20, 30)];
+    imgView1.image = [UIImage imageNamed:@"text_3"];
+    imgView1.contentMode = UIViewContentModeScaleAspectFit;
+    [headerView addSubview:imgView1];
     
-    _fitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _fitBtn.frame = CGRectMake(_bodyBtn.left, _bodyBtn.bottom+12, _bodyBtn.width, _bodyBtn.height);
-    [_fitBtn setImage:[UIImage imageNamed:@"text_2"] forState:UIControlStateNormal];
-    //    _nearbyBtn.backgroundColor = [UIColor redColor];
-    _fitBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0);
-    _fitBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -8);
-    _fitBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [_fitBtn setTitleColor:[UIColor colorWithHexString:@"#58595A"] forState:UIControlStateNormal];
-    [_fitBtn setTitle:@"适合吃XXXXX" forState:UIControlStateNormal];
-    [headerView addSubview:_fitBtn];
+    _bodyLab = [[UILabel alloc] initWithFrame:CGRectMake(imgView1.right+10, imgView1.center.y-10, kScreen_Width-12-12, 20)];
+    _bodyLab.font = [UIFont systemFontOfSize:14];
+    _bodyLab.textColor = [UIColor colorWithHexString:@"#58595A"];
+    _bodyLab.text = @"您的体质是XXXX";
+    [headerView addSubview:_bodyLab];
     
-    _possibleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _possibleBtn.frame = CGRectMake(_bodyBtn.left, _bodyBtn.bottom+12, _bodyBtn.width, _bodyBtn.height);
-    [_possibleBtn setImage:[UIImage imageNamed:@"text_3"] forState:UIControlStateNormal];
-    //    _nearbyBtn.backgroundColor = [UIColor redColor];
-    _possibleBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0);
-    _possibleBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -8);
-    _possibleBtn.titleLabel.font = [UIFont systemFontOfSize:16];
-    [_possibleBtn setTitleColor:[UIColor colorWithHexString:@"#58595A"] forState:UIControlStateNormal];
-    [_possibleBtn setTitle:@"尽量少吃XXXXX" forState:UIControlStateNormal];
-    [headerView addSubview:_possibleBtn];
+    UIImageView *imgView2 = [[UIImageView alloc] initWithFrame:CGRectMake(12, _bodyLab.bottom+20, 20, 30)];
+    imgView2.image = [UIImage imageNamed:@"text_2"];
+    imgView2.contentMode = UIViewContentModeScaleAspectFit;
+    [headerView addSubview:imgView2];
+
+    _fitLab = [[UILabel alloc] initWithFrame:CGRectMake(imgView2.right+10, imgView2.center.y-10, kScreen_Width-12-12, 20)];
+    _fitLab.font = [UIFont systemFontOfSize:14];
+    _fitLab.textColor = [UIColor colorWithHexString:@"#58595A"];
+    _fitLab.text = @"适合吃XXXX";
+    [headerView addSubview:_fitLab];
     
-    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, _possibleBtn.bottom+10, kScreen_Width, 6)];
+    UIImageView *imgView3 = [[UIImageView alloc] initWithFrame:CGRectMake(12, _fitLab.bottom+20, 20, 30)];
+    imgView3.image = [UIImage imageNamed:@"text_1"];
+    imgView3.contentMode = UIViewContentModeScaleAspectFit;
+    [headerView addSubview:imgView3];
+    
+    _possibleLab = [[UILabel alloc] initWithFrame:CGRectMake(imgView3.right+10, imgView3.center.y-10, kScreen_Width-12-12, 20)];
+    _possibleLab.font = [UIFont systemFontOfSize:14];
+    _possibleLab.textColor = [UIColor colorWithHexString:@"#58595A"];
+    _possibleLab.text = @"尽量少吃XXXX";
+    [headerView addSubview:_possibleLab];
+    
+    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, _possibleLab.bottom+12, kScreen_Width, 6)];
     line2.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     [headerView addSubview:line2];
     
     headerView.height = line2.bottom;
+    self.tableView.tableHeaderView = headerView;
+    
+    [self.view addSubview:self.tableView];
 }
 
 

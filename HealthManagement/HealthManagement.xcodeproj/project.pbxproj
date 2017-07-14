@@ -31,6 +31,18 @@
 		F74FF5CB1F15FC1900C84034 /* HXTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5CA1F15FC1900C84034 /* HXTagsView.m */; };
 		F74FF5D11F160FB700C84034 /* DietArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5D01F160FB700C84034 /* DietArticleCell.m */; };
 		F74FF5D41F161FAA00C84034 /* DietRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5D31F161FAA00C84034 /* DietRecordView.m */; };
+		F75EB7791F17221C00DA36FF /* RecommendDietVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB7781F17221C00DA36FF /* RecommendDietVC.m */; };
+		F75EB77C1F17391C00DA36FF /* ResDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB77B1F17391C00DA36FF /* ResDetailHeaderView.m */; };
+		F75EB77F1F17393600DA36FF /* ResDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB77E1F17393600DA36FF /* ResDetailVC.m */; };
+		F75EB7821F1743CB00DA36FF /* ResDetailCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB7811F1743CB00DA36FF /* ResDetailCollectionViewCell.m */; };
+		F75EB7851F174A0F00DA36FF /* ResDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB7841F174A0F00DA36FF /* ResDetailCell.m */; };
+		F75EB78C1F175A0700DA36FF /* NSObject+YYModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB7881F175A0700DA36FF /* NSObject+YYModel.m */; };
+		F75EB78D1F175A0700DA36FF /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB78A1F175A0700DA36FF /* YYClassInfo.m */; };
+		F75EB7901F175A2700DA36FF /* ResDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB78F1F175A2700DA36FF /* ResDetailModel.m */; };
+		F76E48121F185D46001C259E /* CookbookDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F76E48111F185D46001C259E /* CookbookDetailVC.m */; };
+		F76E48151F185E63001C259E /* TLCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F76E48141F185E63001C259E /* TLCollectionViewCell.m */; };
+		F76E48181F1860F6001C259E /* TLCollectionViewLineLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F76E48171F1860F6001C259E /* TLCollectionViewLineLayout.m */; };
+		F76E481B1F188BB0001C259E /* PaymentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F76E481A1F188BB0001C259E /* PaymentVC.m */; };
 		F774B91B1F13244C00A60166 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B91A1F13244C00A60166 /* HeaderView.m */; };
 		F774B92C1F13271000A60166 /* TAAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B91F1F13271000A60166 /* TAAbstractDotView.m */; };
 		F774B92D1F13271000A60166 /* TAAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = F774B9211F13271000A60166 /* TAAnimatedDotView.m */; };
@@ -119,6 +131,31 @@
 		F74FF5D01F160FB700C84034 /* DietArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietArticleCell.m; sourceTree = "<group>"; };
 		F74FF5D21F161FAA00C84034 /* DietRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DietRecordView.h; sourceTree = "<group>"; };
 		F74FF5D31F161FAA00C84034 /* DietRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietRecordView.m; sourceTree = "<group>"; };
+		F75EB7771F17221C00DA36FF /* RecommendDietVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendDietVC.h; sourceTree = "<group>"; };
+		F75EB7781F17221C00DA36FF /* RecommendDietVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendDietVC.m; sourceTree = "<group>"; };
+		F75EB77A1F17391C00DA36FF /* ResDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResDetailHeaderView.h; sourceTree = "<group>"; };
+		F75EB77B1F17391C00DA36FF /* ResDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResDetailHeaderView.m; sourceTree = "<group>"; };
+		F75EB77D1F17393600DA36FF /* ResDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResDetailVC.h; sourceTree = "<group>"; };
+		F75EB77E1F17393600DA36FF /* ResDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResDetailVC.m; sourceTree = "<group>"; };
+		F75EB7801F1743CB00DA36FF /* ResDetailCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResDetailCollectionViewCell.h; sourceTree = "<group>"; };
+		F75EB7811F1743CB00DA36FF /* ResDetailCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResDetailCollectionViewCell.m; sourceTree = "<group>"; };
+		F75EB7831F174A0F00DA36FF /* ResDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResDetailCell.h; sourceTree = "<group>"; };
+		F75EB7841F174A0F00DA36FF /* ResDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResDetailCell.m; sourceTree = "<group>"; };
+		F75EB7871F175A0700DA36FF /* NSObject+YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+YYModel.h"; sourceTree = "<group>"; };
+		F75EB7881F175A0700DA36FF /* NSObject+YYModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+YYModel.m"; sourceTree = "<group>"; };
+		F75EB7891F175A0700DA36FF /* YYClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYClassInfo.h; sourceTree = "<group>"; };
+		F75EB78A1F175A0700DA36FF /* YYClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYClassInfo.m; sourceTree = "<group>"; };
+		F75EB78B1F175A0700DA36FF /* YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYModel.h; sourceTree = "<group>"; };
+		F75EB78E1F175A2700DA36FF /* ResDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResDetailModel.h; sourceTree = "<group>"; };
+		F75EB78F1F175A2700DA36FF /* ResDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResDetailModel.m; sourceTree = "<group>"; };
+		F76E48101F185D46001C259E /* CookbookDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CookbookDetailVC.h; sourceTree = "<group>"; };
+		F76E48111F185D46001C259E /* CookbookDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CookbookDetailVC.m; sourceTree = "<group>"; };
+		F76E48131F185E63001C259E /* TLCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCollectionViewCell.h; sourceTree = "<group>"; };
+		F76E48141F185E63001C259E /* TLCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCollectionViewCell.m; sourceTree = "<group>"; };
+		F76E48161F1860F6001C259E /* TLCollectionViewLineLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCollectionViewLineLayout.h; sourceTree = "<group>"; };
+		F76E48171F1860F6001C259E /* TLCollectionViewLineLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCollectionViewLineLayout.m; sourceTree = "<group>"; };
+		F76E48191F188BB0001C259E /* PaymentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentVC.h; sourceTree = "<group>"; };
+		F76E481A1F188BB0001C259E /* PaymentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentVC.m; sourceTree = "<group>"; };
 		F774B9191F13244C00A60166 /* HeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderView.h; sourceTree = "<group>"; };
 		F774B91A1F13244C00A60166 /* HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderView.m; sourceTree = "<group>"; };
 		F774B91E1F13271000A60166 /* TAAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAbstractDotView.h; sourceTree = "<group>"; };
@@ -261,6 +298,8 @@
 		F737E22A1F01F305000B5738 /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
+				F76E48091F184FBB001C259E /* TLCollectionViewLineLayout */,
+				F75EB7861F175A0700DA36FF /* YYModel */,
 				F74FF5C81F15FC1900C84034 /* 标签 */,
 				F774B91C1F13271000A60166 /* SDCycleScrollView */,
 				F737E2471F01F6BE000B5738 /* Toast */,
@@ -270,6 +309,7 @@
 				F737E22B1F01F31C000B5738 /* Reachability */,
 			);
 			name = Thirdparty;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		F737E22B1F01F31C000B5738 /* Reachability */ = {
@@ -364,6 +404,29 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		F75EB7861F175A0700DA36FF /* YYModel */ = {
+			isa = PBXGroup;
+			children = (
+				F75EB7871F175A0700DA36FF /* NSObject+YYModel.h */,
+				F75EB7881F175A0700DA36FF /* NSObject+YYModel.m */,
+				F75EB7891F175A0700DA36FF /* YYClassInfo.h */,
+				F75EB78A1F175A0700DA36FF /* YYClassInfo.m */,
+				F75EB78B1F175A0700DA36FF /* YYModel.h */,
+			);
+			path = YYModel;
+			sourceTree = "<group>";
+		};
+		F76E48091F184FBB001C259E /* TLCollectionViewLineLayout */ = {
+			isa = PBXGroup;
+			children = (
+				F76E48161F1860F6001C259E /* TLCollectionViewLineLayout.h */,
+				F76E48171F1860F6001C259E /* TLCollectionViewLineLayout.m */,
+				F76E48131F185E63001C259E /* TLCollectionViewCell.h */,
+				F76E48141F185E63001C259E /* TLCollectionViewCell.m */,
+			);
+			path = TLCollectionViewLineLayout;
+			sourceTree = "<group>";
+		};
 		F774B91C1F13271000A60166 /* SDCycleScrollView */ = {
 			isa = PBXGroup;
 			children = (
@@ -396,6 +459,8 @@
 		F780229D1F0F89D100017D5C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F75EB78E1F175A2700DA36FF /* ResDetailModel.h */,
+				F75EB78F1F175A2700DA36FF /* ResDetailModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -421,6 +486,12 @@
 				F74FF5C31F15B91300C84034 /* RecommendDietTableView.m */,
 				F74FF5C51F15BB2200C84034 /* RecommendDietCell.h */,
 				F74FF5C61F15BB2200C84034 /* RecommendDietCell.m */,
+				F75EB77A1F17391C00DA36FF /* ResDetailHeaderView.h */,
+				F75EB77B1F17391C00DA36FF /* ResDetailHeaderView.m */,
+				F75EB7801F1743CB00DA36FF /* ResDetailCollectionViewCell.h */,
+				F75EB7811F1743CB00DA36FF /* ResDetailCollectionViewCell.m */,
+				F75EB7831F174A0F00DA36FF /* ResDetailCell.h */,
+				F75EB7841F174A0F00DA36FF /* ResDetailCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -432,6 +503,14 @@
 				F737E24D1F01F8D2000B5738 /* HomeVC.m */,
 				F74371681F14BD3500332D21 /* NearbyRestaurantVC.h */,
 				F74371691F14BD3500332D21 /* NearbyRestaurantVC.m */,
+				F75EB7771F17221C00DA36FF /* RecommendDietVC.h */,
+				F75EB7781F17221C00DA36FF /* RecommendDietVC.m */,
+				F75EB77D1F17393600DA36FF /* ResDetailVC.h */,
+				F75EB77E1F17393600DA36FF /* ResDetailVC.m */,
+				F76E48101F185D46001C259E /* CookbookDetailVC.h */,
+				F76E48111F185D46001C259E /* CookbookDetailVC.m */,
+				F76E48191F188BB0001C259E /* PaymentVC.h */,
+				F76E481A1F188BB0001C259E /* PaymentVC.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -439,7 +518,6 @@
 		F7933AA01F0096F20069DBF7 = {
 			isa = PBXGroup;
 			children = (
-				F737E22A1F01F305000B5738 /* Thirdparty */,
 				F7933AAB1F0096F20069DBF7 /* HealthManagement */,
 				F7933AC51F0096F20069DBF7 /* HealthManagementTests */,
 				F7933AD01F0096F20069DBF7 /* HealthManagementUITests */,
@@ -462,6 +540,7 @@
 		F7933AAB1F0096F20069DBF7 /* HealthManagement */ = {
 			isa = PBXGroup;
 			children = (
+				F737E22A1F01F305000B5738 /* Thirdparty */,
 				F74371641F14A03500332D21 /* CustomClass */,
 				F7933AAF1F0096F20069DBF7 /* AppDelegate.h */,
 				F7933AB01F0096F20069DBF7 /* AppDelegate.m */,
@@ -705,24 +784,35 @@
 				F743716D1F14C0E100332D21 /* NearbyRestaurantTableView.m in Sources */,
 				F737E2211F01EF91000B5738 /* NavigationController.m in Sources */,
 				F780229C1F0F802400017D5C /* BaseViewController.m in Sources */,
+				F76E481B1F188BB0001C259E /* PaymentVC.m in Sources */,
+				F76E48181F1860F6001C259E /* TLCollectionViewLineLayout.m in Sources */,
 				F737E23E1F01F32A000B5738 /* UIViewExt.m in Sources */,
+				F75EB77C1F17391C00DA36FF /* ResDetailHeaderView.m in Sources */,
 				F737E24E1F01F8D2000B5738 /* HomeVC.m in Sources */,
 				F774B93B1F13750C00A60166 /* RecommendDietView.m in Sources */,
 				F74371701F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m in Sources */,
 				F774B9321F13271000A60166 /* UIView+SDExtension.m in Sources */,
 				F737E21E1F01EC01000B5738 /* TabBarController.m in Sources */,
 				F74FF5D11F160FB700C84034 /* DietArticleCell.m in Sources */,
+				F75EB78D1F175A0700DA36FF /* YYClassInfo.m in Sources */,
+				F75EB7901F175A2700DA36FF /* ResDetailModel.m in Sources */,
 				F74FF5D41F161FAA00C84034 /* DietRecordView.m in Sources */,
 				F774B92F1F13271000A60166 /* TAPageControl.m in Sources */,
+				F75EB77F1F17393600DA36FF /* ResDetailVC.m in Sources */,
 				F737E2571F01FAA0000B5738 /* SleepVC.m in Sources */,
 				F74FF5C71F15BB2200C84034 /* RecommendDietCell.m in Sources */,
+				F75EB7821F1743CB00DA36FF /* ResDetailCollectionViewCell.m in Sources */,
+				F75EB7791F17221C00DA36FF /* RecommendDietVC.m in Sources */,
 				F737E2541F01F99A000B5738 /* SportVC.m in Sources */,
 				F737E25A1F01FB30000B5738 /* PersonalCenterVC.m in Sources */,
+				F75EB78C1F175A0700DA36FF /* NSObject+YYModel.m in Sources */,
 				F743716A1F14BD3500332D21 /* NearbyRestaurantVC.m in Sources */,
 				F7933AB11F0096F20069DBF7 /* AppDelegate.m in Sources */,
+				F75EB7851F174A0F00DA36FF /* ResDetailCell.m in Sources */,
 				F737E2421F01F331000B5738 /* UIColor+Expend.m in Sources */,
 				F774B92D1F13271000A60166 /* TAAnimatedDotView.m in Sources */,
 				F774B92E1F13271000A60166 /* TADotView.m in Sources */,
+				F76E48121F185D46001C259E /* CookbookDetailVC.m in Sources */,
 				F774B92C1F13271000A60166 /* TAAbstractDotView.m in Sources */,
 				F737E2461F01F389000B5738 /* InfoCache.m in Sources */,
 				F74FF5C41F15B91300C84034 /* RecommendDietTableView.m in Sources */,
@@ -731,6 +821,7 @@
 				F774B9311F13271000A60166 /* SDCycleScrollView.m in Sources */,
 				F737E23D1F01F32A000B5738 /* UIViewController+UIViewControllerExt.m in Sources */,
 				F74FF5CB1F15FC1900C84034 /* HXTagsView.m in Sources */,
+				F76E48151F185E63001C259E /* TLCollectionViewCell.m in Sources */,
 				F774B9301F13271000A60166 /* SDCollectionViewCell.m in Sources */,
 				F737E23C1F01F32A000B5738 /* UIView+UIViewController.m in Sources */,
 				F737E24A1F01F6C5000B5738 /* Toast+UIView.m in Sources */,

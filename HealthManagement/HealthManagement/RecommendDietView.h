@@ -12,7 +12,7 @@
 
 #define kBigWidth 120*scaleX
 
-#define kWidth (kScreen_Width-12*2-5*2-kBigWidth)/2.0
+#define kRWidth (kScreen_Width-12*2-5*2-kBigWidth)/2.0
 
 @property(nonatomic,strong) NSMutableArray *viewArr;
 @property(nonatomic,strong) NSArray *modelArr;

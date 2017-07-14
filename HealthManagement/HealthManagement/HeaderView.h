@@ -16,7 +16,7 @@
 @interface HeaderView : UIView<SDCycleScrollViewDelegate>
 
 //-----------定位-----------
-@property(nonatomic,strong) UIButton *userLocationBtn;
+@property(nonatomic,strong) UILabel *userLocationLab;
 
 //-----------搜索-----------
 @property(nonatomic,strong) UITextField *tf;

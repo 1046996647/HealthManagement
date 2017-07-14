@@ -45,7 +45,7 @@
         
         _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.right+12, _imgView.top, kScreen_Width-(_imgView.right+12)-50-12-12, 20)];
         _lab2.font = [UIFont systemFontOfSize:18];
-        _lab2.text = @"科技福克斯京东方方式发送到";
+        _lab2.text = @"蜂蜜水晶包";
         //        _lab2.textAlignment = NSTextAlignmentRight;
         //        _lab1.textColor = [UIColor grayColor];
         [self.contentView addSubview:_lab2];
@@ -68,7 +68,7 @@
         
         _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView1.right+12, _lab2.bottom+10, kScreen_Width-(_imgView1.right+12)-50-12-12, 16)];
         _lab4.font = [UIFont systemFontOfSize:14];
-        _lab4.text = @"优惠滑动满100件20dgdgd";
+        _lab4.text = @"胜必";
         //        _lab2.textAlignment = NSTextAlignmentRight;
         _lab4.textColor = [UIColor grayColor];
         [self.contentView addSubview:_lab4];
@@ -80,7 +80,7 @@
         
         _lab5 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView2.right+12, _imgView2.top, kScreen_Width-(_imgView2.right+12)-40-12-12-12, 16)];
         _lab5.font = [UIFont systemFontOfSize:14];
-        _lab5.text = @"跨境电商返回后防守打法";
+        _lab5.text = @"拱墅区祥园路28号";
         //        _lab2.textAlignment = NSTextAlignmentRight;
         _lab5.textColor = [UIColor grayColor];
         [self.contentView addSubview:_lab5];

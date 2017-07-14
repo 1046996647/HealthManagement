@@ -18,8 +18,8 @@
         
         
         _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12, (107-85)/2, 85, 85)];
-        //        _imgView.image = [UIImage imageNamed:@"recipes_3"];
-        _imgView.backgroundColor = [UIColor redColor];
+        _imgView.image = [UIImage imageNamed:@"food"];
+//        _imgView.backgroundColor = [UIColor redColor];
         _imgView.layer.cornerRadius = 6;
         _imgView.layer.masksToBounds = YES;
         _imgView.contentMode = UIViewContentModeScaleAspectFit;
@@ -30,12 +30,12 @@
         _lab1.font = [UIFont systemFontOfSize:14];
         _lab1.text = @"190m";
         _lab1.textAlignment = NSTextAlignmentRight;
-        _lab1.backgroundColor = [UIColor redColor];
+//        _lab1.backgroundColor = [UIColor redColor];
         [self.contentView addSubview:_lab1];
         
         _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.right+12, _imgView.top, kScreen_Width-(_imgView.right+12)-50-12-12, 20)];
         _lab2.font = [UIFont systemFontOfSize:18];
-        _lab2.text = @"科技福克斯京东方方式发送到";
+        _lab2.text = @"必胜（城北店万达店）";
 //        _lab2.textAlignment = NSTextAlignmentRight;
         //        _lab1.textColor = [UIColor grayColor];
         [self.contentView addSubview:_lab2];
@@ -54,7 +54,7 @@
         
         _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView1.right+12, _lab3.bottom+6, kScreen_Width-(_imgView1.right+12)-12, 16)];
         _lab4.font = [UIFont systemFontOfSize:14];
-        _lab4.text = @"优惠滑动满100件20";
+        _lab4.text = @"优惠活动满100件20";
         //        _lab2.textAlignment = NSTextAlignmentRight;
         _lab4.textColor = [UIColor grayColor];
         [self.contentView addSubview:_lab4];
@@ -75,7 +75,7 @@
         
         _lab5 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView2.right+12, _lab4.bottom+6, kScreen_Width-(_imgView2.right+12)-40-12-12, 16)];
         _lab5.font = [UIFont systemFontOfSize:14];
-        _lab5.text = @"跨境电商返回后防守打法";
+        _lab5.text = @"拱墅区祥园路28号";
         //        _lab2.textAlignment = NSTextAlignmentRight;
         _lab5.textColor = [UIColor grayColor];
         [self.contentView addSubview:_lab5];

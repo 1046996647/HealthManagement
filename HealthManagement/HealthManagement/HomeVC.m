@@ -56,7 +56,14 @@
     //启动LocationService
     [_locService startUserLocationService];
     
+
+    
 }
+
+//- (UIStatusBarStyle)preferredStatusBarStyle
+//{
+//    return UIStatusBarStyleLightContent;
+//}
 
 - (void)initSubviews
 {
@@ -66,6 +73,7 @@
     [self.view addSubview:self.tableView];
     self.headView = headView;
 
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -73,7 +81,11 @@
     _locService.delegate = self;
     _geocodesearch.delegate = self;
     
-    [self.navigationController.navigationBar setHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
+    //带动画结果在切换tabBar的时候viewController会有闪动的效果不建议这样写
+    //    [self.navigationController setNavigationBarHidden:YES animated:YES];
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -81,7 +93,10 @@
     _locService.delegate = nil;
     _geocodesearch.delegate = nil;
     
-    [self.navigationController.navigationBar setHidden:NO];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+     //带动画结果在切换tabBar的时候viewController会有闪动的效果不建议这样写
+//    [self.navigationController setNavigationBarHidden:NO animated:YES];
 
 }
 
@@ -126,7 +141,6 @@
 }
 
 
-
 #pragma mark -------------地理反编码的delegate---------------
 
 -(void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
@@ -135,8 +149,17 @@
     
     NSLog(@"address:%@----%@",result.addressDetail,result.address);
     
-    // 定位
-    [self.headView.userLocationBtn  setTitle:result.address forState:UIControlStateNormal];
+    if (result) {
+        // 定位
+        BMKPoiInfo *poiInfo = [result.poiList firstObject];
+        self.headView.userLocationLab.text = poiInfo.name;
+    }
+    else {
+        
+        self.headView.userLocationLab.text = @"定位失败";
+
+    }
+
     
     //addressDetail:     层次化地址信息
     
@@ -163,7 +186,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 //    return self.dataArray.count;
-    return 3;
+    return 10;
 }
 
 
