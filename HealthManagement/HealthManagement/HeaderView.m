@@ -62,7 +62,7 @@
     NSString *str1 = @"4";
 //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
 //    self.money = str1;
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"升级还需%@积分",str1]];
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"还需%@积分",str1]];
     NSRange range1 = {4,[str1 length]};
     [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range1];
     
@@ -92,11 +92,12 @@
     
     // 运动
     _btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btn1.frame = CGRectMake(line2.left-10-120, _btn.top, 120, 18);
+    _btn1.frame = CGRectMake(line2.left-10-100, _btn.top, 100, 18);
     [_btn1 setImage:[UIImage imageNamed:@"home_4"] forState:UIControlStateNormal];
     _btn1.titleLabel.font = [UIFont systemFontOfSize:12];
     [_btn1 setTitleColor:[UIColor colorWithHexString:@"#868788"] forState:UIControlStateNormal];
-    [_btn1 setTitle:@"今日已做有氧运动" forState:UIControlStateNormal];
+//    _btn1.backgroundColor = [UIColor redColor];
+    [_btn1 setTitle:@"今日已做运动" forState:UIControlStateNormal];
     [self addSubview:_btn1];
     
     //-----------附近餐厅-----------

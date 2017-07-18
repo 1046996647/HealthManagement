@@ -7,8 +7,9 @@
 //
 
 #import "SportVC.h"
-
-@interface SportVC ()
+#import "PXLineChartView.h"
+#import "PointItem.h"
+@interface SportVC ()<PXLineChartViewDelegate>
 
 // -----------运动-----------------
 @property(nonatomic,strong) UILabel *sportLab;
@@ -26,9 +27,15 @@
 @property(nonatomic,strong) UILabel *disLab2;
 
 // -----------其他-----------------
-@property(nonatomic,strong) UIView *view2;
+@property (nonatomic,strong) UIScrollView *scrollView;
+@property (nonatomic,strong) UIView *view2;
 
+// -----------统计图-----------------
+@property (nonatomic, strong) PXLineChartView *pXLineChartView;
 
+@property (nonatomic, strong) NSArray *lines;//line count
+@property (nonatomic, strong) NSArray *xElements;//x轴数据
+@property (nonatomic, strong) NSArray *yElements;//y轴数据
 
 @end
 
@@ -39,21 +46,27 @@
     // Do any additional setup after loading the view.
 //    self.view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     
-    UIView *baseView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-49-64-25)];
-    baseView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:baseView];
+    // 滑动视图
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-49-64-25)];
+    //    scrollView.pagingEnabled = YES;
+    //    scrollView.delegate = self;
+    scrollView.backgroundColor = [UIColor whiteColor];
+    scrollView.showsVerticalScrollIndicator = NO;
+    //    scrollView.contentSize = CGSizeMake(kScreen_Width*3, kWidth+10+20);
+    [self.view addSubview:scrollView];
+    self.scrollView = scrollView;
     
     // -----------运动-----------------
     UIButton *sportBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sportBtn.frame = CGRectMake((kScreen_Width-120*scaleX)/2.0, 20, scaleX*120, scaleX*120);
     [sportBtn setImage:[UIImage imageNamed:@"lan"] forState:UIControlStateNormal];
 //    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
-    [baseView addSubview:sportBtn];
+    [scrollView addSubview:sportBtn];
     
     UIView *sportView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     sportView.center = sportBtn.center;
 //    sportView.backgroundColor = [UIColor redColor];
-    [baseView addSubview:sportView];
+    [scrollView addSubview:sportView];
     
     UIImageView *sportImg = [[UIImageView alloc] initWithFrame:CGRectMake((sportView.width-16)/2.0-10-16, 0, 16, 16)];
     sportImg.image = [UIImage imageNamed:@"sport_2"];
@@ -86,13 +99,13 @@
     timeBtn.frame = CGRectMake(sportBtn.center.x-30-scaleX*100, sportBtn.center.y+10, scaleX*100, scaleX*100);
     [timeBtn setImage:[UIImage imageNamed:@"yew"] forState:UIControlStateNormal];
     //    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
-    [baseView insertSubview:timeBtn atIndex:0];
+    [scrollView insertSubview:timeBtn atIndex:0];
     self.timeBtn = timeBtn;
     
     UIView *timeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     timeView.center = timeBtn.center;
     //    sportView.backgroundColor = [UIColor redColor];
-    [baseView addSubview:timeView];
+    [scrollView addSubview:timeView];
     
     UIImageView *timeImg = [[UIImageView alloc] initWithFrame:CGRectMake((timeView.width-16)/2.0, 0, 16, 16)];
     timeImg.image = [UIImage imageNamed:@"sport_4"];
@@ -131,12 +144,12 @@
     disBtn.frame = CGRectMake(sportBtn.center.x+30, sportBtn.center.y, scaleX*90, scaleX*90);
     [disBtn setImage:[UIImage imageNamed:@"red"] forState:UIControlStateNormal];
     //    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
-    [baseView insertSubview:disBtn atIndex:0];
+    [scrollView insertSubview:disBtn atIndex:0];
     
     UIView *disView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     disView.center = disBtn.center;
     //    sportView.backgroundColor = [UIColor redColor];
-    [baseView addSubview:disView];
+    [scrollView addSubview:disView];
     
     UIImageView *disImg = [[UIImageView alloc] initWithFrame:CGRectMake((disView.width-25)/2.0, 0, 25, 16)];
     disImg.image = [UIImage imageNamed:@"sport_3"];
@@ -157,7 +170,7 @@
     
     _disLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _disLab1.bottom+15, disView.width, 14)];
     _disLab2.font = [UIFont systemFontOfSize:12];
-    _disLab2.text = @"时间";
+    _disLab2.text = @"距离";
     _disLab2.textAlignment = NSTextAlignmentCenter;
     _disLab2.textColor = [UIColor grayColor];
     [disView addSubview:_disLab2];
@@ -165,7 +178,7 @@
     // 灰色条
     UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(0, timeBtn.bottom+30, kScreen_Width, 10)];
     view2.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.view addSubview:view2];
+    [self.scrollView addSubview:view2];
     self.view2 = view2;
     
     // 统计图
@@ -178,16 +191,26 @@
     UIImageView *recordImg = [[UIImageView alloc] initWithFrame:CGRectMake(12, self.view2.bottom+12, 20, 20)];
     recordImg.image = [UIImage imageNamed:@"sport_1"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:recordImg];
+    [self.scrollView addSubview:recordImg];
     
     NSArray *items = @[@"日",@"月",@"年"];
     //创建分段控件实例
     UISegmentedControl *sc = [[UISegmentedControl alloc]initWithItems:items]; //用文字数组初始化
     sc.frame = CGRectMake((kScreen_Width-200)/2, recordImg.center.y-15, 200, 30);
     sc.tintColor = [UIColor colorWithHexString:@"#59A43A"];
-    [self.view addSubview:sc];
+    [self.scrollView addSubview:sc];
     
-
+    _pXLineChartView = [[PXLineChartView alloc] initWithFrame:CGRectMake(-25, sc.bottom, kScreen_Width, 200)];
+    _pXLineChartView.delegate = self;
+//    _pXLineChartView.backgroundColor = [UIColor redColor];
+    [self.scrollView addSubview:_pXLineChartView];
+    
+    self.scrollView.contentSize = CGSizeMake(kScreen_Width, _pXLineChartView.bottom+12-64);
+    
+    _xElements = @[@"16-2",@"16-3",@"16-4",@"16-5",@"16-6",@"16-7",@"16-8",@"16-9",@"16-10",@"16-11",@"16-12",@"17-01",@"17-02",@"17-03",@"17-04",@"17-05"];
+    _yElements = @[@"1000",@"2000",@"3000",@"4000",@"5000"];
+    
+    self.lines = [self lines:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -195,14 +218,123 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (NSArray *)lines:(BOOL)fill {
+    //    NSArray *pointsArr1 = @[@{@"xValue" : @"16-2", @"yValue" : @"1000"},
+    //                           @{@"xValue" : @"16-4", @"yValue" : @"2000"},
+    //                           @{@"xValue" : @"16-6", @"yValue" : @"1700"},
+    //                           @{@"xValue" : @"16-8", @"yValue" : @"3100"},
+    //                           @{@"xValue" : @"16-9", @"yValue" : @"3500"},
+    //                           @{@"xValue" : @"16-12", @"yValue" : @"3400"},
+    //                           @{@"xValue" : @"17-02", @"yValue" : @"1100"},
+    //                           @{@"xValue" : @"17-04", @"yValue" : @"1500"}];
+    
+    NSArray *pointsArr1 = @[@{@"xValue" : @"16-2", @"yValue" : @"2000"},
+                            @{@"xValue" : @"16-3", @"yValue" : @"2200"},
+                            @{@"xValue" : @"16-4", @"yValue" : @"3000"},
+                            @{@"xValue" : @"16-6", @"yValue" : @"3750"},
+                            @{@"xValue" : @"16-7", @"yValue" : @"3800"},
+                            @{@"xValue" : @"16-8", @"yValue" : @"4000"},
+                            @{@"xValue" : @"16-10", @"yValue" : @"2000"}];
+    
+    //    NSMutableArray *points = @[].mutableCopy;
+    //    for (int i = 0; i < pointsArr.count; i++) {
+    //        PointItem *item = [[PointItem alloc] init];
+    //        NSDictionary *itemDic = pointsArr[i];
+    //        item.price = itemDic[@"yValue"];
+    //        item.time = itemDic[@"xValue"];
+    //        item.chartLineColor = [UIColor redColor];
+    //        item.chartPointColor = [UIColor redColor];
+    //        item.pointValueColor = [UIColor redColor];
+    ////        if (fill) {
+    ////            item.chartFillColor = [UIColor colorWithRed:0 green:0.5 blue:0.2 alpha:0.5];
+    ////            item.chartFill = YES;
+    ////        }
+    //        [points addObject:item];
+    //    }
+    
+    NSMutableArray *pointss = @[].mutableCopy;
+    for (int i = 0; i < pointsArr1.count; i++) {
+        PointItem *item = [[PointItem alloc] init];
+        NSDictionary *itemDic = pointsArr1[i];
+        item.price = itemDic[@"yValue"];
+        item.time = itemDic[@"xValue"];
+        item.chartLineColor = [UIColor colorWithRed:0.2 green:1 blue:0.7 alpha:1];
+        item.chartPointColor = [UIColor whiteColor];
+        item.pointValueColor = [UIColor blackColor];
+        //        if (fill) {
+        //            item.chartFillColor = [UIColor colorWithRed:0.5 green:0.1 blue:0.8 alpha:0.5];
+        //            item.chartFill = YES;
+        //        }
+        [pointss addObject:item];
+    }
+    //两条line
+    return @[pointss];
 }
-*/
+
+#pragma mark PXLineChartViewDelegate
+//通用设置
+- (NSDictionary<NSString*, NSString*> *)lineChartViewAxisAttributes {
+    return @{yElementInterval : @"40",
+             xElementInterval : @"40",
+             yMargin : @"50",
+             xMargin : @"25",
+             yAxisColor : [UIColor colorWithRed:200.0/255 green:200.0/255 blue:200.0/255 alpha:1],
+             xAxisColor : [UIColor colorWithRed:200.0/255 green:200.0/255 blue:200.0/255 alpha:1],
+             gridColor : [UIColor colorWithRed:244.0/255 green:244.0/255 blue:244.0/255 alpha:1],
+             gridHide : @0,
+             pointHide : @0,
+             pointFont : [UIFont systemFontOfSize:10],
+             firstYAsOrigin : @1,
+             scrollAnimation : @1,
+             scrollAnimationDuration : @"2"};
+}
+//line count
+- (NSUInteger)numberOfChartlines {
+    return self.lines.count;
+}
+//x轴y轴对应的元素count
+- (NSUInteger)numberOfElementsCountWithAxisType:(AxisType)axisType {
+    return (axisType == AxisTypeY)? _yElements.count : _xElements.count;
+}
+//x轴y轴对应的元素view
+- (UILabel *)elementWithAxisType:(AxisType)axisType index:(NSUInteger)index {
+    UILabel *label = [[UILabel alloc] init];
+    NSString *axisValue = @"";
+    if (axisType == AxisTypeX) {
+        axisValue = _xElements[index];
+        label.textAlignment = NSTextAlignmentCenter;//;
+    }else if(axisType == AxisTypeY){
+        axisValue = _yElements[index];
+        label.textAlignment = NSTextAlignmentRight;//;
+    }
+    label.text = axisValue;
+    label.font = [UIFont systemFontOfSize:12];
+    label.textColor = [UIColor blackColor];
+    return label;
+}
+//每条line对应的point数组
+- (NSArray<id<PointItemProtocol>> *)plotsOflineIndex:(NSUInteger)lineIndex {
+    return self.lines[lineIndex];
+}
+//点击point回调响应
+- (void)elementDidClickedWithPointSuperIndex:(NSUInteger)superidnex pointSubIndex:(NSUInteger)subindex {
+    PointItem *item = self.lines[superidnex][subindex];
+    NSString *xTitle = item.time;
+    NSString *yTitle = item.price;
+    UIAlertController *alertView = [UIAlertController alertControllerWithTitle:yTitle
+                                                                       message:[NSString stringWithFormat:@"x：%@ \ny：%@",xTitle,yTitle] preferredStyle:UIAlertControllerStyleAlert];
+    [alertView addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    [self presentViewController:alertView animated:YES completion:nil];
+}
+
+//static bool fill = NO;
+//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//    fill = !fill;
+//    self.lines = [self lines:fill];
+//    [_pXLineChartView reloadData];
+//}
+
 
 @end

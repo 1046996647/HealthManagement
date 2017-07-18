@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		8FEE33F23F48E8843A465F26 /* libPods-HealthManagement.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D21BD6AC30A01FD6000B9F3 /* libPods-HealthManagement.a */; };
+		F71C58811F19B61A00D97047 /* PXChartBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C58771F19B61A00D97047 /* PXChartBackgroundView.m */; };
+		F71C58821F19B61A00D97047 /* PXLineChartConst.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C587A1F19B61A00D97047 /* PXLineChartConst.m */; };
+		F71C58831F19B61A00D97047 /* PXLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C587C1F19B61A00D97047 /* PXLineChartView.m */; };
+		F71C58841F19B61A00D97047 /* PXXview.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C587E1F19B61A00D97047 /* PXXview.m */; };
+		F71C58851F19B61A00D97047 /* PXYview.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C58801F19B61A00D97047 /* PXYview.m */; };
+		F71C58881F19B69900D97047 /* PointItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C58871F19B69900D97047 /* PointItem.m */; };
+		F71C59101F19FBCD00D97047 /* AvoidingSubviewScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71C59081F19FBCD00D97047 /* AvoidingSubviewScrollViewDelegate.swift */; };
+		F71C59111F19FBCD00D97047 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71C59091F19FBCD00D97047 /* Clock.swift */; };
+		F71C59121F19FBCD00D97047 /* CoreAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71C590A1F19FBCD00D97047 /* CoreAnimation.swift */; };
+		F71C59131F19FBCD00D97047 /* CoreGraphicsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71C590B1F19FBCD00D97047 /* CoreGraphicsExtensions.swift */; };
+		F71C59141F19FBCD00D97047 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71C590C1F19FBCD00D97047 /* DateExtensions.swift */; };
 		F737E21E1F01EC01000B5738 /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E21D1F01EC01000B5738 /* TabBarController.m */; };
 		F737E2211F01EF91000B5738 /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E2201F01EF91000B5738 /* NavigationController.m */; };
 		F737E22E1F01F31C000B5738 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F737E22D1F01F31C000B5738 /* Reachability.m */; };
@@ -39,6 +50,7 @@
 		F75EB78C1F175A0700DA36FF /* NSObject+YYModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB7881F175A0700DA36FF /* NSObject+YYModel.m */; };
 		F75EB78D1F175A0700DA36FF /* YYClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB78A1F175A0700DA36FF /* YYClassInfo.m */; };
 		F75EB7901F175A2700DA36FF /* ResDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB78F1F175A2700DA36FF /* ResDetailModel.m */; };
+		F7667D211F1C86D800F60D34 /* ZWLSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = F7667D201F1C86D800F60D34 /* ZWLSlider.m */; };
 		F76E48121F185D46001C259E /* CookbookDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F76E48111F185D46001C259E /* CookbookDetailVC.m */; };
 		F76E48151F185E63001C259E /* TLCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F76E48141F185E63001C259E /* TLCollectionViewCell.m */; };
 		F76E48181F1860F6001C259E /* TLCollectionViewLineLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F76E48171F1860F6001C259E /* TLCollectionViewLineLayout.m */; };
@@ -84,6 +96,28 @@
 /* Begin PBXFileReference section */
 		1C3DBC4AB9AA761BBA56BFD4 /* Pods-HealthManagement.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthManagement.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthManagement/Pods-HealthManagement.debug.xcconfig"; sourceTree = "<group>"; };
 		9D21BD6AC30A01FD6000B9F3 /* libPods-HealthManagement.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HealthManagement.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F71C58751F19B61A00D97047 /* PointItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointItemProtocol.h; sourceTree = "<group>"; };
+		F71C58761F19B61A00D97047 /* PXChartBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXChartBackgroundView.h; sourceTree = "<group>"; };
+		F71C58771F19B61A00D97047 /* PXChartBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXChartBackgroundView.m; sourceTree = "<group>"; };
+		F71C58781F19B61A00D97047 /* PXLineChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXLineChart.h; sourceTree = "<group>"; };
+		F71C58791F19B61A00D97047 /* PXLineChartConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXLineChartConst.h; sourceTree = "<group>"; };
+		F71C587A1F19B61A00D97047 /* PXLineChartConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXLineChartConst.m; sourceTree = "<group>"; };
+		F71C587B1F19B61A00D97047 /* PXLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXLineChartView.h; sourceTree = "<group>"; };
+		F71C587C1F19B61A00D97047 /* PXLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXLineChartView.m; sourceTree = "<group>"; };
+		F71C587D1F19B61A00D97047 /* PXXview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXXview.h; sourceTree = "<group>"; };
+		F71C587E1F19B61A00D97047 /* PXXview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXXview.m; sourceTree = "<group>"; };
+		F71C587F1F19B61A00D97047 /* PXYview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXYview.h; sourceTree = "<group>"; };
+		F71C58801F19B61A00D97047 /* PXYview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXYview.m; sourceTree = "<group>"; };
+		F71C58861F19B69900D97047 /* PointItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointItem.h; sourceTree = "<group>"; };
+		F71C58871F19B69900D97047 /* PointItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PointItem.m; sourceTree = "<group>"; };
+		F71C59031F19FB3400D97047 /* HealthManagement-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HealthManagement-Bridging-Header.h"; sourceTree = "<group>"; };
+		F71C59081F19FBCD00D97047 /* AvoidingSubviewScrollViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvoidingSubviewScrollViewDelegate.swift; sourceTree = "<group>"; };
+		F71C59091F19FBCD00D97047 /* Clock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
+		F71C590A1F19FBCD00D97047 /* CoreAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreAnimation.swift; sourceTree = "<group>"; };
+		F71C590B1F19FBCD00D97047 /* CoreGraphicsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtensions.swift; sourceTree = "<group>"; };
+		F71C590C1F19FBCD00D97047 /* DateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
+		F71C590E1F19FBCD00D97047 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		F71C590F1F19FBCD00D97047 /* TenClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenClock.h; sourceTree = "<group>"; };
 		F737E21C1F01EC01000B5738 /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
 		F737E21D1F01EC01000B5738 /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarController.m; sourceTree = "<group>"; };
 		F737E21F1F01EF91000B5738 /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
@@ -148,6 +182,8 @@
 		F75EB78B1F175A0700DA36FF /* YYModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYModel.h; sourceTree = "<group>"; };
 		F75EB78E1F175A2700DA36FF /* ResDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResDetailModel.h; sourceTree = "<group>"; };
 		F75EB78F1F175A2700DA36FF /* ResDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResDetailModel.m; sourceTree = "<group>"; };
+		F7667D1F1F1C86D800F60D34 /* ZWLSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZWLSlider.h; sourceTree = "<group>"; };
+		F7667D201F1C86D800F60D34 /* ZWLSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZWLSlider.m; sourceTree = "<group>"; };
 		F76E48101F185D46001C259E /* CookbookDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CookbookDetailVC.h; sourceTree = "<group>"; };
 		F76E48111F185D46001C259E /* CookbookDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CookbookDetailVC.m; sourceTree = "<group>"; };
 		F76E48131F185E63001C259E /* TLCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCollectionViewCell.h; sourceTree = "<group>"; };
@@ -241,6 +277,49 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F71C58741F19B61A00D97047 /* LineChart */ = {
+			isa = PBXGroup;
+			children = (
+				F71C58861F19B69900D97047 /* PointItem.h */,
+				F71C58871F19B69900D97047 /* PointItem.m */,
+				F71C58751F19B61A00D97047 /* PointItemProtocol.h */,
+				F71C58761F19B61A00D97047 /* PXChartBackgroundView.h */,
+				F71C58771F19B61A00D97047 /* PXChartBackgroundView.m */,
+				F71C58781F19B61A00D97047 /* PXLineChart.h */,
+				F71C58791F19B61A00D97047 /* PXLineChartConst.h */,
+				F71C587A1F19B61A00D97047 /* PXLineChartConst.m */,
+				F71C587B1F19B61A00D97047 /* PXLineChartView.h */,
+				F71C587C1F19B61A00D97047 /* PXLineChartView.m */,
+				F71C587D1F19B61A00D97047 /* PXXview.h */,
+				F71C587E1F19B61A00D97047 /* PXXview.m */,
+				F71C587F1F19B61A00D97047 /* PXYview.h */,
+				F71C58801F19B61A00D97047 /* PXYview.m */,
+			);
+			path = LineChart;
+			sourceTree = "<group>";
+		};
+		F71C59061F19FBBB00D97047 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				F71C59071F19FBCD00D97047 /* 10Clock */,
+			);
+			name = Swift;
+			sourceTree = "<group>";
+		};
+		F71C59071F19FBCD00D97047 /* 10Clock */ = {
+			isa = PBXGroup;
+			children = (
+				F71C59081F19FBCD00D97047 /* AvoidingSubviewScrollViewDelegate.swift */,
+				F71C59091F19FBCD00D97047 /* Clock.swift */,
+				F71C590A1F19FBCD00D97047 /* CoreAnimation.swift */,
+				F71C590B1F19FBCD00D97047 /* CoreGraphicsExtensions.swift */,
+				F71C590C1F19FBCD00D97047 /* DateExtensions.swift */,
+				F71C590E1F19FBCD00D97047 /* module.modulemap */,
+				F71C590F1F19FBCD00D97047 /* TenClock.h */,
+			);
+			path = 10Clock;
+			sourceTree = "<group>";
+		};
 		F737E2221F01EFF4000B5738 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +377,7 @@
 		F737E22A1F01F305000B5738 /* Thirdparty */ = {
 			isa = PBXGroup;
 			children = (
+				F71C58741F19B61A00D97047 /* LineChart */,
 				F76E48091F184FBB001C259E /* TLCollectionViewLineLayout */,
 				F75EB7861F175A0700DA36FF /* YYModel */,
 				F74FF5C81F15FC1900C84034 /* 标签 */,
@@ -366,6 +446,8 @@
 		F74371641F14A03500332D21 /* CustomClass */ = {
 			isa = PBXGroup;
 			children = (
+				F7667D1F1F1C86D800F60D34 /* ZWLSlider.h */,
+				F7667D201F1C86D800F60D34 /* ZWLSlider.m */,
 			);
 			path = CustomClass;
 			sourceTree = "<group>";
@@ -540,14 +622,15 @@
 		F7933AAB1F0096F20069DBF7 /* HealthManagement */ = {
 			isa = PBXGroup;
 			children = (
+				F71C59061F19FBBB00D97047 /* Swift */,
 				F737E22A1F01F305000B5738 /* Thirdparty */,
-				F74371641F14A03500332D21 /* CustomClass */,
 				F7933AAF1F0096F20069DBF7 /* AppDelegate.h */,
 				F7933AB01F0096F20069DBF7 /* AppDelegate.m */,
 				F737E21F1F01EF91000B5738 /* NavigationController.h */,
 				F737E2201F01EF91000B5738 /* NavigationController.m */,
 				F780229A1F0F802400017D5C /* BaseViewController.h */,
 				F780229B1F0F802400017D5C /* BaseViewController.m */,
+				F74371641F14A03500332D21 /* CustomClass */,
 				F737E21C1F01EC01000B5738 /* TabBarController.h */,
 				F737E21D1F01EC01000B5738 /* TabBarController.m */,
 				F737E2291F01F086000B5738 /* 注册登录 */,
@@ -568,6 +651,7 @@
 		F7933AAC1F0096F20069DBF7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F71C59031F19FB3400D97047 /* HealthManagement-Bridging-Header.h */,
 				F7933AAD1F0096F20069DBF7 /* main.m */,
 				F78022951F0F66B600017D5C /* HelpMac.h */,
 				F737E24B1F01F780000B5738 /* HealthManagement.pch */,
@@ -664,6 +748,7 @@
 					F7933AA81F0096F20069DBF7 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = D59VU3JG9L;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Manual;
 					};
 					F7933AC11F0096F20069DBF7 = {
@@ -788,25 +873,33 @@
 				F76E48181F1860F6001C259E /* TLCollectionViewLineLayout.m in Sources */,
 				F737E23E1F01F32A000B5738 /* UIViewExt.m in Sources */,
 				F75EB77C1F17391C00DA36FF /* ResDetailHeaderView.m in Sources */,
+				F7667D211F1C86D800F60D34 /* ZWLSlider.m in Sources */,
 				F737E24E1F01F8D2000B5738 /* HomeVC.m in Sources */,
+				F71C59121F19FBCD00D97047 /* CoreAnimation.swift in Sources */,
 				F774B93B1F13750C00A60166 /* RecommendDietView.m in Sources */,
 				F74371701F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m in Sources */,
 				F774B9321F13271000A60166 /* UIView+SDExtension.m in Sources */,
+				F71C58851F19B61A00D97047 /* PXYview.m in Sources */,
 				F737E21E1F01EC01000B5738 /* TabBarController.m in Sources */,
 				F74FF5D11F160FB700C84034 /* DietArticleCell.m in Sources */,
 				F75EB78D1F175A0700DA36FF /* YYClassInfo.m in Sources */,
+				F71C59131F19FBCD00D97047 /* CoreGraphicsExtensions.swift in Sources */,
 				F75EB7901F175A2700DA36FF /* ResDetailModel.m in Sources */,
 				F74FF5D41F161FAA00C84034 /* DietRecordView.m in Sources */,
 				F774B92F1F13271000A60166 /* TAPageControl.m in Sources */,
 				F75EB77F1F17393600DA36FF /* ResDetailVC.m in Sources */,
 				F737E2571F01FAA0000B5738 /* SleepVC.m in Sources */,
+				F71C59101F19FBCD00D97047 /* AvoidingSubviewScrollViewDelegate.swift in Sources */,
 				F74FF5C71F15BB2200C84034 /* RecommendDietCell.m in Sources */,
 				F75EB7821F1743CB00DA36FF /* ResDetailCollectionViewCell.m in Sources */,
+				F71C58881F19B69900D97047 /* PointItem.m in Sources */,
 				F75EB7791F17221C00DA36FF /* RecommendDietVC.m in Sources */,
 				F737E2541F01F99A000B5738 /* SportVC.m in Sources */,
 				F737E25A1F01FB30000B5738 /* PersonalCenterVC.m in Sources */,
 				F75EB78C1F175A0700DA36FF /* NSObject+YYModel.m in Sources */,
 				F743716A1F14BD3500332D21 /* NearbyRestaurantVC.m in Sources */,
+				F71C58811F19B61A00D97047 /* PXChartBackgroundView.m in Sources */,
+				F71C58821F19B61A00D97047 /* PXLineChartConst.m in Sources */,
 				F7933AB11F0096F20069DBF7 /* AppDelegate.m in Sources */,
 				F75EB7851F174A0F00DA36FF /* ResDetailCell.m in Sources */,
 				F737E2421F01F331000B5738 /* UIColor+Expend.m in Sources */,
@@ -814,19 +907,23 @@
 				F774B92E1F13271000A60166 /* TADotView.m in Sources */,
 				F76E48121F185D46001C259E /* CookbookDetailVC.m in Sources */,
 				F774B92C1F13271000A60166 /* TAAbstractDotView.m in Sources */,
+				F71C59141F19FBCD00D97047 /* DateExtensions.swift in Sources */,
 				F737E2461F01F389000B5738 /* InfoCache.m in Sources */,
 				F74FF5C41F15B91300C84034 /* RecommendDietTableView.m in Sources */,
 				F774B91B1F13244C00A60166 /* HeaderView.m in Sources */,
+				F71C59111F19FBCD00D97047 /* Clock.swift in Sources */,
 				F7933AAE1F0096F20069DBF7 /* main.m in Sources */,
 				F774B9311F13271000A60166 /* SDCycleScrollView.m in Sources */,
 				F737E23D1F01F32A000B5738 /* UIViewController+UIViewControllerExt.m in Sources */,
 				F74FF5CB1F15FC1900C84034 /* HXTagsView.m in Sources */,
 				F76E48151F185E63001C259E /* TLCollectionViewCell.m in Sources */,
 				F774B9301F13271000A60166 /* SDCollectionViewCell.m in Sources */,
+				F71C58841F19B61A00D97047 /* PXXview.m in Sources */,
 				F737E23C1F01F32A000B5738 /* UIView+UIViewController.m in Sources */,
 				F737E24A1F01F6C5000B5738 /* Toast+UIView.m in Sources */,
 				F737E2511F01F907000B5738 /* DietArticleVC.m in Sources */,
 				F737E23B1F01F32A000B5738 /* NSStringExt.m in Sources */,
+				F71C58831F19B61A00D97047 /* PXLineChartView.m in Sources */,
 				F78022A21F0F8BA300017D5C /* DietRecordCell.m in Sources */,
 				F737E22E1F01F31C000B5738 /* Reachability.m in Sources */,
 			);
@@ -980,6 +1077,8 @@
 			baseConfigurationReference = 1C3DBC4AB9AA761BBA56BFD4 /* Pods-HealthManagement.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = D59VU3JG9L;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -991,6 +1090,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7947b905-6660-44f3-9e2f-476fb7aa5ec0";
 				PROVISIONING_PROFILE_SPECIFIER = 170617;
+				SWIFT_OBJC_BRIDGING_HEADER = "HealthManagement/HealthManagement-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -999,7 +1101,9 @@
 			baseConfigurationReference = FE1EB4E447C59A76E198F67F /* Pods-HealthManagement.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = D59VU3JG9L;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1009,14 +1113,17 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.HongHu.Health;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c3fc436e-6fe6-4d49-adbb-49882186443c";
-				PROVISIONING_PROFILE_SPECIFIER = Ad_Hoc_Profile;
+				PROVISIONING_PROFILE = "e234e4bc-08fd-47f2-8e2c-733dcb32bd3d";
+				PROVISIONING_PROFILE_SPECIFIER = Ad_Hoc_7_15;
+				SWIFT_OBJC_BRIDGING_HEADER = "HealthManagement/HealthManagement-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		F7933ADA1F0096F20069DBF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = V9Z6UNDDUZ;
 				INFOPLIST_FILE = HealthManagementTests/Info.plist;
@@ -1030,6 +1137,7 @@
 		F7933ADB1F0096F20069DBF7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = V9Z6UNDDUZ;
 				INFOPLIST_FILE = HealthManagementTests/Info.plist;
@@ -1043,6 +1151,7 @@
 		F7933ADD1F0096F20069DBF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = V9Z6UNDDUZ;
 				INFOPLIST_FILE = HealthManagementUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1055,6 +1164,7 @@
 		F7933ADE1F0096F20069DBF7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = V9Z6UNDDUZ;
 				INFOPLIST_FILE = HealthManagementUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
