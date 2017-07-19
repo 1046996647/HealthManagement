@@ -28,7 +28,7 @@
 - (void)initSubViews
 {
     UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake((kScreen_Width-80)/2, 15, 80, 20)];
-    lab.font = [UIFont systemFontOfSize:18];
+    lab.font = [UIFont systemFontOfSize:16];
     lab.text = @"推荐饮食";
     lab.textAlignment = NSTextAlignmentCenter;
 //    lab.backgroundColor = [UIColor cyanColor];
@@ -54,7 +54,7 @@
     // 小图
     CGFloat height = kRWidth+40;
     for (int i=0; i<4; i++) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+kBigWidth+5+i%2*(kRWidth+5), btn.bottom+i/2*(height+5), kRWidth, height)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+kBigWidth+(16*scaleWidth)+i%2*(kRWidth+(16*scaleWidth)), btn.bottom+i/2*(height+5), kRWidth, height)];
         view.layer.borderWidth = .5;
         view.layer.borderColor = [UIColor colorWithHexString:@"#efeff4"].CGColor;
         view.layer.cornerRadius = 5;
@@ -68,7 +68,7 @@
         [view addSubview:imgView];
         
         UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, imgView.bottom, kRWidth-10, 20)];
-        titleLab.font = [UIFont systemFontOfSize:14];
+        titleLab.font = [UIFont systemFontOfSize:12];
         titleLab.text = @"桂花莲子";
         titleLab.tag = 101+i;
 //        titleLab.backgroundColor = [UIColor cyanColor];
@@ -76,7 +76,7 @@
         [view addSubview:titleLab];
         
         UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom, kRWidth/3, 14)];
-        moneyLab.font = [UIFont systemFontOfSize:12];
+        moneyLab.font = [UIFont systemFontOfSize:10];
 //        moneyLab.textAlignment = NSTextAlignmentRight;
         moneyLab.text = @"￥25";
         moneyLab.textColor = [UIColor redColor];
@@ -91,7 +91,7 @@
         NSRange range1 = {3,[str1 length]};
         [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#107909"] range:range1];
         UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kRWidth-kRWidth*2/3+5, titleLab.bottom, kRWidth*2/3-5, 14)];
-        fitLab.font = [UIFont systemFontOfSize:12];
+        fitLab.font = [UIFont systemFontOfSize:10];
         fitLab.textAlignment = NSTextAlignmentRight;
 //        fitLab.text = @"";
         fitLab.tag = 103+i;
@@ -116,11 +116,12 @@
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBigWidth, _bigView.height-60)];
     imgView.backgroundColor = [UIColor redColor];
     imgView.tag = 10;
+    imgView.contentMode = UIViewContentModeScaleAspectFill;
     imgView.image = [UIImage imageNamed:@"food"];
     [_bigView addSubview:imgView];
     
     UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, _bigView.height-30-20, kBigWidth-10, 18)];
-    titleLab.font = [UIFont systemFontOfSize:16];
+    titleLab.font = [UIFont systemFontOfSize:14];
     titleLab.text = @"桂花莲子";
     titleLab.tag = 11;
 //    titleLab.backgroundColor = [UIColor cyanColor];
@@ -128,7 +129,7 @@
     [_bigView addSubview:titleLab];
     
     UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom+5, kBigWidth/3, 16)];
-    moneyLab.font = [UIFont systemFontOfSize:14];
+    moneyLab.font = [UIFont systemFontOfSize:12];
     //        moneyLab.textAlignment = NSTextAlignmentRight;
     moneyLab.text = @"￥256";
     moneyLab.textColor = [UIColor redColor];
@@ -144,7 +145,7 @@
     NSRange range1 = {3,[str1 length]};
     [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range1];
     UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kBigWidth-kBigWidth*2/3+5, titleLab.bottom+5, kBigWidth*2/3-5, 16)];
-    fitLab.font = [UIFont systemFontOfSize:14];
+    fitLab.font = [UIFont systemFontOfSize:12];
     fitLab.textAlignment = NSTextAlignmentRight;
 //    fitLab.text = @"匹配度98%";
     fitLab.tag = 13;

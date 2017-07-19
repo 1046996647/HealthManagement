@@ -42,6 +42,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // 让内容置顶显示
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     // 初始化视图
     [self initSubviews];
     

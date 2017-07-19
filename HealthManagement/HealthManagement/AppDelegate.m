@@ -7,7 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#import "TabBarController.h"
+#import "LoginVC.h"
+#import "NavigationController.h"
+
 #import <BaiduMapAPI_Base/BMKBaseComponent.h>//引入base相关所有的头文件
 
 @interface AppDelegate ()<BMKGeneralDelegate>
@@ -27,6 +29,22 @@
     self.window.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     [self.window makeKeyAndVisible];
     
+    // 是否是第一次启动(针对本地推送 应用删除再安装还会出现之前的本地推送设置)
+    if (![InfoCache getValueForKey:@"IsFirstLaunch"]) {
+        [InfoCache saveValue:@(YES) forKey:@"IsFirstLaunch"];
+        UIApplication *app = [UIApplication sharedApplication];
+        // 删除所有本地推送
+        [app cancelAllLocalNotifications];
+    }
+    
+    // ios8后，需要添加这个注册，才能得到授权
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationType type =  UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type
+                                                                                 categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
+    
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
     // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
@@ -35,6 +53,9 @@
         NSLog(@"manager start failed!");
     }
     
+//    LoginVC *loginVC = [[LoginVC alloc] init];
+//    NavigationController *nav = [[NavigationController alloc] initWithRootViewController:loginVC];
+//    self.window.rootViewController = nav;
     
     TabBarController *tabVC = [[TabBarController alloc] init];
     self.window.rootViewController = tabVC;
@@ -43,6 +64,21 @@
 }
 
 
+// 本地通知回调函数，当应用程序在前台时调用(闹钟)
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSLog(@"noti:%@",notification);
+    
+    // 这里真实需要处理交互的地方
+    // 获取通知所带的数据
+    //    NSString *clockID = [notification.userInfo objectForKey:@"ActivityClock"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"闹钟提醒"
+                                                    message:notification.alertBody
+                                                   delegate:nil
+                                          cancelButtonTitle:@"好的"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

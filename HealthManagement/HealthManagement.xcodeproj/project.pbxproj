@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8FEE33F23F48E8843A465F26 /* libPods-HealthManagement.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D21BD6AC30A01FD6000B9F3 /* libPods-HealthManagement.a */; };
+		F71B31ED1F1F5D380018B70A /* SettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F71B31EC1F1F5D380018B70A /* SettingVC.m */; };
 		F71C58811F19B61A00D97047 /* PXChartBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C58771F19B61A00D97047 /* PXChartBackgroundView.m */; };
 		F71C58821F19B61A00D97047 /* PXLineChartConst.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C587A1F19B61A00D97047 /* PXLineChartConst.m */; };
 		F71C58831F19B61A00D97047 /* PXLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = F71C587C1F19B61A00D97047 /* PXLineChartView.m */; };
@@ -37,11 +38,26 @@
 		F743716A1F14BD3500332D21 /* NearbyRestaurantVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74371691F14BD3500332D21 /* NearbyRestaurantVC.m */; };
 		F743716D1F14C0E100332D21 /* NearbyRestaurantTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F743716C1F14C0E100332D21 /* NearbyRestaurantTableView.m */; };
 		F74371701F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F743716F1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m */; };
+		F748FF191F1D9D6D0089722D /* YHCoderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F748FF181F1D9D6D0089722D /* YHCoderObject.m */; };
+		F748FF1C1F1D9D820089722D /* SleepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F748FF1B1F1D9D820089722D /* SleepModel.m */; };
+		F748FF241F1DC8430089722D /* 布谷鸟.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF1E1F1DC8430089722D /* 布谷鸟.caf */; };
+		F748FF251F1DC8430089722D /* 叮当.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF1F1F1DC8430089722D /* 叮当.caf */; };
+		F748FF261F1DC8430089722D /* 非常有趣.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF201F1DC8430089722D /* 非常有趣.caf */; };
+		F748FF271F1DC8430089722D /* 懒猪起床.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF211F1DC8430089722D /* 懒猪起床.caf */; };
+		F748FF281F1DC8430089722D /* 梦幻.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF221F1DC8430089722D /* 梦幻.caf */; };
+		F748FF291F1DC8430089722D /* 起床铃声.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF231F1DC8430089722D /* 起床铃声.caf */; };
+		F74FA0781F1EF136003B0920 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA0771F1EF136003B0920 /* LoginVC.m */; };
+		F74FA07B1F1EFD52003B0920 /* registerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA07A1F1EFD52003B0920 /* registerVC.m */; };
+		F74FA07E1F1F1B6B003B0920 /* RegisterSuccessVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA07D1F1F1B6B003B0920 /* RegisterSuccessVC.m */; };
+		F74FA0811F1F20F7003B0920 /* BodyTestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA0801F1F20F7003B0920 /* BodyTestVC.m */; };
+		F74FA0841F1F2280003B0920 /* TestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA0831F1F2280003B0920 /* TestCell.m */; };
+		F74FA0871F1F2DBC003B0920 /* TestResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA0861F1F2DBC003B0920 /* TestResultVC.m */; };
 		F74FF5C41F15B91300C84034 /* RecommendDietTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5C31F15B91300C84034 /* RecommendDietTableView.m */; };
 		F74FF5C71F15BB2200C84034 /* RecommendDietCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5C61F15BB2200C84034 /* RecommendDietCell.m */; };
 		F74FF5CB1F15FC1900C84034 /* HXTagsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5CA1F15FC1900C84034 /* HXTagsView.m */; };
 		F74FF5D11F160FB700C84034 /* DietArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5D01F160FB700C84034 /* DietArticleCell.m */; };
 		F74FF5D41F161FAA00C84034 /* DietRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FF5D31F161FAA00C84034 /* DietRecordView.m */; };
+		F7531AF41F1DD90C00788A3B /* MusicSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7531AF31F1DD90C00788A3B /* MusicSelectVC.m */; };
 		F75EB7791F17221C00DA36FF /* RecommendDietVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB7781F17221C00DA36FF /* RecommendDietVC.m */; };
 		F75EB77C1F17391C00DA36FF /* ResDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB77B1F17391C00DA36FF /* ResDetailHeaderView.m */; };
 		F75EB77F1F17393600DA36FF /* ResDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75EB77E1F17393600DA36FF /* ResDetailVC.m */; };
@@ -96,6 +112,8 @@
 /* Begin PBXFileReference section */
 		1C3DBC4AB9AA761BBA56BFD4 /* Pods-HealthManagement.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HealthManagement.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HealthManagement/Pods-HealthManagement.debug.xcconfig"; sourceTree = "<group>"; };
 		9D21BD6AC30A01FD6000B9F3 /* libPods-HealthManagement.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HealthManagement.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F71B31EB1F1F5D380018B70A /* SettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingVC.h; sourceTree = "<group>"; };
+		F71B31EC1F1F5D380018B70A /* SettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingVC.m; sourceTree = "<group>"; };
 		F71C58751F19B61A00D97047 /* PointItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointItemProtocol.h; sourceTree = "<group>"; };
 		F71C58761F19B61A00D97047 /* PXChartBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXChartBackgroundView.h; sourceTree = "<group>"; };
 		F71C58771F19B61A00D97047 /* PXChartBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXChartBackgroundView.m; sourceTree = "<group>"; };
@@ -155,6 +173,28 @@
 		F743716C1F14C0E100332D21 /* NearbyRestaurantTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyRestaurantTableView.m; sourceTree = "<group>"; };
 		F743716E1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyRestaurantTableViewCell.h; sourceTree = "<group>"; };
 		F743716F1F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyRestaurantTableViewCell.m; sourceTree = "<group>"; };
+		F748FF171F1D9D6D0089722D /* YHCoderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YHCoderObject.h; sourceTree = "<group>"; };
+		F748FF181F1D9D6D0089722D /* YHCoderObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YHCoderObject.m; sourceTree = "<group>"; };
+		F748FF1A1F1D9D820089722D /* SleepModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepModel.h; sourceTree = "<group>"; };
+		F748FF1B1F1D9D820089722D /* SleepModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepModel.m; sourceTree = "<group>"; };
+		F748FF1E1F1DC8430089722D /* 布谷鸟.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "布谷鸟.caf"; sourceTree = "<group>"; };
+		F748FF1F1F1DC8430089722D /* 叮当.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "叮当.caf"; sourceTree = "<group>"; };
+		F748FF201F1DC8430089722D /* 非常有趣.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "非常有趣.caf"; sourceTree = "<group>"; };
+		F748FF211F1DC8430089722D /* 懒猪起床.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "懒猪起床.caf"; sourceTree = "<group>"; };
+		F748FF221F1DC8430089722D /* 梦幻.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "梦幻.caf"; sourceTree = "<group>"; };
+		F748FF231F1DC8430089722D /* 起床铃声.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "起床铃声.caf"; sourceTree = "<group>"; };
+		F74FA0761F1EF136003B0920 /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
+		F74FA0771F1EF136003B0920 /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
+		F74FA0791F1EFD52003B0920 /* registerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registerVC.h; sourceTree = "<group>"; };
+		F74FA07A1F1EFD52003B0920 /* registerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = registerVC.m; sourceTree = "<group>"; };
+		F74FA07C1F1F1B6B003B0920 /* RegisterSuccessVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterSuccessVC.h; sourceTree = "<group>"; };
+		F74FA07D1F1F1B6B003B0920 /* RegisterSuccessVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterSuccessVC.m; sourceTree = "<group>"; };
+		F74FA07F1F1F20F7003B0920 /* BodyTestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BodyTestVC.h; sourceTree = "<group>"; };
+		F74FA0801F1F20F7003B0920 /* BodyTestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BodyTestVC.m; sourceTree = "<group>"; };
+		F74FA0821F1F2280003B0920 /* TestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCell.h; sourceTree = "<group>"; };
+		F74FA0831F1F2280003B0920 /* TestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestCell.m; sourceTree = "<group>"; };
+		F74FA0851F1F2DBC003B0920 /* TestResultVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestResultVC.h; sourceTree = "<group>"; };
+		F74FA0861F1F2DBC003B0920 /* TestResultVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestResultVC.m; sourceTree = "<group>"; };
 		F74FF5C21F15B91300C84034 /* RecommendDietTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendDietTableView.h; sourceTree = "<group>"; };
 		F74FF5C31F15B91300C84034 /* RecommendDietTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendDietTableView.m; sourceTree = "<group>"; };
 		F74FF5C51F15BB2200C84034 /* RecommendDietCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendDietCell.h; sourceTree = "<group>"; };
@@ -165,6 +205,8 @@
 		F74FF5D01F160FB700C84034 /* DietArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietArticleCell.m; sourceTree = "<group>"; };
 		F74FF5D21F161FAA00C84034 /* DietRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DietRecordView.h; sourceTree = "<group>"; };
 		F74FF5D31F161FAA00C84034 /* DietRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DietRecordView.m; sourceTree = "<group>"; };
+		F7531AF21F1DD90C00788A3B /* MusicSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicSelectVC.h; sourceTree = "<group>"; };
+		F7531AF31F1DD90C00788A3B /* MusicSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicSelectVC.m; sourceTree = "<group>"; };
 		F75EB7771F17221C00DA36FF /* RecommendDietVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendDietVC.h; sourceTree = "<group>"; };
 		F75EB7781F17221C00DA36FF /* RecommendDietVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendDietVC.m; sourceTree = "<group>"; };
 		F75EB77A1F17391C00DA36FF /* ResDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResDetailHeaderView.h; sourceTree = "<group>"; };
@@ -335,6 +377,8 @@
 			children = (
 				F737E2581F01FB30000B5738 /* PersonalCenterVC.h */,
 				F737E2591F01FB30000B5738 /* PersonalCenterVC.m */,
+				F71B31EB1F1F5D380018B70A /* SettingVC.h */,
+				F71B31EC1F1F5D380018B70A /* SettingVC.m */,
 			);
 			name = "我的";
 			sourceTree = "<group>";
@@ -363,6 +407,10 @@
 			children = (
 				F737E2551F01FAA0000B5738 /* SleepVC.h */,
 				F737E2561F01FAA0000B5738 /* SleepVC.m */,
+				F7531AF21F1DD90C00788A3B /* MusicSelectVC.h */,
+				F7531AF31F1DD90C00788A3B /* MusicSelectVC.m */,
+				F748FF1A1F1D9D820089722D /* SleepModel.h */,
+				F748FF1B1F1D9D820089722D /* SleepModel.m */,
 			);
 			name = "睡眠";
 			sourceTree = "<group>";
@@ -370,6 +418,18 @@
 		F737E2291F01F086000B5738 /* 注册登录 */ = {
 			isa = PBXGroup;
 			children = (
+				F74FA0761F1EF136003B0920 /* LoginVC.h */,
+				F74FA0771F1EF136003B0920 /* LoginVC.m */,
+				F74FA0791F1EFD52003B0920 /* registerVC.h */,
+				F74FA07A1F1EFD52003B0920 /* registerVC.m */,
+				F74FA07C1F1F1B6B003B0920 /* RegisterSuccessVC.h */,
+				F74FA07D1F1F1B6B003B0920 /* RegisterSuccessVC.m */,
+				F74FA07F1F1F20F7003B0920 /* BodyTestVC.h */,
+				F74FA0801F1F20F7003B0920 /* BodyTestVC.m */,
+				F74FA0851F1F2DBC003B0920 /* TestResultVC.h */,
+				F74FA0861F1F2DBC003B0920 /* TestResultVC.m */,
+				F74FA0821F1F2280003B0920 /* TestCell.h */,
+				F74FA0831F1F2280003B0920 /* TestCell.m */,
 			);
 			name = "注册登录";
 			sourceTree = "<group>";
@@ -404,6 +464,8 @@
 		F737E22F1F01F32A000B5738 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				F748FF171F1D9D6D0089722D /* YHCoderObject.h */,
+				F748FF181F1D9D6D0089722D /* YHCoderObject.m */,
 				F737E2321F01F32A000B5738 /* NSStringExt.h */,
 				F737E2331F01F32A000B5738 /* NSStringExt.m */,
 				F737E2341F01F32A000B5738 /* UIView+UIViewController.h */,
@@ -450,6 +512,19 @@
 				F7667D201F1C86D800F60D34 /* ZWLSlider.m */,
 			);
 			path = CustomClass;
+			sourceTree = "<group>";
+		};
+		F748FF1D1F1DC8390089722D /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				F748FF1E1F1DC8430089722D /* 布谷鸟.caf */,
+				F748FF1F1F1DC8430089722D /* 叮当.caf */,
+				F748FF201F1DC8430089722D /* 非常有趣.caf */,
+				F748FF211F1DC8430089722D /* 懒猪起床.caf */,
+				F748FF221F1DC8430089722D /* 梦幻.caf */,
+				F748FF231F1DC8430089722D /* 起床铃声.caf */,
+			);
+			path = Music;
 			sourceTree = "<group>";
 		};
 		F74FF5C81F15FC1900C84034 /* 标签 */ = {
@@ -651,6 +726,7 @@
 		F7933AAC1F0096F20069DBF7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F748FF1D1F1DC8390089722D /* Music */,
 				F71C59031F19FB3400D97047 /* HealthManagement-Bridging-Header.h */,
 				F7933AAD1F0096F20069DBF7 /* main.m */,
 				F78022951F0F66B600017D5C /* HelpMac.h */,
@@ -790,9 +866,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F748FF291F1DC8430089722D /* 起床铃声.caf in Resources */,
+				F748FF261F1DC8430089722D /* 非常有趣.caf in Resources */,
+				F748FF251F1DC8430089722D /* 叮当.caf in Resources */,
+				F748FF271F1DC8430089722D /* 懒猪起床.caf in Resources */,
+				F748FF241F1DC8430089722D /* 布谷鸟.caf in Resources */,
 				F7933ABC1F0096F20069DBF7 /* LaunchScreen.storyboard in Resources */,
 				F7933AB91F0096F20069DBF7 /* Assets.xcassets in Resources */,
 				F7933AB71F0096F20069DBF7 /* Main.storyboard in Resources */,
+				F748FF281F1DC8430089722D /* 梦幻.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,10 +956,13 @@
 				F737E23E1F01F32A000B5738 /* UIViewExt.m in Sources */,
 				F75EB77C1F17391C00DA36FF /* ResDetailHeaderView.m in Sources */,
 				F7667D211F1C86D800F60D34 /* ZWLSlider.m in Sources */,
+				F74FA0811F1F20F7003B0920 /* BodyTestVC.m in Sources */,
 				F737E24E1F01F8D2000B5738 /* HomeVC.m in Sources */,
 				F71C59121F19FBCD00D97047 /* CoreAnimation.swift in Sources */,
 				F774B93B1F13750C00A60166 /* RecommendDietView.m in Sources */,
 				F74371701F14D1AD00332D21 /* NearbyRestaurantTableViewCell.m in Sources */,
+				F74FA07E1F1F1B6B003B0920 /* RegisterSuccessVC.m in Sources */,
+				F74FA07B1F1EFD52003B0920 /* registerVC.m in Sources */,
 				F774B9321F13271000A60166 /* UIView+SDExtension.m in Sources */,
 				F71C58851F19B61A00D97047 /* PXYview.m in Sources */,
 				F737E21E1F01EC01000B5738 /* TabBarController.m in Sources */,
@@ -890,6 +975,10 @@
 				F75EB77F1F17393600DA36FF /* ResDetailVC.m in Sources */,
 				F737E2571F01FAA0000B5738 /* SleepVC.m in Sources */,
 				F71C59101F19FBCD00D97047 /* AvoidingSubviewScrollViewDelegate.swift in Sources */,
+				F748FF191F1D9D6D0089722D /* YHCoderObject.m in Sources */,
+				F74FA0871F1F2DBC003B0920 /* TestResultVC.m in Sources */,
+				F748FF1C1F1D9D820089722D /* SleepModel.m in Sources */,
+				F74FA0781F1EF136003B0920 /* LoginVC.m in Sources */,
 				F74FF5C71F15BB2200C84034 /* RecommendDietCell.m in Sources */,
 				F75EB7821F1743CB00DA36FF /* ResDetailCollectionViewCell.m in Sources */,
 				F71C58881F19B69900D97047 /* PointItem.m in Sources */,
@@ -899,11 +988,13 @@
 				F75EB78C1F175A0700DA36FF /* NSObject+YYModel.m in Sources */,
 				F743716A1F14BD3500332D21 /* NearbyRestaurantVC.m in Sources */,
 				F71C58811F19B61A00D97047 /* PXChartBackgroundView.m in Sources */,
+				F7531AF41F1DD90C00788A3B /* MusicSelectVC.m in Sources */,
 				F71C58821F19B61A00D97047 /* PXLineChartConst.m in Sources */,
 				F7933AB11F0096F20069DBF7 /* AppDelegate.m in Sources */,
 				F75EB7851F174A0F00DA36FF /* ResDetailCell.m in Sources */,
 				F737E2421F01F331000B5738 /* UIColor+Expend.m in Sources */,
 				F774B92D1F13271000A60166 /* TAAnimatedDotView.m in Sources */,
+				F74FA0841F1F2280003B0920 /* TestCell.m in Sources */,
 				F774B92E1F13271000A60166 /* TADotView.m in Sources */,
 				F76E48121F185D46001C259E /* CookbookDetailVC.m in Sources */,
 				F774B92C1F13271000A60166 /* TAAbstractDotView.m in Sources */,
@@ -912,6 +1003,7 @@
 				F74FF5C41F15B91300C84034 /* RecommendDietTableView.m in Sources */,
 				F774B91B1F13244C00A60166 /* HeaderView.m in Sources */,
 				F71C59111F19FBCD00D97047 /* Clock.swift in Sources */,
+				F71B31ED1F1F5D380018B70A /* SettingVC.m in Sources */,
 				F7933AAE1F0096F20069DBF7 /* main.m in Sources */,
 				F774B9311F13271000A60166 /* SDCycleScrollView.m in Sources */,
 				F737E23D1F01F32A000B5738 /* UIViewController+UIViewControllerExt.m in Sources */,

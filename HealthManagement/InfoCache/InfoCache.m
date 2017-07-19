@@ -11,42 +11,39 @@
 @implementation InfoCache
 
 //------------------NSUserDefaults--------------------
-+ (void)saveUserID:(NSString *)str
-{
-    [self saveInfo:str];
-}
-
-+ (NSString *)getUserID:(NSString *)str
-{
-
-    return [self getInfo:str];
-}
-
-
-// 共有的
-+ (void)saveInfo:(NSString *)str
++ (void)saveValue:(id)value forKey:(NSString *)key
 {
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    [userDefaultes setObject:str forKey:str];
+    [userDefaultes setObject:value forKey:key];
     [userDefaultes synchronize];
 }
 
-+ (NSString *)getInfo:(NSString *)str
++ (id)getValueForKey:(NSString *)key
 {
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    str = [userDefaultes objectForKey:str];
-    return str;
+    id value = [userDefaultes objectForKey:key];
+    return value;
 }
 
 //------------------archive/unarchive--------------------
 + (void)archiveObject:(id)obj toFile:(NSString *)path
 {
-    [NSKeyedArchiver archiveRootObject:obj toFile:path];
+    // 不要用NSHomeDirectory，不然失败
+    NSString *stringPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    path = [stringPath stringByAppendingPathComponent:path];//添加储存的文件名
+   BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:path];
+    if (success) {
+        NSLog(@"归档成功");
+
+    }
     
 }
 
 + (id)unarchiveObjectWithFile:(NSString *)path
 {
+    // 不要用NSHomeDirectory，不然失败
+    NSString *stringPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    path = [stringPath stringByAppendingPathComponent:path];//添加储存的文件名
     return [NSKeyedUnarchiver unarchiveObjectWithFile:path];
 }
 

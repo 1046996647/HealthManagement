@@ -207,7 +207,7 @@
     
     self.scrollView.contentSize = CGSizeMake(kScreen_Width, _pXLineChartView.bottom+12-64);
     
-    _xElements = @[@"16-2",@"16-3",@"16-4",@"16-5",@"16-6",@"16-7",@"16-8",@"16-9",@"16-10",@"16-11",@"16-12",@"17-01",@"17-02",@"17-03",@"17-04",@"17-05"];
+    _xElements = @[@"6.27",@"6.28",@"6.29",@"6.30",@"7.1",@"7.2",@"7.3"];
     _yElements = @[@"1000",@"2000",@"3000",@"4000",@"5000"];
     
     self.lines = [self lines:NO];
@@ -228,13 +228,13 @@
     //                           @{@"xValue" : @"17-02", @"yValue" : @"1100"},
     //                           @{@"xValue" : @"17-04", @"yValue" : @"1500"}];
     
-    NSArray *pointsArr1 = @[@{@"xValue" : @"16-2", @"yValue" : @"2000"},
-                            @{@"xValue" : @"16-3", @"yValue" : @"2200"},
-                            @{@"xValue" : @"16-4", @"yValue" : @"3000"},
-                            @{@"xValue" : @"16-6", @"yValue" : @"3750"},
-                            @{@"xValue" : @"16-7", @"yValue" : @"3800"},
-                            @{@"xValue" : @"16-8", @"yValue" : @"4000"},
-                            @{@"xValue" : @"16-10", @"yValue" : @"2000"}];
+    NSArray *pointsArr1 = @[@{@"xValue" : @"6.27", @"yValue" : @"2000"},
+                            @{@"xValue" : @"6.28", @"yValue" : @"2200"},
+                            @{@"xValue" : @"6.29", @"yValue" : @"3000"},
+                            @{@"xValue" : @"6.30", @"yValue" : @"3750"},
+                            @{@"xValue" : @"7.1", @"yValue" : @"3800"},
+                            @{@"xValue" : @"7.2", @"yValue" : @"4000"},
+                            @{@"xValue" : @"7.3", @"yValue" : @"2000"}];
     
     //    NSMutableArray *points = @[].mutableCopy;
     //    for (int i = 0; i < pointsArr.count; i++) {

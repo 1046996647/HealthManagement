@@ -11,8 +11,8 @@
 @interface InfoCache : NSObject
 
 //------------------NSUserDefaults--------------------
-+ (void)saveUserID:(NSString *)str;
-+ (NSString *)getUserID:(NSString *)str;
++ (void)saveValue:(id)value forKey:(NSString *)key;
++ (id)getValueForKey:(NSString *)key;
 
 
 //------------------archive/unarchive--------------------

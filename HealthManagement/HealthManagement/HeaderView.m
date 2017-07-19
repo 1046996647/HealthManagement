@@ -35,7 +35,7 @@
                                   @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
                                   ];
     // 网络加载 --- 创建带标题的图片轮播器
-    SDCycleScrollView *cycleScrollView2 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kScreen_Width, 180*scaleX) delegate:self placeholderImage:nil];
+    SDCycleScrollView *cycleScrollView2 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kScreen_Width, 150*scaleX) delegate:self placeholderImage:nil];
     cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
     cycleScrollView2.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
 //    cycleScrollView2.titlesGroup = titles;
@@ -49,7 +49,7 @@
     
     //----------------------
     _btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btn.frame = CGRectMake(12, cycleScrollView2.bottom+16, 80, 18);
+    _btn.frame = CGRectMake(12, cycleScrollView2.bottom+11, 75, 18);
     [_btn setImage:[UIImage imageNamed:@"home_3"] forState:UIControlStateNormal];
 //    _btn.backgroundColor = [UIColor redColor];
     _btn.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
@@ -62,7 +62,7 @@
     NSString *str1 = @"4";
 //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
 //    self.money = str1;
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"还需%@积分",str1]];
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"升级还需%@积分",str1]];
     NSRange range1 = {4,[str1 length]};
     [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range1];
     
@@ -80,7 +80,7 @@
     [self addSubview:line1];
     
     // 闹铃
-    _imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-20-12, _lab1.top, 20, 20)];
+    _imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-15-10, _lab1.top, 15, 15)];
     _imgView1.image = [UIImage imageNamed:@"home_5"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_imgView1];
@@ -92,16 +92,17 @@
     
     // 运动
     _btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btn1.frame = CGRectMake(line2.left-10-100, _btn.top, 100, 18);
+    _btn1.frame = CGRectMake(line2.left-8-140, _btn.top, 140, 18);
     [_btn1 setImage:[UIImage imageNamed:@"home_4"] forState:UIControlStateNormal];
     _btn1.titleLabel.font = [UIFont systemFontOfSize:12];
     [_btn1 setTitleColor:[UIColor colorWithHexString:@"#868788"] forState:UIControlStateNormal];
+    _btn1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
 //    _btn1.backgroundColor = [UIColor redColor];
-    [_btn1 setTitle:@"今日已做运动" forState:UIControlStateNormal];
+    [_btn1 setTitle:@" 今日已进行有氧运动" forState:UIControlStateNormal];
     [self addSubview:_btn1];
     
     //-----------附近餐厅-----------
-    _nearbyResView = [[NearbyResView alloc] initWithFrame:CGRectMake(0, _btn1.bottom+16, kScreen_Width, 0)];
+    _nearbyResView = [[NearbyResView alloc] initWithFrame:CGRectMake(0, _btn1.bottom+11, kScreen_Width, 0)];
     [self addSubview:_nearbyResView];
 
     //-----------推荐饮食-----------
@@ -118,38 +119,38 @@
     self.height = _dietRecordView.bottom;
     
     //-----------定位-----------
-    UIImageView *locationView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 20, 20, 20)];
+    UIImageView *locationView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 20, 25, 27)];
     locationView.image = [UIImage imageNamed:@"home_1"];
     [self addSubview:locationView];
     
-    _userLocationLab = [[UILabel alloc] initWithFrame:CGRectMake(locationView.right, 20, kScreen_Width-(locationView.right+10)-12-150-12, 20)];
-//    _userLocationLab.backgroundColor = [UIColor redColor];
-    _userLocationLab.font = [UIFont systemFontOfSize:16];
-    _userLocationLab.textColor = [UIColor whiteColor];
-    [self addSubview:_userLocationLab];
-    
-    
-//    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(_userLocationLab.right+10, _userLocationLab.center.y-40/2, kScreen_Width-(_userLocationLab.right+10)-12, 40)];
     //-----------搜索-----------
-    UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
+    UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 15)];
     leftView.contentMode = UIViewContentModeScaleAspectFit;
     leftView.image = [UIImage imageNamed:@"home_2"];
     
-    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(kScreen_Width-12-150, _userLocationLab.center.y-40/2, 150, 40)];
+    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(kScreen_Width-12-175*scaleX, locationView.center.y-25/2, 175*scaleX, 25)];
     tf.layer.cornerRadius = tf.height/2.0;
     //    tf.delegate = self;
     //    [tf addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventEditingChanged];
     tf.layer.masksToBounds = YES;
     tf.placeholder = @"餐厅/菜谱/食物";
-    tf.font = [UIFont systemFontOfSize:14];
-    [tf setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
+    tf.font = [UIFont systemFontOfSize:12];
+    [tf setValue:[UIFont systemFontOfSize:12] forKeyPath:@"_placeholderLabel.font"];
     [tf setValue:[UIColor colorWithHexString:@"#868788"] forKeyPath:@"_placeholderLabel.textColor"];
-    tf.backgroundColor = [UIColor whiteColor];
+    tf.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:.7];
     tf.leftViewMode = UITextFieldViewModeAlways;
     tf.leftView = leftView;
     //    tf.tintColor = [UIColor blueColor];
     [self addSubview:tf];
     self.tf = tf;
+    
+    _userLocationLab = [[UILabel alloc] initWithFrame:CGRectMake(locationView.right, locationView.center.y-20/2, kScreen_Width-(locationView.right+10)-12-tf.width-12, 20)];
+//    _userLocationLab.backgroundColor = [UIColor redColor];
+    _userLocationLab.font = [UIFont systemFontOfSize:12];
+    _userLocationLab.textColor = [UIColor whiteColor];
+    [self addSubview:_userLocationLab];
+    
+
 
 }
 

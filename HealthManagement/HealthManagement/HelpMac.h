@@ -65,6 +65,9 @@
 #define kScreen_CenterX  kScreen_Width/2
 #define kScreen_CenterY  kScreen_Height/2
 
+#define scaleWidth  kScreen_Width/375
+
+
 #define scaleX  kScreen_Width/320
 #define scaleY  kScreen_Height/568
 

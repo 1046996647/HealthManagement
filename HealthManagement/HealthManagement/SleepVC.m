@@ -9,8 +9,13 @@
 #import "SleepVC.h"
 #import "HealthManagement-Swift.h"
 #import "ZWLSlider.h"
+#import "SleepModel.h"
+#import "NSStringExt.h"
+#import "MusicSelectVC.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AVFoundation/AVFoundation.h>
+
+#define ClockPath @"ClockPath"
 
 @interface SleepVC ()<UIGestureRecognizerDelegate,TenClockDelegate>
 
@@ -20,6 +25,12 @@
 @property (nonatomic,strong) UILabel *sleepLab2;
 @property (nonatomic,strong) UILabel *upLabel1;
 @property (nonatomic,strong) UILabel *timeTotalLab;
+@property (nonatomic,strong) SleepModel *model;
+@property (nonatomic,strong) UILabel *weekLab;
+
+@property(nonatomic,strong) UIButton *lastBtn;
+
+@property (nonatomic,strong) UILabel *musicLab;
 
 
 
@@ -27,10 +38,18 @@
 
 @implementation SleepVC
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 //    self.view.backgroundColor = [UIColor whiteColor];
+    
+    // 取出闹钟本地数据
+    _model = [InfoCache unarchiveObjectWithFile:ClockPath];
+    if (!_model) {
+        _model = [[SleepModel alloc] init];
+
+    }
     
     // 滑动视图
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-49-64-25)];
@@ -57,16 +76,25 @@
     
     UILabel *weekLab = [[UILabel alloc] initWithFrame:CGRectMake(sleepLab.left, sleepLab.bottom+10, 250, 16)];
     weekLab.font = [UIFont systemFontOfSize:13];
-    weekLab.text = @"周一 周二";
+//    weekLab.text = @"周一 周二";
     weekLab.textAlignment = NSTextAlignmentLeft;
     weekLab.textColor = [UIColor colorWithHexString:@"#666666"];
     [self.scrollView addSubview:weekLab];
+    self.weekLab = weekLab;
     
+    [self setWeekMethod];
+
+    // 打开或关闭闹钟
     UIButton *setBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     setBtn.frame = CGRectMake(kScreen_Width-42-12, sleepLab.top+10, 42, 24);
-    [setBtn setImage:[UIImage imageNamed:@"setGreen"] forState:UIControlStateNormal];
-    //    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
+    [setBtn setImage:[UIImage imageNamed:@"setGray"] forState:UIControlStateNormal];
+    [setBtn setImage:[UIImage imageNamed:@"setGreen"] forState:UIControlStateSelected];
+
+    [setBtn addTarget:self action:@selector(setAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:setBtn];
+    setBtn.selected = _model.isOpen;
+
+
 
 
     // 灰色条
@@ -131,7 +159,18 @@
     self.clock = clock;
     [self dateFormatterStart:clock.startDate end:clock.endDate];
     
-    // 解决上下滑动冲突
+    if (_model.startDate) {
+        clock.startDate = _model.startDate;
+        clock.endDate = _model.endDate;
+        [self dateFormatterStart:clock.startDate end:clock.endDate];
+
+    }
+    else {
+        _model.startDate = [NSDate date];
+        _model.endDate = [[NSDate date] dateByAddingTimeInterval:-60 * 60 * 8];
+    }
+    
+    // 解决上下滑动冲突(有bug，慢滑手指离开不会调代理方法)
 //    UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onClickBtnLoction:)];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
     tap.delegate=self;
@@ -140,6 +179,7 @@
     UIImageView *clockImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, clock.width-135, clock.width-135)];
     clockImg.image = [UIImage imageNamed:@"circle_bg"];
     clockImg.center = clock.center;
+//    clockImg.userInteractionEnabled = YES;// 处理在闹钟中间滑动
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.scrollView addSubview:clockImg];
     
@@ -176,18 +216,31 @@
     weekLab1.textColor = [UIColor blackColor];
     [self.scrollView addSubview:weekLab1];
     
-    NSArray *weekArr = @[@"一",@"二",@"三"];
+    NSArray *weekArr = @[@"一",@"二",@"三",@"四",@"五",@"六",@"七"];
     for (int i=0; i<weekArr.count; i++) {
         UIButton *btn = [[UIButton alloc] init];
-        btn.frame = CGRectMake(60+i*(28+20), (weekLab1.height-28)/2, 28, 28);
+        btn.frame = CGRectMake(60+i*(25+20), (weekLab1.height-25)/2, 25, 25);
         btn.layer.cornerRadius = btn.width/2;
         btn.layer.masksToBounds = YES;
         btn.titleLabel.font = [UIFont systemFontOfSize:16];
         btn.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
         [btn setTitle:weekArr[i] forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btn.tag = i+1;
         [btn addTarget:self action:@selector(weekAction:) forControlEvents:UIControlEventTouchUpInside];
         [weekLab1 addSubview:btn];
+        
+        if (_model.weekDay.count) {
+            for (NSString *weekDay in _model.weekDay) {
+                
+                NSString *chNum = [NSString translationArabicNum:weekDay.integerValue];
+                if ([chNum isEqualToString:weekArr[i]]) {
+                    btn.backgroundColor = [UIColor colorWithHexString:@"#59A43A"];
+                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                }
+            }
+            
+        }
         
     }
     
@@ -235,12 +288,19 @@
         
         UIButton *btn = [[UIButton alloc] init];
         btn.frame = CGRectMake(kScreen_Width-30-12, (remindLab.height-30)/2, 30, 30);
+        btn.tag = i;
         UIImage *image = [self OriginImage:[UIImage imageNamed:@"hui"] scaleToSize:CGSizeMake(15, 15)];
         [btn setImage:image forState:UIControlStateNormal];
         [btn setImage:[UIImage imageNamed:@"lv"] forState:UIControlStateSelected];
         [btn addTarget:self action:@selector(remindAction:) forControlEvents:UIControlEventTouchUpInside];
-
         [remindLab addSubview:btn];
+        
+        if (_model.tag.integerValue == i) {
+            btn.selected = YES;
+            self.lastBtn = btn;
+
+        }
+        
         
     }
     
@@ -257,6 +317,8 @@
     btn3.titleLabel.font = [UIFont systemFontOfSize:13];
     [btn3 setTitle:@"  提醒铃声" forState:UIControlStateNormal];
     btn3.backgroundColor = [UIColor whiteColor];
+    [btn3 addTarget:self action:@selector(musicAction:) forControlEvents:UIControlEventTouchUpInside];
+
     [self.scrollView addSubview:btn3];
     
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-7-12, (btn3.height-10)/2.0, 7, 10)];
@@ -264,12 +326,18 @@
     imgView.image = [UIImage imageNamed:@"assistor"];
     [btn3 addSubview:imgView];
     
-    UILabel *timeLab = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width-200-30, 0,200, btn3.height)];
-    timeLab.font = [UIFont systemFontOfSize:12];
-    timeLab.text = @"早起者";
-    timeLab.textAlignment = NSTextAlignmentRight;
-    timeLab.textColor = [UIColor colorWithHexString:@"#727272"];
-    [btn3 addSubview:timeLab];
+    UILabel *musicLab = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width-200-30, 0,200, btn3.height)];
+    musicLab.font = [UIFont systemFontOfSize:12];
+//    timeLab.text = @"早起者";
+    musicLab.textAlignment = NSTextAlignmentRight;
+    musicLab.textColor = [UIColor colorWithHexString:@"#727272"];
+    [btn3 addSubview:musicLab];
+    self.musicLab = musicLab;
+    
+    if (_model.musicName) {
+        musicLab.text = _model.musicName;
+
+    }
     
     // 灰色条
     UIView *view7 = [[UIView alloc] initWithFrame:CGRectMake(0, btn3.bottom, kScreen_Width, view4.height)];
@@ -317,40 +385,129 @@
 
 }
 
-//自定义滑块的大小    通过此方法可以更改滑块的任意大小和形状
--(UIImage*) OriginImage:(UIImage*)image scaleToSize:(CGSize)size
-
+- (void)setWeekMethod
 {
-    UIGraphicsBeginImageContext(size);//size为CGSize类型，即你所需要的图片尺寸
-    
-    [image drawInRect:CGRectMake(0,0, size.width, size.height)];
-    
-    UIImage* scaledImage =UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return scaledImage;
-    
+    if (_model.weekDay.count) {
+        NSMutableString *mStr = [NSMutableString string];
+        
+        NSComparator finderSort = ^(id string1,id string2){
+            
+            if ([string1 integerValue] > [string2 integerValue]) {
+                return (NSComparisonResult)NSOrderedDescending;
+            }else if ([string1 integerValue] < [string2 integerValue]){
+                return (NSComparisonResult)NSOrderedAscending;
+            }
+            else
+                return (NSComparisonResult)NSOrderedSame;
+        };
+        
+        //数组排序：
+        NSArray *resultArray = [_model.weekDay sortedArrayUsingComparator:finderSort];
+        
+        for (NSString *weekDay in resultArray) {
+            
+            NSString *chNum = [NSString translationArabicNum:weekDay.integerValue];
+            
+            [mStr appendFormat:@"周%@ ",chNum];
+        }
+        self.weekLab.text = mStr;
+        
+    }
 }
+
+
+
 
 // 日期动作
 - (void)weekAction:(UIButton *)btn
 {
+    NSString *numStr = [NSString stringWithFormat:@"%ld",(long)btn.tag];
     btn.selected = !btn.selected;
     
     if (btn.selected) {
         btn.backgroundColor = [UIColor colorWithHexString:@"#59A43A"];
         [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        if (![_model.weekDay containsObject:numStr]) {
+            [_model.weekDay addObject:numStr];
+        }
     }
     else {
         btn.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        
+        if ([_model.weekDay containsObject:numStr]) {
+            [_model.weekDay removeObject:numStr];
+        }
+        
     }
+    
+    [self setWeekMethod];
+    
+    if (_model.isOpen) {
+        [self createLocalNotification];
+
+    }
+    
+
+    
+//    [InfoCache archiveObject:_model toFile:ClockPath];
+
 }
 
-- (void)remindAction:(UIButton *)btn
+// 选择铃声
+- (void)musicAction:(UIButton *)btn
+{
+    
+    MusicSelectVC *vc = [[MusicSelectVC alloc] init];
+    vc.block = ^(NSString *name) {
+        self.musicLab.text = name;
+        _model.musicName = name;
+//        [InfoCache archiveObject:_model toFile:ClockPath];
+        if (_model.isOpen) {
+            [self createLocalNotification];
+            
+        }
+
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+// 打开或关闭闹钟
+- (void)setAction:(UIButton *)btn
 {
     btn.selected = !btn.selected;
+    _model.isOpen = btn.selected;
+    
+    if (btn.selected) {
+        [self createLocalNotification];
+
+    }
+    else {
+        [SleepVC shutdownClock:@"SleepID"];
+        [SleepVC shutdownClock:@"WakeupID"];
+
+    }
+
+//    [InfoCache archiveObject:_model toFile:ClockPath];
+}
+
+// 提前提醒入睡
+- (void)remindAction:(UIButton *)btn
+{
+//    btn.selected = !btn.selected;
+    _model.tag = @(btn.tag);
+//    [InfoCache archiveObject:_model toFile:ClockPath];
+
+    self.lastBtn.selected = NO;
+    btn.selected = YES;
+    self.lastBtn = btn;
+
+    if (_model.isOpen) {
+        [self createLocalNotification];
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -359,27 +516,33 @@
 }
 
 #pragma mark - TenClockDelegate
+
+// 时时更新
 - (void)timesUpdated:(TenClock *)clock startDate:(NSDate *)startDate endDate:(NSDate *)endDate
 {
 
     [self dateFormatterStart:startDate end:endDate];
-    NSLog(@"------%@",startDate);
-//    NSLog(@"------%@",endDate);
 
 }
 
+// 停止拖动更新
 - (void)timesChanged:(TenClock *)clock startDate:(NSDate *)startDate endDate:(NSDate *)endDate
 {
-    [self dateFormatterStart:startDate end:endDate];
-    
-    // do something
+    _model.startDate = startDate;
+    _model.endDate = endDate;
+    NSLog(@"------%@",startDate);
+    //    NSLog(@"------%@",endDate);
+//    [InfoCache archiveObject:_model toFile:ClockPath];
+//    [self dateFormatterStart:startDate end:endDate];
+    if (_model.isOpen) {
+        [self createLocalNotification];
+        
+    }
 }
 
 - (void)timesTotal:(TenClock *)clock time:(NSInteger)time
 {
-//    titleTextLayer.string = "\(fiveMinIncrements / 12)hr \((fiveMinIncrements % 12) * 5)min"
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
+
     NSString *str1 = [NSString stringWithFormat:@"%ld",(time / 12)];
     NSString *str2 = [NSString stringWithFormat:@"%ld",((time % 12) * 5)];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时%@分钟",str1, str2]];
@@ -416,6 +579,154 @@
     self.upLabel1.text = endString;
 }
 
+#pragma mark - 闹钟方法
+
+// 创建闹钟入口
+- (void)createLocalNotification
+{
+    if (_model) {
+        
+        [InfoCache archiveObject:_model toFile:ClockPath];
+
+        // 时间格式化
+        NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"HH:mm"];
+        NSString * startDate = nil;
+        NSString * endDate = nil;
+        NSDate *updateDate = nil;
+        NSTimeInterval time = 0;
+        
+        // 就寝时
+        if (_model.tag.integerValue == 0) {
+            //转化为字符串
+            startDate = [dateFormatter stringFromDate:_model.startDate];
+            NSLog(@"！！！！！！！！！%@",startDate);
+            
+        }
+        
+        // 15分钟前
+        if (_model.tag.integerValue == 1) {
+            time = 15 * 60;
+            updateDate = [_model.startDate dateByAddingTimeInterval:-time];
+            //转化为字符串
+            startDate = [dateFormatter stringFromDate:updateDate];
+            NSLog(@"！！！！！！！！！%@",startDate);
+            
+        }
+        // 30分钟前
+        else if (_model.tag.integerValue == 2) {
+            time = 30 * 60;
+            updateDate = [_model.startDate dateByAddingTimeInterval:-time];
+            //转化为字符串
+            startDate = [dateFormatter stringFromDate:updateDate];
+            NSLog(@"！！！！！！！！！%@",startDate);
+        }
+        // 1小时前
+        else if (_model.tag.integerValue == 3) {
+            time = 1 * 60 * 60;
+            updateDate = [_model.startDate dateByAddingTimeInterval:-time];
+            //转化为字符串
+            startDate = [dateFormatter stringFromDate:updateDate];
+            NSLog(@"！！！！！！！！！%@",startDate);
+        }
+        endDate = [dateFormatter stringFromDate:_model.endDate];
+
+        
+        // 就寝闹钟
+        [SleepVC shutdownClock:@"SleepID"];
+        [SleepVC postLocalNotification:@"SleepID" clockTime:startDate weekArr:_model.weekDay alertBody:@"该睡觉啦~" clockMusic:_model.musicName];
+
+        // 起床闹钟
+        [SleepVC shutdownClock:@"WakeupID"];
+        [SleepVC postLocalNotification:@"WakeupID" clockTime:endDate weekArr:_model.weekDay alertBody:@"该起床啦~" clockMusic:_model.musicName];
+    }
+    
+}
+
++ (void)postLocalNotification:(NSString *)clockID clockTime:(NSString *)clockTime weekArr:(NSArray *)array alertBody:(NSString *)alertBody clockMusic:(NSString *)clockMusic
+{
+    
+    //-----组建本地通知的fireDate-----------------------------------------------
+    NSArray *clockTimeArray = [clockTime componentsSeparatedByString:@":"];
+    NSDate *dateNow = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    //    [calendar setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+    //    [comps setTimeZone:[NSTimeZone timeZoneWithName:@"CMT"]];
+    NSInteger unitFlags = NSCalendarUnitEra |
+    NSCalendarUnitYear |
+    NSCalendarUnitMonth |
+    NSCalendarUnitDay |
+    NSCalendarUnitHour |
+    NSCalendarUnitMinute |
+    NSCalendarUnitSecond |
+    NSCalendarUnitWeekOfYear |
+    NSCalendarUnitWeekday |
+    NSCalendarUnitWeekdayOrdinal |
+    NSCalendarUnitQuarter;
+    
+    comps = [calendar components:unitFlags fromDate:dateNow];
+    [comps setHour:[[clockTimeArray objectAtIndex:0] intValue]];
+    [comps setMinute:[[clockTimeArray objectAtIndex:1] intValue]];
+    [comps setSecond:0];
+    
+    //------------------------------------------------------------------------
+    Byte weekday = [comps weekday];
+    //    NSArray *array = [[clockMode substringFromIndex:1] componentsSeparatedByString:@"、"];
+    Byte i = 0;
+    Byte j = 0;
+    int days = 0;
+    int	temp = 0;
+    Byte count = [array count];
+    Byte clockDays[7];
+    
+//    NSArray *tempWeekdays = [NSArray arrayWithObjects:@"一",@"二",@"三",@"四",@"五",@"六",@"七", nil];
+    NSArray *tempWeekdays = [NSArray arrayWithObjects:@"7",@"1",@"2",@"3",@"4",@"5",@"6", nil];
+    //查找设定的周期模式
+    for (i = 0; i < count; i++) {
+        for (j = 0; j < 7; j++) {
+            if ([[array objectAtIndex:i] isEqualToString:[tempWeekdays objectAtIndex:j]]) {
+                clockDays[i] = j + 1;
+                break;
+            }
+        }
+    }
+    
+    for (i = 0; i < count; i++) {
+        temp = clockDays[i] - weekday;
+        days = (temp >= 0 ? temp : temp + 7);
+        NSDate *newFireDate = [[calendar dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
+        
+        UILocalNotification *newNotification = [[UILocalNotification alloc] init];
+        if (newNotification) {
+            newNotification.fireDate = newFireDate;
+            newNotification.alertBody = alertBody;
+//            newNotification.soundName = @"7557.wav";
+            newNotification.soundName = [NSString stringWithFormat:@"%@.caf", clockMusic];
+
+            //            newNotification.alertAction = @"查看闹钟";
+            newNotification.repeatInterval = NSCalendarUnitWeekOfYear;
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:clockID forKey:@"ActivityClock"];
+            newNotification.userInfo = userInfo;
+            [[UIApplication sharedApplication] scheduleLocalNotification:newNotification];
+        }
+        NSLog(@"Post new localNotification:%@", [newNotification fireDate]);
+        
+    }
+}
+
++ (void)shutdownClock:(NSString *)clockID
+{
+    NSArray *localNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for(UILocalNotification *notification in localNotifications)
+    {
+        if ([[[notification userInfo] objectForKey:@"ActivityClock"] isEqualToString:clockID]) {
+            NSLog(@"Shutdown localNotification:%@", [notification fireDate]);
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+}
+
 
 #pragma mark - UIGestureRecognizerDelegate
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
@@ -435,6 +746,21 @@
 }
 
 
+//自定义滑块的大小    通过此方法可以更改滑块的任意大小和形状
+-(UIImage*) OriginImage:(UIImage*)image scaleToSize:(CGSize)size
+
+{
+    UIGraphicsBeginImageContext(size);//size为CGSize类型，即你所需要的图片尺寸
+    
+    [image drawInRect:CGRectMake(0,0, size.width, size.height)];
+    
+    UIImage* scaledImage =UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+    
+}
 
 
 

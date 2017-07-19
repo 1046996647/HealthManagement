@@ -27,7 +27,7 @@
 - (void)initSubViews
 {
     UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake((kScreen_Width-80)/2, 15, 80, 20)];
-    lab.font = [UIFont systemFontOfSize:18];
+    lab.font = [UIFont systemFontOfSize:16];
     lab.text = @"饮食记录";
     lab.textAlignment = NSTextAlignmentCenter;
     //    lab.backgroundColor = [UIColor cyanColor];

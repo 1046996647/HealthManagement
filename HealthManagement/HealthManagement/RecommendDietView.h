@@ -10,9 +10,9 @@
 
 @interface RecommendDietView : UIView
 
-#define kBigWidth 120*scaleX
+#define kBigWidth 120*scaleWidth
 
-#define kRWidth (kScreen_Width-12*2-5*2-kBigWidth)/2.0
+#define kRWidth (kScreen_Width-12*2-(16*scaleWidth)*2-kBigWidth)/2.0
 
 @property(nonatomic,strong) NSMutableArray *viewArr;
 @property(nonatomic,strong) NSArray *modelArr;

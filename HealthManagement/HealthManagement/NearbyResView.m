@@ -26,7 +26,7 @@
 - (void)initSubViews
 {
     UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake((kScreen_Width-80)/2, 15, 80, 20)];
-    lab.font = [UIFont systemFontOfSize:18];
+    lab.font = [UIFont systemFontOfSize:16];
     lab.text = @"附近餐厅";
     lab.textAlignment = NSTextAlignmentCenter;
 //    lab.backgroundColor = [UIColor cyanColor];
@@ -74,7 +74,7 @@
             [subView addSubview:imgView];
             
             UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(imgView.left, imgView.bottom+10, kWidth*2/3, 16)];
-            moneyLab.font = [UIFont systemFontOfSize:14];
+            moneyLab.font = [UIFont systemFontOfSize:12];
             //        moneyLab.textAlignment = NSTextAlignmentRight;
             moneyLab.text = @"星巴克";
             //        moneyLab.textColor = [UIColor redColor];
@@ -83,7 +83,7 @@
             [subView addSubview:moneyLab];
             
             UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kWidth-kWidth/3, imgView.bottom+12, kWidth/3, 14)];
-            fitLab.font = [UIFont systemFontOfSize:12];
+            fitLab.font = [UIFont systemFontOfSize:11];
             fitLab.textAlignment = NSTextAlignmentRight;
             fitLab.text = @"120m";
             fitLab.tag = 102+j;
