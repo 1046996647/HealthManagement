@@ -9,6 +9,7 @@
 #import "NearbyRestaurantVC.h"
 #import "NearbyRestaurantTableView.h"
 #import "RecommendDietTableView.h"
+#import "SearchVC.h"
 
 @interface NearbyRestaurantVC ()
 
@@ -126,7 +127,9 @@
 // 搜索
 - (void)searchAction
 {
-    
+    SearchVC *vc = [[SearchVC alloc] init];
+//    vc.title = @"";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)exchangeAction:(UIButton *)btn

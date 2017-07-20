@@ -10,4 +10,8 @@
 
 @interface BodyTestVC : BaseViewController
 
+// 0:基础 1:专业
+@property(nonatomic,assign) NSInteger tag;
+
+
 @end

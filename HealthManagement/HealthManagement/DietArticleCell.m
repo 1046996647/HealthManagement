@@ -85,12 +85,26 @@
         [_btn1 setTitle:@"7253" forState:UIControlStateNormal];
         [self.contentView addSubview:_btn1];
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 104-10, kScreen_Width, 10)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
         view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
         [self.contentView addSubview:view];
+        self.view = view;
+
         
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if (self.type == 1) {
+        self.view.frame = CGRectMake(0, self.height-1, kScreen_Width, 1);
+    }
+    else {
+        self.view.frame = CGRectMake(0, self.height-10, kScreen_Width, 10);
+
+    }
 }
 
 @end

@@ -52,7 +52,7 @@
     [self addSubview:btn];
     
     // 小图
-    CGFloat height = kRWidth+40;
+    CGFloat height = kRWidth-20+40;
     for (int i=0; i<4; i++) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+kBigWidth+(16*scaleWidth)+i%2*(kRWidth+(16*scaleWidth)), btn.bottom+i/2*(height+5), kRWidth, height)];
         view.layer.borderWidth = .5;
@@ -61,7 +61,7 @@
         view.layer.masksToBounds = YES;
         [self addSubview:view];
         
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kRWidth, kRWidth)];
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kRWidth, kRWidth-20)];
 //        imgView.backgroundColor = [UIColor redColor];
         imgView.tag = 100+i;
         imgView.image = [UIImage imageNamed:@"food"];

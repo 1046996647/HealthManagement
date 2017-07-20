@@ -9,6 +9,7 @@
 #import "PaymentVC.h"
 #import "HXTagsView.h"
 #import "ResDetailCollectionViewCell.h"
+#import "PayOnlineVC.h"
 
 
 @interface PaymentVC ()<UICollectionViewDelegate,UICollectionViewDataSource>
@@ -223,6 +224,7 @@
         UIButton *btn4 = [UIButton buttonWithType:UIButtonTypeCustom];
         btn4.frame = CGRectMake((kScreen_Width/2)*i, view3.bottom, kScreen_Width/2, 150);
         [btn4 setImage:[UIImage imageNamed:payArr[i]] forState:UIControlStateNormal];
+        btn4.tag = i;
         //    _nearbyBtn.backgroundColor = [UIColor redColor];
         btn4.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0);
         btn4.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -8);
@@ -230,6 +232,8 @@
         [btn4 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btn4 setTitle:titleArr[i] forState:UIControlStateNormal];
         [self.scrollView addSubview:btn4];
+        [btn4 addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+
         
         if (i == 0) {
             UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(kScreen_Width/2, 10, 1, 130)];
@@ -243,6 +247,18 @@
     self.scrollView.contentSize = CGSizeMake(kScreen_Width, self.btn4.bottom+12);
 
 
+}
+
+- (void)btnAction:(UIButton *)btn
+{
+    if (btn.tag == 0) {
+        
+    }
+    else {
+        PayOnlineVC *vc = [[PayOnlineVC alloc] init];
+        vc.title = @"在线支付";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

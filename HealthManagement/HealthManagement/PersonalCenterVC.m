@@ -7,6 +7,10 @@
 //
 
 #import "PersonalCenterVC.h"
+#import "SettingVC.h"
+#import "BodyTestVC.h"
+#import "PreferenceVC.h"
+#import "BodyDataVC.h"
 
 @interface PersonalCenterVC ()
 
@@ -166,8 +170,11 @@
     for (int i=0; i<titleArr.count; i++) {
         
         UIButton *resBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        resBtn.tag = i;
         resBtn.frame = CGRectMake(i*kScreen_Width/3.0, view.bottom, kScreen_Width/3.0, 170/2);
         [self.scrollView addSubview:resBtn];
+        [resBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+
         
         UIImageView *resImgView = [[UIImageView alloc] initWithFrame:CGRectMake((resBtn.width-35)/2.0, 8, 35, 35)];
         //        imgView.backgroundColor = [UIColor redColor];
@@ -181,7 +188,7 @@
         resLab.textAlignment = NSTextAlignmentCenter;
         [resBtn addSubview:resLab];
         
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(resBtn.right, 2, 1, resBtn.height-4)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(resBtn.width, 2, 1, resBtn.height-4)];
         line.backgroundColor = [UIColor colorWithHexString:@"#EEEFEF"];
         [resBtn addSubview:line];
         
@@ -207,9 +214,32 @@
 
 }
 
+- (void)btnAction:(UIButton *)btn
+{
+    if (btn.tag == 0) {
+        BodyTestVC *vc = [[BodyTestVC alloc] init];
+        vc.title = @"体质测试";
+        vc.tag = 1;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (btn.tag == 1) {
+        PreferenceVC *vc = [[PreferenceVC alloc] init];
+        vc.title = @"个人偏好";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (btn.tag == 2) {
+        BodyDataVC *vc = [[BodyDataVC alloc] init];
+        vc.title = @"身体数据";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+
 - (void)setAction
 {
-    
+    SettingVC *vc = [[SettingVC alloc] init];
+    vc.title = @"设置";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /*

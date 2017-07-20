@@ -54,6 +54,11 @@
     markLab.font = [UIFont systemFontOfSize:16];
     [footerView addSubview:markLab];
     
+    if (self.tag == 1) {
+        markLab.text = @"  * 共45道题，均为单选。";
+
+    }
+    
     UIButton *enterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     enterBtn.frame = CGRectMake(10, markLab.bottom+54/2, kScreen_Width-20, 100/2);
     enterBtn.layer.cornerRadius = 5;

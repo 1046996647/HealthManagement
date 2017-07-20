@@ -46,6 +46,13 @@
 		F748FF271F1DC8430089722D /* 懒猪起床.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF211F1DC8430089722D /* 懒猪起床.caf */; };
 		F748FF281F1DC8430089722D /* 梦幻.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF221F1DC8430089722D /* 梦幻.caf */; };
 		F748FF291F1DC8430089722D /* 起床铃声.caf in Resources */ = {isa = PBXBuildFile; fileRef = F748FF231F1DC8430089722D /* 起床铃声.caf */; };
+		F74D336E1F203F320096BC0B /* PreferenceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74D336D1F203F320096BC0B /* PreferenceVC.m */; };
+		F74D33711F204C1E0096BC0B /* BodyDataVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74D33701F204C1E0096BC0B /* BodyDataVC.m */; };
+		F74D33741F205C770096BC0B /* SearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74D33731F205C770096BC0B /* SearchVC.m */; };
+		F74D337A1F207B0F0096BC0B /* HistorySearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F74D33791F207B0F0096BC0B /* HistorySearchCell.m */; };
+		F74D337D1F2082440096BC0B /* SearchResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74D337C1F2082440096BC0B /* SearchResultVC.m */; };
+		F74D33801F20987D0096BC0B /* DeleteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F74D337F1F20987D0096BC0B /* DeleteViewController.m */; };
+		F74D33831F209E4D0096BC0B /* PayOnlineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74D33821F209E4D0096BC0B /* PayOnlineVC.m */; };
 		F74FA0781F1EF136003B0920 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA0771F1EF136003B0920 /* LoginVC.m */; };
 		F74FA07B1F1EFD52003B0920 /* registerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA07A1F1EFD52003B0920 /* registerVC.m */; };
 		F74FA07E1F1F1B6B003B0920 /* RegisterSuccessVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FA07D1F1F1B6B003B0920 /* RegisterSuccessVC.m */; };
@@ -183,6 +190,20 @@
 		F748FF211F1DC8430089722D /* 懒猪起床.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "懒猪起床.caf"; sourceTree = "<group>"; };
 		F748FF221F1DC8430089722D /* 梦幻.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "梦幻.caf"; sourceTree = "<group>"; };
 		F748FF231F1DC8430089722D /* 起床铃声.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "起床铃声.caf"; sourceTree = "<group>"; };
+		F74D336C1F203F320096BC0B /* PreferenceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferenceVC.h; sourceTree = "<group>"; };
+		F74D336D1F203F320096BC0B /* PreferenceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferenceVC.m; sourceTree = "<group>"; };
+		F74D336F1F204C1E0096BC0B /* BodyDataVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BodyDataVC.h; sourceTree = "<group>"; };
+		F74D33701F204C1E0096BC0B /* BodyDataVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BodyDataVC.m; sourceTree = "<group>"; };
+		F74D33721F205C770096BC0B /* SearchVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchVC.h; sourceTree = "<group>"; };
+		F74D33731F205C770096BC0B /* SearchVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchVC.m; sourceTree = "<group>"; };
+		F74D33781F207B0F0096BC0B /* HistorySearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistorySearchCell.h; sourceTree = "<group>"; };
+		F74D33791F207B0F0096BC0B /* HistorySearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistorySearchCell.m; sourceTree = "<group>"; };
+		F74D337B1F2082440096BC0B /* SearchResultVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultVC.h; sourceTree = "<group>"; };
+		F74D337C1F2082440096BC0B /* SearchResultVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultVC.m; sourceTree = "<group>"; };
+		F74D337E1F20987D0096BC0B /* DeleteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteViewController.h; sourceTree = "<group>"; };
+		F74D337F1F20987D0096BC0B /* DeleteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteViewController.m; sourceTree = "<group>"; };
+		F74D33811F209E4D0096BC0B /* PayOnlineVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayOnlineVC.h; sourceTree = "<group>"; };
+		F74D33821F209E4D0096BC0B /* PayOnlineVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayOnlineVC.m; sourceTree = "<group>"; };
 		F74FA0761F1EF136003B0920 /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
 		F74FA0771F1EF136003B0920 /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
 		F74FA0791F1EFD52003B0920 /* registerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registerVC.h; sourceTree = "<group>"; };
@@ -379,6 +400,10 @@
 				F737E2591F01FB30000B5738 /* PersonalCenterVC.m */,
 				F71B31EB1F1F5D380018B70A /* SettingVC.h */,
 				F71B31EC1F1F5D380018B70A /* SettingVC.m */,
+				F74D336C1F203F320096BC0B /* PreferenceVC.h */,
+				F74D336D1F203F320096BC0B /* PreferenceVC.m */,
+				F74D336F1F204C1E0096BC0B /* BodyDataVC.h */,
+				F74D33701F204C1E0096BC0B /* BodyDataVC.m */,
 			);
 			name = "我的";
 			sourceTree = "<group>";
@@ -508,6 +533,8 @@
 		F74371641F14A03500332D21 /* CustomClass */ = {
 			isa = PBXGroup;
 			children = (
+				F74D337E1F20987D0096BC0B /* DeleteViewController.h */,
+				F74D337F1F20987D0096BC0B /* DeleteViewController.m */,
 				F7667D1F1F1C86D800F60D34 /* ZWLSlider.h */,
 				F7667D201F1C86D800F60D34 /* ZWLSlider.m */,
 			);
@@ -649,6 +676,8 @@
 				F75EB7811F1743CB00DA36FF /* ResDetailCollectionViewCell.m */,
 				F75EB7831F174A0F00DA36FF /* ResDetailCell.h */,
 				F75EB7841F174A0F00DA36FF /* ResDetailCell.m */,
+				F74D33781F207B0F0096BC0B /* HistorySearchCell.h */,
+				F74D33791F207B0F0096BC0B /* HistorySearchCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -668,6 +697,12 @@
 				F76E48111F185D46001C259E /* CookbookDetailVC.m */,
 				F76E48191F188BB0001C259E /* PaymentVC.h */,
 				F76E481A1F188BB0001C259E /* PaymentVC.m */,
+				F74D33811F209E4D0096BC0B /* PayOnlineVC.h */,
+				F74D33821F209E4D0096BC0B /* PayOnlineVC.m */,
+				F74D33721F205C770096BC0B /* SearchVC.h */,
+				F74D33731F205C770096BC0B /* SearchVC.m */,
+				F74D337B1F2082440096BC0B /* SearchResultVC.h */,
+				F74D337C1F2082440096BC0B /* SearchResultVC.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -972,6 +1007,7 @@
 				F75EB7901F175A2700DA36FF /* ResDetailModel.m in Sources */,
 				F74FF5D41F161FAA00C84034 /* DietRecordView.m in Sources */,
 				F774B92F1F13271000A60166 /* TAPageControl.m in Sources */,
+				F74D337D1F2082440096BC0B /* SearchResultVC.m in Sources */,
 				F75EB77F1F17393600DA36FF /* ResDetailVC.m in Sources */,
 				F737E2571F01FAA0000B5738 /* SleepVC.m in Sources */,
 				F71C59101F19FBCD00D97047 /* AvoidingSubviewScrollViewDelegate.swift in Sources */,
@@ -980,6 +1016,7 @@
 				F748FF1C1F1D9D820089722D /* SleepModel.m in Sources */,
 				F74FA0781F1EF136003B0920 /* LoginVC.m in Sources */,
 				F74FF5C71F15BB2200C84034 /* RecommendDietCell.m in Sources */,
+				F74D336E1F203F320096BC0B /* PreferenceVC.m in Sources */,
 				F75EB7821F1743CB00DA36FF /* ResDetailCollectionViewCell.m in Sources */,
 				F71C58881F19B69900D97047 /* PointItem.m in Sources */,
 				F75EB7791F17221C00DA36FF /* RecommendDietVC.m in Sources */,
@@ -991,12 +1028,15 @@
 				F7531AF41F1DD90C00788A3B /* MusicSelectVC.m in Sources */,
 				F71C58821F19B61A00D97047 /* PXLineChartConst.m in Sources */,
 				F7933AB11F0096F20069DBF7 /* AppDelegate.m in Sources */,
+				F74D33831F209E4D0096BC0B /* PayOnlineVC.m in Sources */,
 				F75EB7851F174A0F00DA36FF /* ResDetailCell.m in Sources */,
 				F737E2421F01F331000B5738 /* UIColor+Expend.m in Sources */,
 				F774B92D1F13271000A60166 /* TAAnimatedDotView.m in Sources */,
+				F74D33741F205C770096BC0B /* SearchVC.m in Sources */,
 				F74FA0841F1F2280003B0920 /* TestCell.m in Sources */,
 				F774B92E1F13271000A60166 /* TADotView.m in Sources */,
 				F76E48121F185D46001C259E /* CookbookDetailVC.m in Sources */,
+				F74D33801F20987D0096BC0B /* DeleteViewController.m in Sources */,
 				F774B92C1F13271000A60166 /* TAAbstractDotView.m in Sources */,
 				F71C59141F19FBCD00D97047 /* DateExtensions.swift in Sources */,
 				F737E2461F01F389000B5738 /* InfoCache.m in Sources */,
@@ -1005,6 +1045,7 @@
 				F71C59111F19FBCD00D97047 /* Clock.swift in Sources */,
 				F71B31ED1F1F5D380018B70A /* SettingVC.m in Sources */,
 				F7933AAE1F0096F20069DBF7 /* main.m in Sources */,
+				F74D33711F204C1E0096BC0B /* BodyDataVC.m in Sources */,
 				F774B9311F13271000A60166 /* SDCycleScrollView.m in Sources */,
 				F737E23D1F01F32A000B5738 /* UIViewController+UIViewControllerExt.m in Sources */,
 				F74FF5CB1F15FC1900C84034 /* HXTagsView.m in Sources */,
@@ -1012,6 +1053,7 @@
 				F774B9301F13271000A60166 /* SDCollectionViewCell.m in Sources */,
 				F71C58841F19B61A00D97047 /* PXXview.m in Sources */,
 				F737E23C1F01F32A000B5738 /* UIView+UIViewController.m in Sources */,
+				F74D337A1F207B0F0096BC0B /* HistorySearchCell.m in Sources */,
 				F737E24A1F01F6C5000B5738 /* Toast+UIView.m in Sources */,
 				F737E2511F01F907000B5738 /* DietArticleVC.m in Sources */,
 				F737E23B1F01F32A000B5738 /* NSStringExt.m in Sources */,

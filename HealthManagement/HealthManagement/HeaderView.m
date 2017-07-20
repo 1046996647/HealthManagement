@@ -7,6 +7,7 @@
 //
 
 #import "HeaderView.h"
+#import "SearchResultVC.h"
 
 
 @implementation HeaderView
@@ -140,6 +141,9 @@
     tf.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:.7];
     tf.leftViewMode = UITextFieldViewModeAlways;
     tf.leftView = leftView;
+    tf.delegate = self;
+    tf.returnKeyType = UIReturnKeySearch;
+    tf.clearButtonMode = UITextFieldViewModeWhileEditing;
     //    tf.tintColor = [UIColor blueColor];
     [self addSubview:tf];
     self.tf = tf;
@@ -163,5 +167,17 @@
     
 //    [self.navigationController pushViewController:[NSClassFromString(@"DemoVCWithXib") new] animated:YES];
 }
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.tf resignFirstResponder];
+    SearchResultVC *vc = [[SearchResultVC alloc] init];
+    vc.title = @"搜索结果";
+    [self.viewController.navigationController pushViewController:vc animated:YES];
+    return YES;
+}
+
+
 
 @end

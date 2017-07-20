@@ -13,7 +13,7 @@
 #import "DietRecordView.h"
 
 
-@interface HeaderView : UIView<SDCycleScrollViewDelegate>
+@interface HeaderView : UIView<SDCycleScrollViewDelegate,UITextFieldDelegate>
 
 //-----------定位-----------
 @property(nonatomic,strong) UILabel *userLocationLab;

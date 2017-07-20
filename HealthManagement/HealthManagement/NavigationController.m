@@ -27,8 +27,10 @@
     bar.translucent = NO;
     bar.barTintColor = [UIColor whiteColor];
     //消除底部横线
-    [bar setShadowImage:[[UIImage alloc] init]];
+//    [bar setShadowImage:[[UIImage alloc] init]];
 //    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbarBW"] forBarMetrics:UIBarMetricsDefault];
+    
+    // 设置字体
 //    [bar setTitleTextAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:17],NSForegroundColorAttributeName : [UIColor colorWithHexString:@"#59A43A"]}];
     
 }
@@ -51,7 +53,7 @@
         [button setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
 //        [button setImage:[UIImage imageNamed:@"navigationReturnClick"] forState:UIControlStateHighlighted];
         CGRect frame = button.frame;
-        frame.size = CGSizeMake(40, 30);
+        frame.size = CGSizeMake(30, 20);
         button.frame = frame;
         
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;

@@ -13,6 +13,7 @@
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) NSArray *leftDataList;
 @property(nonatomic,strong) NSArray *rightDataList;
+@property(nonatomic,strong) UIImageView *headImg;
 
 
 @end
@@ -26,7 +27,8 @@
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, kScreen_Width, kScreen_Height-64-20-45)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        //        _tableView.backgroundColor = [UIColor redColor];
+        _tableView.scrollEnabled = NO;
+        _tableView.backgroundColor = [UIColor clearColor];
         _tableView.tableFooterView = [[UIView alloc] init];
     }
     return _tableView;
@@ -37,10 +39,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.leftDataList = @[@"头像",@"名字",@"手机",@"密码"];
+    self.rightDataList = @[@"",@"qwe112",@"尚未绑定",@"修改"];
+    
     [self.view addSubview:self.tableView];
     
-    self.leftDataList = @[@"头像",@"名字",@"手机",@"密码"];
-    self.leftDataList = @[@"",@"qwe112",@"尚未绑定",@"修改"];
+    UIButton *exitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    exitBtn.frame = CGRectMake(0, kScreen_Height-45-64, kScreen_Width, 45);
+    [exitBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    exitBtn.backgroundColor = [UIColor whiteColor];
+    [exitBtn setTitle:@"退出登录" forState:UIControlStateNormal];
+    exitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    [self.view addSubview:exitBtn];
+//    [exitBtn addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,7 +69,22 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.row == 0) {
+        return 232/2;
+
+    }
     return 116/2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.0001;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -66,11 +93,26 @@
     if (cell == nil) {
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+
     }
-//    [cell.wechatBtn addTarget:self action:@selector(testAction:) forControlEvents:UIControlEventTouchUpInside];
-    cell.textLabel.text = @"情绪稳定，性格平和";
-    cell.textLabel.textColor = [UIColor colorWithHexString:@"#6D6D6D"];
-    cell.textLabel.font = [UIFont systemFontOfSize:20];
+    
+    if (indexPath.row == 0) {
+        UIImageView *headImg = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-156/2-30, (232/2-156/2)/2, 156/2, 156/2)];
+        headImg.image = [UIImage imageNamed:@"head"];
+        //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
+        [cell.contentView addSubview:headImg];
+        self.headImg = headImg;
+    }
+
+    cell.textLabel.text = self.leftDataList[indexPath.row];
+//    cell.textLabel.textColor = [UIColor colorWithHexString:@"#6D6D6D"];
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
+    
+    cell.detailTextLabel.text = self.rightDataList[indexPath.row];
+    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#898989"];
+    cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:17];
     return cell;
 }
 @end
