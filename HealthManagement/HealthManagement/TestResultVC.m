@@ -105,19 +105,16 @@
 
 - (void)enterAction
 {
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    TabBarController *tabVC = [[TabBarController alloc] init];
-    delegate.window.rootViewController = tabVC;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kLoginNotification" object:nil];
+    
+    //    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    TabBarController *tabVC = [[TabBarController alloc] init];
+//    delegate.window.rootViewController = tabVC;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+// 重写
+- (void)back{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
-*/
 
 @end

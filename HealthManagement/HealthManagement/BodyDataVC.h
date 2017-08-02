@@ -8,6 +8,12 @@
 
 #import "BaseViewController.h"
 
+#import "PersonModel.h"
+
+
 @interface BodyDataVC : BaseViewController
+
+@property(nonatomic,strong) PersonModel *person;
+
 
 @end

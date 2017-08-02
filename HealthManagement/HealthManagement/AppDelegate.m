@@ -9,17 +9,36 @@
 #import "AppDelegate.h"
 #import "LoginVC.h"
 #import "NavigationController.h"
+#import "ClockView.h"
+#import <AVFoundation/AVFoundation.h>
 
 #import <BaiduMapAPI_Base/BMKBaseComponent.h>//引入base相关所有的头文件
 
 @interface AppDelegate ()<BMKGeneralDelegate>
 
 @property (strong, nonatomic) BMKMapManager *mapManager;
-
+@property (strong, nonatomic) ClockView *clockView;
+@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 
 @end
 
 @implementation AppDelegate
+
++ (AppDelegate *)share
+{
+    return (AppDelegate *)[UIApplication sharedApplication].delegate;
+}
+
+// 计步单例
+- (CMPedometer *)sharedPedometer
+{
+    static CMPedometer *sharedsharedPedometerrInstance = nil;
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        sharedsharedPedometerrInstance = [[CMPedometer alloc] init];
+    });
+    return sharedsharedPedometerrInstance;
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -53,14 +72,26 @@
         NSLog(@"manager start failed!");
     }
     
-//    LoginVC *loginVC = [[LoginVC alloc] init];
-//    NavigationController *nav = [[NavigationController alloc] initWithRootViewController:loginVC];
-//    self.window.rootViewController = nav;
+    // 判断登录状态
+    [self isLoginedState];
     
-    TabBarController *tabVC = [[TabBarController alloc] init];
-    self.window.rootViewController = tabVC;
+    
     
     return YES;
+}
+
+// 判断登录状态
+- (void)isLoginedState
+{
+    if (![[InfoCache getValueForKey:@"LoginedState"] integerValue]) {
+        LoginVC *loginVC = [[LoginVC alloc] init];
+        NavigationController *nav = [[NavigationController alloc] initWithRootViewController:loginVC];
+        self.window.rootViewController = nav;
+    }
+    else {
+        TabBarController *tabVC = [[TabBarController alloc] init];
+        self.window.rootViewController = tabVC;
+    }
 }
 
 
@@ -68,15 +99,33 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     NSLog(@"noti:%@",notification);
     
-    // 这里真实需要处理交互的地方
     // 获取通知所带的数据
-    //    NSString *clockID = [notification.userInfo objectForKey:@"ActivityClock"];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"闹钟提醒"
-                                                    message:notification.alertBody
-                                                   delegate:nil
-                                          cancelButtonTitle:@"好的"
-                                          otherButtonTitles:nil];
-    [alert show];
+    NSString *clockTime = [notification.userInfo objectForKey:@"clockTime"];
+    
+    // 播放音频
+    NSString *clockMusic = [notification.userInfo objectForKey:@"clockMusic"];
+    NSString *path = [[NSBundle mainBundle]pathForResource:clockMusic ofType:nil];
+    NSURL *url = [NSURL fileURLWithPath:path];
+    _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
+//    _audioPlayer.delegate = self;
+    _audioPlayer.numberOfLoops = 0; // 不循环
+    [_audioPlayer prepareToPlay]; // 准备播放，加载音频文件到缓存
+    [self.audioPlayer play];
+    
+    NSString *clockID = [notification.userInfo objectForKey:@"ActivityClock"];
+
+    if ([clockID isEqualToString:@"WakeupID"]) {
+        self.clockView = [[ClockView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height)];
+        self.clockView.timeStr = clockTime;
+        [self.window addSubview:self.clockView];
+        
+        __weak typeof(self) weakSelf = self;
+        self.clockView.block = ^{
+            if ([weakSelf.audioPlayer isPlaying]) {
+                [weakSelf.audioPlayer pause];
+            }
+        };
+    }
     
 }
 

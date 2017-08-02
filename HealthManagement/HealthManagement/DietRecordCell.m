@@ -32,7 +32,7 @@
         [self.contentView addSubview:_lab1];
         
         _imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(_lab1.right+10, _lab1.center.y-8, 33, 12)];
-        _imgView1.image = [UIImage imageNamed:@"temperament_3"];
+        _imgView1.image = [UIImage imageNamed:@"气郁质"];
 //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_imgView1];
         

@@ -24,9 +24,37 @@
         [wechatBtn setImage:[UIImage imageNamed:@"nochoose"] forState:UIControlStateNormal];
         [wechatBtn setImage:[UIImage imageNamed:@"choose"] forState:UIControlStateSelected];
         [self.contentView addSubview:wechatBtn];
+        [wechatBtn addTarget:self action:@selector(testAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.wechatBtn = wechatBtn;
+
 
     }
     return self;
+}
+
+- (void)setModel:(ContenModel *)model
+{
+    _model = model;
+    
+    if (self.model.isSelected) {
+        self.wechatBtn.selected = YES;
+        
+    }
+    else {
+        self.wechatBtn.selected = NO;
+
+        
+    }
+}
+
+- (void)testAction:(UIButton *)btn
+{
+    self.model.isSelected = !self.model.isSelected;
+    
+    
+    if (self.block) {
+        self.block(_model);
+    }
 }
 
 @end

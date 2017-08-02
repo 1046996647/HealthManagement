@@ -25,6 +25,9 @@
     
     // 推荐饮食视图
     _recommendDietTableView = [[RecommendDietTableView alloc] initWithFrame:CGRectMake(0, 3, kScreen_Width, kScreen_Height-64-3)];
+    _recommendDietTableView.latitude = self.latitude;
+    _recommendDietTableView.longitude = self.longitude;
+    _recommendDietTableView.groupBy = @"SuitMe";
     [self.view addSubview:_recommendDietTableView];
     
 }

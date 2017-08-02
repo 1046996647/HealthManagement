@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HXTagsView.h"
+#import "ArticleModel.h"
 
 
 @interface DietArticleCell : UITableViewCell
@@ -29,5 +30,6 @@
 
 
 @property(nonatomic,strong) HXTagsView *tagsView;
+@property(nonatomic,strong) ArticleModel *model;
 
 @end

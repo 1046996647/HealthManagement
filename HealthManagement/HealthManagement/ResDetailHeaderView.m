@@ -8,6 +8,7 @@
 
 #import "ResDetailHeaderView.h"
 #import "ResDetailCollectionViewCell.h"
+#import "NSStringExt.h"
 
 @implementation ResDetailHeaderView
 
@@ -24,19 +25,19 @@
         
         _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(12, view.bottom+12,kScreen_Width-90-12-12, 16)];
         _lab1.font = [UIFont systemFontOfSize:14];
-        _lab1.text = @"必胜（城北店万达店）";
+//        _lab1.text = @"必胜（城北店万达店）";
         //        _lab1.textColor = [UIColor grayColor];
         [self addSubview:_lab1];
         
         _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(_lab1.left, _lab1.bottom+12, kScreen_Width-12-12, 12)];
         _lab2.font = [UIFont systemFontOfSize:12];
-        _lab2.text = @"中餐 1.1km";
+//        _lab2.text = @"中餐 1.1km";
         _lab2.textColor = [UIColor grayColor];
         [self addSubview:_lab2];
     
         
         _lab3 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+12, _lab2.width, 14)];
-        _lab3.text = @"本月销售5861份    人均 ￥56";
+//        _lab3.text = @"本月销售5861份    人均 ￥56";
         _lab3.textColor = [UIColor grayColor];
         _lab3.font = [UIFont systemFontOfSize:12];
         [self addSubview:_lab3];
@@ -57,6 +58,7 @@
         [collectionView registerClass:[ResDetailCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
         collectionView.contentInset = UIEdgeInsetsMake(0, 12, 0, 12);
         [self addSubview:collectionView];
+        self.collectionView = collectionView;
         
         _lab5 = [[UILabel alloc] initWithFrame:CGRectMake(40, collectionView.bottom+12, kScreen_Width-40-80, 30)];
         _lab5.font = [UIFont systemFontOfSize:12];
@@ -121,19 +123,30 @@
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 10;
+    return self.model.images.count;
 }
 
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ResDetailCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
+    [cell.imgView sd_setImageWithURL:[NSURL URLWithString:self.model.images[indexPath.item]]];
     return cell;
     
 }
 
 
+- (void)setModel:(ResDetailModel *)model
+{
+    _model = model;
+    _lab1.text = model.name;
+    _lab2.text = [NSString stringWithFormat:@"%@ %@",model.category,[NSString meterToKilometer:model.distance]];
+    _lab3.text = [NSString stringWithFormat:@"本月销售%@份    人均 ￥%@",model.sales,model.consumption];
+    _lab5.text = model.address;
 
+    [self.collectionView reloadData];
+    
+}
 
 
 

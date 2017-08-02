@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ResDetailModel.h"
 
 @interface NearbyRestaurantTableViewCell : UITableViewCell
 
@@ -20,5 +21,8 @@
 @property(nonatomic,strong) UILabel *lab4;
 @property(nonatomic,strong) UILabel *lab5;
 @property(nonatomic,strong) UIButton *btn;
+@property(nonatomic,strong) UIView *view;
+
+@property(nonatomic,strong) ResDetailModel *model;
 
 @end

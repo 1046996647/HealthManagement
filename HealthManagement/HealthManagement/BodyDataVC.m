@@ -7,6 +7,8 @@
 //
 
 #import "BodyDataVC.h"
+#import "ZWLDatePickerView.h"
+#import "InfoChangeController.h"
 
 @interface BodyDataVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -14,6 +16,8 @@
 @property(nonatomic,strong) NSArray *leftDataList;
 @property(nonatomic,strong) NSArray *rightDataList;
 @property(nonatomic,strong) UIImageView *headImg;
+@property(nonatomic,strong) UIImageView *maleImg;
+@property(nonatomic,strong) UIImageView *femaleImg;
 
 
 @end
@@ -40,7 +44,29 @@
     // Do any additional setup after loading the view.
     
     self.leftDataList = @[@"出生日期",@"身高",@"体重",@"劳动强度"];
-    self.rightDataList = @[@"2012年12月12日",@"165 cm",@"56 kg",@"一般"];
+    
+    NSString *height = nil;
+    NSString *weight = nil;
+    if (!self.person.height) {
+        height = @"";
+    }
+    else {
+        height = [NSString stringWithFormat:@"%@ cm",self.person.height];
+
+    }
+    if (!self.person.weight) {
+        weight = @"";
+    }
+    else {
+        weight = [NSString stringWithFormat:@"%@ kg",self.person.weight];
+
+    }
+    if (!self.person.labourIntensity) {
+        self.person.labourIntensity = @"";
+    }
+
+    
+    self.rightDataList = @[self.person.BirthDay,height,weight,self.person.labourIntensity];
     
     // 头视图
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 0)];
@@ -52,16 +78,42 @@
     [headerView addSubview:view];
     
     UIImageView *maleImg = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width/2-35-150/2, view.bottom+45, 150/2, 90/2)];
-    maleImg.image = [UIImage imageNamed:@"body_3"];
+    maleImg.userInteractionEnabled = YES;
+    maleImg.tag = 100;
+
+//    maleImg.image = [UIImage imageNamed:@"body_3"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [headerView addSubview:maleImg];
+    self.maleImg = maleImg;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sexAction:)];
+    [maleImg addGestureRecognizer:tap];
+    
     
     UIImageView *femaleImg = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width/2+35, view.bottom+45, 150/2, 90/2)];
-    femaleImg.image = [UIImage imageNamed:@"body_5"];
+//    femaleImg.image = [UIImage imageNamed:@"body_5"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
+    femaleImg.tag = 101;
+    femaleImg.userInteractionEnabled = YES;
     [headerView addSubview:femaleImg];
+    self.femaleImg = femaleImg;
+
+    
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sexAction:)];
+    [femaleImg addGestureRecognizer:tap1];
     
     headerView.height = femaleImg.bottom+45;
+    
+    if (self.person.sex.integerValue == 0) {
+        maleImg.image = [UIImage imageNamed:@"body_3"];
+        femaleImg.image = [UIImage imageNamed:@"body_5"];
+
+    }
+    else {
+        
+        maleImg.image = [UIImage imageNamed:@"body_4"];
+        femaleImg.image = [UIImage imageNamed:@"body_2"];
+        
+    }
     
     // 尾视图
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 0)];
@@ -91,10 +143,95 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)sexAction:(UIGestureRecognizer *)tap
+{
+    NSInteger tag = tap.view.tag;
+    if (tag == 100) {
+        
+        self.person.sex = @"true";
+        self.maleImg.image = [UIImage imageNamed:@"body_4"];
+        self.femaleImg.image = [UIImage imageNamed:@"body_2"];
+        
+    }
+    else {
+        
+        self.person.sex = @"false";
+        self.maleImg.image = [UIImage imageNamed:@"body_3"];
+        self.femaleImg.image = [UIImage imageNamed:@"body_5"];
+    }
+}
+
 - (void)saveAction
 {
+    [SVProgressHUD show];
+
+    
+    NSMutableDictionary *paramDic=[[NSMutableDictionary  alloc]initWithCapacity:0];
+    [paramDic  setValue:self.person.UserId forKey:@"UserId"];
+    [paramDic  setValue:self.person.sex
+                 forKey:@"UserSex"];
+    [paramDic  setValue:self.person.BirthDay forKey:@"UserBirthTime"];
+    [paramDic  setValue:self.person.height forKey:@"UserHeight"];
+    [paramDic  setValue:self.person.weight forKey:@"UserWeight"];
+    [paramDic  setValue:self.person.labourIntensity forKey:@"labInten"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:SetUserBodyInfo dic:paramDic Succed:^(id responseObject) {
+        
+        
+        NSLog(@"%@",responseObject);
+        
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        
+        if (200 == [code integerValue]) {
+            
+            [self getUserBodyInfo];
+            
+        }
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+        
+    }];
+
+}
+
+// 获取用户信息
+- (void)getUserBodyInfo
+{
+    
+    NSMutableDictionary *paramDic=[[NSMutableDictionary  alloc]initWithCapacity:0];
+    [paramDic  setValue:self.person.UserId forKey:@"Id"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:GetUserBodyInfo dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",responseObject);
+        
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        
+        if (200 == [code integerValue]) {
+            
+            NSArray *arr = [responseObject objectForKey:@"ListData"];
+            PersonModel *model = [PersonModel yy_modelWithJSON:[arr firstObject]];
+            [InfoCache archiveObject:model toFile:@"Person"];
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+        
+    }];
     
 }
+
 
 #pragma mark - UITableViewDataSource
 
@@ -117,6 +254,75 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    //获取单元格
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (indexPath.row == 0) {
+        
+        ZWLDatePickerView *datepickerView = [[ZWLDatePickerView alloc] initWithFrame:CGRectMake(0,kScreen_Height - 270, kScreen_Width, 270)];
+        datepickerView.type = 1;
+        datepickerView.dateStr = cell.detailTextLabel.text;
+        datepickerView.dataBlock = ^(NSString *str,NSString *str1) {
+            self.person.BirthDay = str1;
+            cell.detailTextLabel.text = str;
+        };
+        
+        UIViewController *birthdayCtrl = [[UIViewController alloc] init];
+        birthdayCtrl.modalPresentationStyle=UIModalPresentationOverCurrentContext;
+        //淡出淡入
+        birthdayCtrl.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        //            self.definesPresentationContext = YES; //不盖住整个屏幕
+        //            birthdayCtrl.dateStr = cell.dataLab.text;
+        birthdayCtrl.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.4];
+        [birthdayCtrl.view addSubview:datepickerView];
+        
+        [self presentViewController:birthdayCtrl animated:YES completion:nil];
+        
+    }
+    if (indexPath.row == 1) {
+        
+        InfoChangeController *vc = [[InfoChangeController alloc] init];
+        vc.title = @"身高";
+        vc.text = self.person.height;
+        [self.navigationController pushViewController:vc animated:YES];
+        vc.block = ^(NSString *str) {
+            self.person.height = str;
+            
+            if (str.length == 0) {
+                cell.detailTextLabel.text = @"";
+
+            }
+            else {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ cm",str];
+
+            }
+
+        };
+        
+    }
+    if (indexPath.row == 2) {
+        InfoChangeController *vc = [[InfoChangeController alloc] init];
+        vc.title = @"体重";
+        vc.text = self.person.weight;
+        [self.navigationController pushViewController:vc animated:YES];
+        vc.block = ^(NSString *str) {
+            self.person.weight = str;
+            
+            if (str.length == 0) {
+                cell.detailTextLabel.text = @"";
+                
+            }
+            else {
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ cm",str];
+                
+            }
+        };
+        
+    }
+    if (indexPath.row == 3) {
+        
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

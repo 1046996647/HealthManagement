@@ -561,20 +561,23 @@ open class TenClock : UIControl{
 
     }
     override open  func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        while var superview = self.superview{
+        
+        delegate?.timesChanged?(self, startDate: self.startDate, endDate: endDate)
+
+//        while let superview = self.superview{
 //            guard let superview = superview as? UIScrollView else {  continue }
-//            superview.scrollEnabled = true
+//            superview.isScrollEnabled = true
 //            break
 //        }
     }
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         pointMover = nil
-//        while var superview = self.superview{
+//        while let superview = self.superview{
 //            guard let superview = superview as? UIScrollView else {  continue }
-//            superview.scrollEnabled = true
+//            superview.isScrollEnabled = true
 //            break
 //        }
-//        do something
+////        do something
 //        valueChanged = false
         delegate?.timesChanged?(self, startDate: self.startDate, endDate: endDate)
     }

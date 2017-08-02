@@ -7,10 +7,14 @@
 //
 
 #import "PreferenceVC.h"
+#import "RecipeModel.h"
 
 @interface PreferenceVC ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic,strong) UITableView *tableView;
+@property(nonatomic,strong) UIButton *lastBtn;
+@property (nonatomic,strong) NSString *Type_Like;
+@property (nonatomic,strong) NSMutableArray *dataList;
 
 
 @end
@@ -61,11 +65,17 @@
             UIView *line = [[UIView alloc] initWithFrame:CGRectMake((headerView.width-1)/2, (headerView.height-22)/2, 1, 22)];
             line.backgroundColor = [UIColor colorWithHexString:@"#EEEFEF"];
             [headerView addSubview:line];
+            
+            self.lastBtn = resBtn;
+            resBtn.selected = YES;
         }
 
     }
     
     self.tableView.tableHeaderView = headerView;
+    self.Type_Like = @"foodlike";
+    [self getSelectUserPreference];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,13 +83,62 @@
     // Dispose of any resources that can be recreated.
 }
 
+// 用户偏好
+- (void)getSelectUserPreference
+{
+    
+    [SVProgressHUD show];
+
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setValue:self.Type_Like forKey:@"Type_Like"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:SelectUserPreference dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",responseObject);
+        
+        NSArray *arr = responseObject[@"ListData"];
+        if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                FoodModel *model = [FoodModel yy_modelWithJSON:dic];
+                
+                NSArray *modelArr = [NSArray arrayWithObject:model];
+                [arrM addObject:modelArr];
+            }
+            self.dataList = arrM;
+            
+            [self.tableView reloadData];
+        }
+        
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",error);
+        
+    }];
+    
+}
+
+
 - (void)btnAction:(UIButton *)btn
 {
+    
+    self.lastBtn.selected = NO;
+    btn.selected = YES;
+    self.lastBtn = btn;
+    
     if (btn.tag == 0) {
 
+        self.Type_Like = @"foodlike";
+        [self getSelectUserPreference];
     }
     if (btn.tag == 1) {
         
+        self.Type_Like = @"foodunlike";
+        [self getSelectUserPreference];
     }
 
 }
@@ -89,13 +148,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 7;
+    return self.dataList.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    return self.dataArray.count;
-    return 1;
+    NSArray *modelArr = self.dataList[section];
+    return modelArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -132,9 +191,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         cell.contentView.backgroundColor = [UIColor whiteColor];
     }
-    cell.textLabel.text = @"红烧五花肉";
+    
+    NSArray *modelArr = self.dataList[indexPath.section];
+    FoodModel *model = modelArr[indexPath.row];
+    cell.textLabel.text = model.FoodName;
 //    cell.textLabel.textColor = [UIColor colorWithHexString:@"#6D6D6D"];
     cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
+    
     return cell;
 }
 

@@ -14,4 +14,14 @@
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) UIButton *lastBtn;
 
+@property(nonatomic,strong) NSMutableArray *modelArr;
+
+
+@property(nonatomic,assign) NSInteger pageNO;// 页数
+@property(nonatomic,strong) NSNumber *latitude;// 纬度
+@property(nonatomic,strong) NSNumber *longitude;// 经度
+
+@property (nonatomic,strong) NSString *groupBy;
+
+
 @end

@@ -63,7 +63,7 @@
             button.layer.borderWidth = _borderWidth;
             button.layer.masksToBounds = _masksToBounds;
             button.layer.cornerRadius = _cornerRadius;
-            button.titleLabel.font = [UIFont systemFontOfSize:_titleSize];
+            button.titleLabel.font = [UIFont boldSystemFontOfSize:_titleSize];
             [button setTitle:tagTitle forState:UIControlStateNormal];
             [button setTitleColor:_titleColor forState:UIControlStateNormal];
             [button setBackgroundImage:_normalBackgroundImage forState:UIControlStateNormal];

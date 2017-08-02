@@ -7,13 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ResDetailModel.h"
+#import "RecipeModel.h"
+
+typedef void(^ReloadBlock)(void);
+
 
 @interface ResDetailCell : UITableViewCell
 
 @property(nonatomic,strong) UIView *view;
 @property(nonatomic,strong) UIView *view1;
 @property(nonatomic,strong) UIImageView *imgView;
+@property(nonatomic,strong) UIView *alphaView;
+
 @property(nonatomic,strong) UIImageView *imgView1;
 @property(nonatomic,strong) UIImageView *imgView2;
 @property(nonatomic,strong) UIImageView *imgView3;
@@ -28,7 +33,10 @@
 @property(nonatomic,strong) UIView *whiteView;
 
 
-@property(nonatomic,strong) ResDetailModel *model;
+@property(nonatomic,strong) RecipeModel *model;
+
+@property (nonatomic,copy) ReloadBlock reloadBlock;
+
 
 
 @end

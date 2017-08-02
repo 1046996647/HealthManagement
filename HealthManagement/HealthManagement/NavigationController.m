@@ -48,29 +48,29 @@
          *  设置默认的"< 返回 "
          */
         
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [button setTitle:@"返回" forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
-//        [button setImage:[UIImage imageNamed:@"navigationReturnClick"] forState:UIControlStateHighlighted];
-        CGRect frame = button.frame;
-        frame.size = CGSizeMake(30, 20);
-        button.frame = frame;
-        
-        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//        button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
-        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+////        [button setTitle:@"返回" forState:UIControlStateNormal];
+//        [button setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+////        [button setImage:[UIImage imageNamed:@"navigationReturnClick"] forState:UIControlStateHighlighted];
+//        CGRect frame = button.frame;
+//        frame.size = CGSizeMake(30, 20);
+//        button.frame = frame;
+//        
+//        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+////        button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+//        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+////        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+//        [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+//        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         viewController.hidesBottomBarWhenPushed = YES;
     }
     
     [super pushViewController:viewController animated:animated];
 
 }
-- (void)back{
-    [self popViewControllerAnimated:YES];
-}
+//- (void)back{
+//    [self popViewControllerAnimated:YES];
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

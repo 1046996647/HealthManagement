@@ -18,6 +18,30 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
+    
+    // 设置了UIRectEdgeNone之后，你嵌在UIViewController里面的UITableView和UIScrollView就不会穿过UINavigationBar了，同时UIView的控件也回复到了iOS6时代。
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    if (self.navigationController.childViewControllers.count > 1) {
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        //        [button setTitle:@"返回" forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"icon_back"] forState:UIControlStateNormal];
+        //        [button setImage:[UIImage imageNamed:@"navigationReturnClick"] forState:UIControlStateHighlighted];
+        CGRect frame = button.frame;
+        frame.size = CGSizeMake(30, 20);
+        button.frame = frame;
+        
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        //        button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        //        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        self.backButton = button;
+    }
+
+    
 
 }
 
@@ -26,14 +50,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
 }
-*/
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
 
 @end

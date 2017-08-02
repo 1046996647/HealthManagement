@@ -1,3 +1,4 @@
+
 //
 //  ViewController.m
 //  HealthManagement
@@ -10,7 +11,7 @@
 #import "DietRecordCell.h"
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>//引入定位功能所有的头文件
 #import <BaiduMapAPI_Search/BMKSearchComponent.h>//引入检索功能所有的头文件
-
+#import "ResDetailModel.h"
 
 #import "HeaderView.h"
 
@@ -20,6 +21,13 @@
 @property (strong, nonatomic) BMKGeoCodeSearch *geocodesearch;
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) HeaderView *headView;
+@property(nonatomic,strong) NSNumber *latitude;// 纬度
+@property(nonatomic,strong) NSNumber *longitude;// 经度
+@property(nonatomic,assign) NSInteger pageNO;// 页数
+@property (nonatomic,strong) NSMutableArray *dataArr;
+@property (nonatomic,assign) BOOL isFirst;
+@property (nonatomic,assign) BOOL isRefresh;
+
 
 
 @end
@@ -44,6 +52,7 @@
     
     // 让内容置顶显示
     self.edgesForExtendedLayout = UIRectEdgeNone;
+//    self.backButton = nil;
     
     // 初始化视图
     [self initSubviews];
@@ -59,14 +68,89 @@
     //启动LocationService
     [_locService startUserLocationService];
     
+    // 页数
+    self.pageNO = 1;
+    
+    // 下拉刷新
+    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
+        [self headerRefresh];
+    }];
     
 }
 
-//- (UIStatusBarStyle)preferredStatusBarStyle
-//{
-//    return UIStatusBarStyleLightContent;
-//}
+- (void)headerRefresh
+{
+//    self.pageNO = 1;
+    [self getTitlePage];
+    self.isRefresh = YES;
+}
+
+// 请求餐厅列表
+- (void)getTitlePage
+{
+//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    
+    PersonModel *model = [InfoCache unarchiveObjectWithFile:Person];
+
+    if (!self.isRefresh) {
+        [SVProgressHUD show];
+
+    }
+
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:self.longitude forKey:@"CoordX"];
+    [paramDic  setObject:self.latitude forKey:@"CoordY"];
+    [paramDic  setObject:model.UserId forKey:@"UserId"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:TitlePage dic:paramDic Succed:^(id responseObject) {
+        [SVProgressHUD dismiss];
+        [self.tableView.mj_header endRefreshing];
+
+        NSLog(@"%@",responseObject);
+        
+        NSArray *arr = responseObject[@"ListData"];
+        if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+//            self.pageNO++;
+
+            NSMutableArray *arrM = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                ResDetailModel *model = [ResDetailModel yy_modelWithJSON:dic];
+                [arrM addObject:model];
+            }
+
+//            self.dataArr = arrM;
+            self.headView.nearbyResView.latitude = self.latitude;
+            self.headView.nearbyResView.longitude = self.longitude;
+//            self.headView.nearbyResView.pageNO = self.pageNO;
+            self.headView.nearbyResView.modelArr = arrM;
+            
+        }
+        
+        NSArray *arr2 = responseObject[@"ListData2"];
+        if ([arr2 isKindOfClass:[NSArray class]] && arr2.count > 0) {
+            //            self.pageNO++;
+            
+            NSMutableArray *arrM2 = [NSMutableArray array];
+            for (NSDictionary *dic in arr2) {
+                RecipeModel *model = [RecipeModel yy_modelWithJSON:dic];
+                [arrM2 addObject:model];
+            }
+            
+            self.headView.recommendDietView.latitude = self.latitude;
+            self.headView.recommendDietView.longitude = self.longitude;
+            self.headView.recommendDietView.modelArr = arrM2;
+            
+        }
+        
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+
+    }];
+}
 
 - (void)initSubviews
 {
@@ -122,6 +206,17 @@
 {
     //    [_locService stopUserLocationService];//定位完成停止位置更新(导致反检索失败)
     NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+    
+    self.latitude = @(userLocation.location.coordinate.latitude);
+    self.longitude = @(userLocation.location.coordinate.longitude);
+    
+    if (!self.isFirst) {// 避免自动多次定位导致多次请求
+        
+        self.isFirst = YES;
+        // 请求餐厅列表
+        [self getTitlePage];
+    }
+
     
     //地理反编码
     BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
@@ -189,7 +284,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 //    return self.dataArray.count;
-    return 10;
+    return 3;
 }
 
 

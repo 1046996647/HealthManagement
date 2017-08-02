@@ -64,21 +64,21 @@
         UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kRWidth, kRWidth-20)];
 //        imgView.backgroundColor = [UIColor redColor];
         imgView.tag = 100+i;
-        imgView.image = [UIImage imageNamed:@"food"];
+//        imgView.image = [UIImage imageNamed:@"food"];
         [view addSubview:imgView];
         
         UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, imgView.bottom, kRWidth-10, 20)];
         titleLab.font = [UIFont systemFontOfSize:12];
-        titleLab.text = @"桂花莲子";
+//        titleLab.text = @"桂花莲子";
         titleLab.tag = 101+i;
 //        titleLab.backgroundColor = [UIColor cyanColor];
         //    lab.textColor = [UIColor colorWithHexString:@"#868788"];
         [view addSubview:titleLab];
         
-        UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom, kRWidth/3, 14)];
+        UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom, kRWidth/3+10, 14)];
         moneyLab.font = [UIFont systemFontOfSize:10];
 //        moneyLab.textAlignment = NSTextAlignmentRight;
-        moneyLab.text = @"￥25";
+//        moneyLab.text = @"￥25";
         moneyLab.textColor = [UIColor redColor];
 //        moneyLab.backgroundColor = [UIColor yellowColor];
         moneyLab.tag = 102+i;
@@ -90,7 +90,7 @@
         NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"匹配度%@%%",str1]];
         NSRange range1 = {3,[str1 length]};
         [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#107909"] range:range1];
-        UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kRWidth-kRWidth*2/3+5, titleLab.bottom, kRWidth*2/3-5, 14)];
+        UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kRWidth-(kRWidth*2/3-10), titleLab.bottom, kRWidth*2/3-10, 14)];
         fitLab.font = [UIFont systemFontOfSize:10];
         fitLab.textAlignment = NSTextAlignmentRight;
 //        fitLab.text = @"";
@@ -114,24 +114,24 @@
     [self addSubview:_bigView];
     
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBigWidth, _bigView.height-60)];
-    imgView.backgroundColor = [UIColor redColor];
+//    imgView.backgroundColor = [UIColor redColor];
     imgView.tag = 10;
     imgView.contentMode = UIViewContentModeScaleAspectFill;
-    imgView.image = [UIImage imageNamed:@"food"];
+//    imgView.image = [UIImage imageNamed:@"food"];
     [_bigView addSubview:imgView];
     
     UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, _bigView.height-30-20, kBigWidth-10, 18)];
     titleLab.font = [UIFont systemFontOfSize:14];
-    titleLab.text = @"桂花莲子";
+//    titleLab.text = @"桂花莲子";
     titleLab.tag = 11;
 //    titleLab.backgroundColor = [UIColor cyanColor];
     //    lab.textColor = [UIColor colorWithHexString:@"#868788"];
     [_bigView addSubview:titleLab];
     
-    UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom+5, kBigWidth/3, 16)];
+    UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(titleLab.left, titleLab.bottom+5, kBigWidth/3+10, 16)];
     moneyLab.font = [UIFont systemFontOfSize:12];
     //        moneyLab.textAlignment = NSTextAlignmentRight;
-    moneyLab.text = @"￥256";
+//    moneyLab.text = @"￥256";
     moneyLab.textColor = [UIColor redColor];
 //    moneyLab.backgroundColor = [UIColor yellowColor];
     moneyLab.tag = 12;
@@ -144,13 +144,13 @@
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"匹配度%@%%",str1]];
     NSRange range1 = {3,[str1 length]};
     [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range1];
-    UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kBigWidth-kBigWidth*2/3+5, titleLab.bottom+5, kBigWidth*2/3-5, 16)];
+    UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kBigWidth-(kBigWidth*2/3-10), titleLab.bottom+5, kBigWidth*2/3-10, 16)];
     fitLab.font = [UIFont systemFontOfSize:12];
     fitLab.textAlignment = NSTextAlignmentRight;
 //    fitLab.text = @"匹配度98%";
     fitLab.tag = 13;
     fitLab.textColor = [UIColor grayColor];
-    //        fitLab.backgroundColor = [UIColor yellowColor];
+//    fitLab.backgroundColor = [UIColor redColor];
     fitLab.attributedText = attStr;
     [_bigView addSubview:fitLab];
     
@@ -162,25 +162,47 @@
 - (void)btnAction
 {
     RecommendDietVC *vc = [[RecommendDietVC alloc] init];
+    vc.latitude = self.latitude;
+    vc.longitude = self.longitude;
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)setModelArr:(NSArray *)modelArr
+- (void)setModelArr:(NSMutableArray *)modelArr
 {
     _modelArr = modelArr;
     
     for (int i=0; i<_viewArr.count; i++) {
+        
+        RecipeModel *model = modelArr[i+1];
+        
         UIView *view = _viewArr[i];
-//        UIImageView *imgView = (UIImageView *)[view viewWithTag:100+i];
-//        UILabel *titleLab = (UILabel *)[view viewWithTag:101+i];
-//        UILabel *moneyLab = (UILabel *)[view viewWithTag:102+i];
+        UIImageView *imgView = (UIImageView *)[view viewWithTag:100+i];
+        [imgView sd_setImageWithURL:[NSURL URLWithString:model.titleImage]];
+        UILabel *titleLab = (UILabel *)[view viewWithTag:101+i];
+        titleLab.text = model.name;
+
+
+        UILabel *moneyLab = (UILabel *)[view viewWithTag:102+i];
+        moneyLab.text = [NSString stringWithFormat:@"￥%@",model.price];
+
+
 //        UILabel *fitLab = (UILabel *)[view viewWithTag:103+i];
-        NSLog(@"%@",view.subviews);
+//        fitLab.text = model.ConstitutionPercentage;
+
+//        NSLog(@"%@",view.subviews);
     }
     
-//    UIImageView *imgView = (UIImageView *)[_bigView viewWithTag:10];
-//    UILabel *titleLab = (UILabel *)[_bigView viewWithTag:11];
-//    UILabel *moneyLab = (UILabel *)[_bigView viewWithTag:12];
+    RecipeModel *model = modelArr[0];
+
+    UIImageView *imgView = (UIImageView *)[_bigView viewWithTag:10];
+    [imgView sd_setImageWithURL:[NSURL URLWithString:model.titleImage]];
+
+    UILabel *titleLab = (UILabel *)[_bigView viewWithTag:11];
+    titleLab.text = model.name;
+
+    UILabel *moneyLab = (UILabel *)[_bigView viewWithTag:12];
+    moneyLab.text = [NSString stringWithFormat:@"￥%@",model.price];
+
 //    UILabel *fitLab = (UILabel *)[_bigView viewWithTag:13];
 }
 

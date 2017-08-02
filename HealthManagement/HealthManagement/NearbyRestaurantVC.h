@@ -10,4 +10,9 @@
 
 @interface NearbyRestaurantVC : BaseViewController<UIScrollViewDelegate>
 
+@property(nonatomic,strong) NSMutableArray *modelArr;
+@property(nonatomic,strong) NSNumber *latitude;// 纬度
+@property(nonatomic,strong) NSNumber *longitude;// 经度
+@property(nonatomic,assign) NSInteger pageNO;// 页数
+
 @end

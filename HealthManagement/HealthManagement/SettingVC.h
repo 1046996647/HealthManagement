@@ -7,7 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "PersonModel.h"
 
 @interface SettingVC : BaseViewController
+
+@property(nonatomic,strong) PersonModel *person;
+
 
 @end

@@ -7,6 +7,10 @@
 //
 
 #import "SettingVC.h"
+#import "LoginVC.h"
+#import "AppDelegate.h"
+#import "NavigationController.h"
+#import "registerVC.h"
 
 @interface SettingVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -40,7 +44,14 @@
     // Do any additional setup after loading the view.
     
     self.leftDataList = @[@"头像",@"名字",@"手机",@"密码"];
-    self.rightDataList = @[@"",@"qwe112",@"尚未绑定",@"修改"];
+    
+    if (!self.person.name) {
+        self.person.name = @"";
+    }
+    if (!self.person.phone) {
+        self.person.phone = @"尚未绑定";
+    }
+    self.rightDataList = @[@"",self.person.name,self.person.phone,@"修改"];
     
     [self.view addSubview:self.tableView];
     
@@ -51,13 +62,23 @@
     [exitBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     exitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16];
     [self.view addSubview:exitBtn];
-//    [exitBtn addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
+    [exitBtn addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)exitAction
+{
+    [InfoCache saveValue:@0 forKey:@"LoginedState"];
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    LoginVC *loginVC = [[LoginVC alloc] init];
+    NavigationController *nav = [[NavigationController alloc] initWithRootViewController:loginVC];
+    delegate.window.rootViewController = nav;
 }
 
 #pragma mark - UITableViewDataSource
@@ -85,6 +106,23 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 0) {
+        
+    }
+    if (indexPath.row == 1) {
+        
+    }
+    if (indexPath.row == 2) {
+        
+    }
+    if (indexPath.row == 3) {
+        
+        registerVC *vc = [[registerVC alloc] init];
+        vc.title = @"修改密码";
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -100,7 +138,7 @@
     
     if (indexPath.row == 0) {
         UIImageView *headImg = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-156/2-30, (232/2-156/2)/2, 156/2, 156/2)];
-        headImg.image = [UIImage imageNamed:@"head"];
+//        headImg.image = [UIImage imageNamed:@"head"];
         //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
         [cell.contentView addSubview:headImg];
         self.headImg = headImg;

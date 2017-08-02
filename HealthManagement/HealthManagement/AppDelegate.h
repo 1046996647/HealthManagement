@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "TabBarController.h"
-
+#import <CoreMotion/CoreMotion.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
++ (AppDelegate *)share;
+
+- (CMPedometer *)sharedPedometer;
 
 
 @end

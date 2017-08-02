@@ -7,7 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "RecipeModel.h"
 
 @interface CookbookDetailVC : BaseViewController
+
+@property(nonatomic,strong) RecipeModel *model;
+
 
 @end

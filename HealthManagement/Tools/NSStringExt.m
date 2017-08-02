@@ -151,4 +151,37 @@
     return nil;
 }
 
+// 公里计算
++ (NSString *)meterToKilometer:(NSString *)meterStr
+{
+    if (meterStr.integerValue > 1000) {
+        return [NSString stringWithFormat:@"%.2fkm",meterStr.integerValue/1000.0];
+    }
+    else {
+        return [NSString stringWithFormat:@"%ldm",meterStr.integerValue];
+
+    }
+    
+}
+
+// 文本宽度
++ (CGSize)textLength:(NSString *)content font:(UIFont *)font
+{
+    CGSize size =[content sizeWithAttributes:@{NSFontAttributeName:font}];
+    return size;
+    
+}
+
+// 富文本
++ (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color
+{
+
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:fullText];
+    NSRange range = {location,[text length]};
+    [attStr addAttribute:NSForegroundColorAttributeName value:color range:range];
+    return attStr;
+    
+}
+
+
 @end

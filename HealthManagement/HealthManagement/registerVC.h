@@ -8,6 +8,12 @@
 
 #import "BaseViewController.h"
 
+//typedef void(^LoginSendValueBlock)(NSString *number,NSString *password);
+
+
 @interface registerVC : BaseViewController
+
+//@property (nonatomic,copy) LoginSendValueBlock block;
+
 
 @end

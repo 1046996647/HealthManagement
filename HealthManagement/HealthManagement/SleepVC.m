@@ -11,26 +11,27 @@
 #import "ZWLSlider.h"
 #import "SleepModel.h"
 #import "NSStringExt.h"
-#import "MusicSelectVC.h"
-#import <MediaPlayer/MediaPlayer.h>
-#import <AVFoundation/AVFoundation.h>
+#import "SleepSettingVC.h"
+
 
 #define ClockPath @"ClockPath"
 
 @interface SleepVC ()<UIGestureRecognizerDelegate,TenClockDelegate>
 
 @property (nonatomic,strong) UIScrollView *scrollView;
-@property (nonatomic,strong) UILabel *remindLab;
 @property (nonatomic,strong) TenClock *clock;
 @property (nonatomic,strong) UILabel *sleepLab2;
 @property (nonatomic,strong) UILabel *upLabel1;
 @property (nonatomic,strong) UILabel *timeTotalLab;
 @property (nonatomic,strong) SleepModel *model;
 @property (nonatomic,strong) UILabel *weekLab;
+@property (nonatomic,strong) UIView *view3;
+@property (nonatomic,strong) UILabel *startLab;
+@property (nonatomic,strong) UILabel *endLab;
 
-@property(nonatomic,strong) UIButton *lastBtn;
 
-@property (nonatomic,strong) UILabel *musicLab;
+//@property(nonatomic,strong) UIButton *lastBtn;
+
 
 
 
@@ -38,18 +39,22 @@
 
 @implementation SleepVC
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-//    self.view.backgroundColor = [UIColor whiteColor];
-    
+- (SleepModel *)model
+{
     // 取出闹钟本地数据
     _model = [InfoCache unarchiveObjectWithFile:ClockPath];
     if (!_model) {
         _model = [[SleepModel alloc] init];
 
     }
+    return _model;
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+//    self.view.backgroundColor = [UIColor whiteColor];
     
     // 滑动视图
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-49-64-25)];
@@ -57,10 +62,13 @@
     //    scrollView.delegate = self;
     scrollView.backgroundColor = [UIColor whiteColor];
     scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.userInteractionEnabled = YES;
+//    scrollView.userInteractionEnabled = YES;
     //    scrollView.contentSize = CGSizeMake(kScreen_Width*3, kWidth+10+20);
     [self.view addSubview:scrollView];
     self.scrollView = scrollView;
+//    self.scrollView.delaysContentTouches = false;
+
+
     
     // 解决上下滑动冲突
     UIGestureRecognizer *gestur = [[UIGestureRecognizer alloc]init];
@@ -82,19 +90,17 @@
     [self.scrollView addSubview:weekLab];
     self.weekLab = weekLab;
     
-    [self setWeekMethod];
-
     // 打开或关闭闹钟
     UIButton *setBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     setBtn.frame = CGRectMake(kScreen_Width-42-12, sleepLab.top+10, 42, 24);
     [setBtn setImage:[UIImage imageNamed:@"setGray"] forState:UIControlStateNormal];
     [setBtn setImage:[UIImage imageNamed:@"setGreen"] forState:UIControlStateSelected];
 
-    [setBtn addTarget:self action:@selector(setAction:) forControlEvents:UIControlEventTouchUpInside];
+    [setBtn addTarget:self action:@selector(controlAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:setBtn];
-    setBtn.selected = _model.isOpen;
+    setBtn.selected = self.model.isOpen;
 
-
+    [self setWeekMethod];
 
 
     // 灰色条
@@ -156,8 +162,9 @@
     clock.endDate = [[NSDate date] dateByAddingTimeInterval:-60 * 60 * 8];
     [clock update];
     [self.scrollView addSubview:clock];
+//    self.scrollView.
+    
     self.clock = clock;
-    [self dateFormatterStart:clock.startDate end:clock.endDate];
     
     if (_model.startDate) {
         clock.startDate = _model.startDate;
@@ -176,13 +183,26 @@
     tap.delegate=self;
     [self.clock addGestureRecognizer:tap];
     
-    UIImageView *clockImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, clock.width-135, clock.width-135)];
+    UIImageView *clockImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, clock.width-125, clock.width-125)];
     clockImg.image = [UIImage imageNamed:@"circle_bg"];
     clockImg.center = clock.center;
+    clockImg.layer.cornerRadius = clockImg.height/2.0;
+    clockImg.layer.masksToBounds = YES;
+//    clockImg.backgroundColor = [UIColor redColor];
+
 //    clockImg.userInteractionEnabled = YES;// 处理在闹钟中间滑动
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.scrollView addSubview:clockImg];
     
+    UIImageView *stopImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, clock.width-125-30, clock.width-125-30)];
+    stopImg.center = clock.center;
+    stopImg.layer.cornerRadius = stopImg.height/2.0;
+    stopImg.layer.masksToBounds = YES;
+//    stopImg.backgroundColor = [UIColor redColor];
+    
+    stopImg.userInteractionEnabled = YES;// 处理在闹钟中间滑动
+    //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.scrollView addSubview:stopImg];
 
     _timeTotalLab = [[UILabel alloc] initWithFrame:CGRectMake(0, (clockImg.height-35)/2.0, clockImg.width, 35)];
     _timeTotalLab.font = [UIFont systemFontOfSize:13];
@@ -195,195 +215,95 @@
     UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(0, clock.bottom, kScreen_Width, view2.height)];
     view3.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
     [self.scrollView addSubview:view3];
-    
-    UILabel *setLab = [[UILabel alloc] initWithFrame:CGRectMake(0, view3.bottom, kScreen_Width, 40)];
-    setLab.font = [UIFont systemFontOfSize:16];
-    setLab.text = @"  设置";
-    setLab.textAlignment = NSTextAlignmentLeft;
-    setLab.textColor = [UIColor blackColor];
-    [self.scrollView addSubview:setLab];
-    
-    // 灰色条
-    UIView *view4 = [[UIView alloc] initWithFrame:CGRectMake(0, setLab.bottom, kScreen_Width, 10)];
-    view4.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.scrollView addSubview:view4];
-    
-    UILabel *weekLab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, view4.bottom, kScreen_Width, 40)];
-    weekLab1.font = [UIFont systemFontOfSize:15];
-    weekLab1.text = @"  星期";
-    weekLab1.userInteractionEnabled = YES;
-    weekLab1.textAlignment = NSTextAlignmentLeft;
-    weekLab1.textColor = [UIColor blackColor];
-    [self.scrollView addSubview:weekLab1];
-    
-    NSArray *weekArr = @[@"一",@"二",@"三",@"四",@"五",@"六",@"七"];
-    for (int i=0; i<weekArr.count; i++) {
-        UIButton *btn = [[UIButton alloc] init];
-        btn.frame = CGRectMake(60+i*(25+20), (weekLab1.height-25)/2, 25, 25);
-        btn.layer.cornerRadius = btn.width/2;
-        btn.layer.masksToBounds = YES;
-        btn.titleLabel.font = [UIFont systemFontOfSize:16];
-        btn.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-        [btn setTitle:weekArr[i] forState:UIControlStateNormal];
-        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        btn.tag = i+1;
-        [btn addTarget:self action:@selector(weekAction:) forControlEvents:UIControlEventTouchUpInside];
-        [weekLab1 addSubview:btn];
-        
-        if (_model.weekDay.count) {
-            for (NSString *weekDay in _model.weekDay) {
-                
-                NSString *chNum = [NSString translationArabicNum:weekDay.integerValue];
-                if ([chNum isEqualToString:weekArr[i]]) {
-                    btn.backgroundColor = [UIColor colorWithHexString:@"#59A43A"];
-                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                }
-            }
-            
-        }
-        
-    }
-    
-    // 灰色条
-    UIView *view5 = [[UIView alloc] initWithFrame:CGRectMake(0, weekLab1.bottom, kScreen_Width, view4.height)];
-    view5.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.scrollView addSubview:view5];
-    
-    NSString *str1 = @"  就寝提醒";
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  您希望将提醒设为就寝前多久?",str1]];
-    NSRange range1 = {0,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range1];
-    [attStr addAttribute:NSFontAttributeName
-     
-                   value:[UIFont systemFontOfSize:14.0]
-     
-                   range:range1];
-    UILabel *sleepRemindLab = [[UILabel alloc] initWithFrame:CGRectMake(0, view5.bottom, kScreen_Width, 40)];
-    sleepRemindLab.font = [UIFont systemFontOfSize:11];
-//    remindLab.text = @"  就寝提醒";
-    sleepRemindLab.textAlignment = NSTextAlignmentLeft;
-    sleepRemindLab.textColor = [UIColor colorWithHexString:@"#A0A0A0"];
-    [self.scrollView addSubview:sleepRemindLab];
-    sleepRemindLab.attributedText = attStr;
-    
-    NSArray *beforeArr = @[@"  就寝时",@"  15分钟前",@"  30分钟前",@"  1小时前"];
-    for (int i=0; i<beforeArr.count; i++) {
-        
-        UILabel *remindLab = [[UILabel alloc] initWithFrame:CGRectMake(0, sleepRemindLab.bottom+i*40, kScreen_Width, 40)];
-        remindLab.font = [UIFont systemFontOfSize:15];
-        //    remindLab.text = @"  就寝提醒";
-        remindLab.text = beforeArr[i];
-        remindLab.userInteractionEnabled = YES;
-        remindLab.textAlignment = NSTextAlignmentLeft;
-        remindLab.textColor = [UIColor colorWithHexString:@"#6F6E6F"];
-        [self.scrollView addSubview:remindLab];
-        self.remindLab = remindLab;
-        
-        // 灰色条
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 1)];
-        line.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-        [remindLab addSubview:line];
-        
-        UIButton *btn = [[UIButton alloc] init];
-        btn.frame = CGRectMake(kScreen_Width-30-12, (remindLab.height-30)/2, 30, 30);
-        btn.tag = i;
-        UIImage *image = [self OriginImage:[UIImage imageNamed:@"hui"] scaleToSize:CGSizeMake(15, 15)];
-        [btn setImage:image forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"lv"] forState:UIControlStateSelected];
-        [btn addTarget:self action:@selector(remindAction:) forControlEvents:UIControlEventTouchUpInside];
-        [remindLab addSubview:btn];
-        
-        if (_model.tag.integerValue == i) {
-            btn.selected = YES;
-            self.lastBtn = btn;
-
-        }
-        
-        
-    }
-    
-    // 灰色条
-    UIView *view6 = [[UIView alloc] initWithFrame:CGRectMake(0, self.remindLab.bottom, kScreen_Width, view4.height)];
-    view6.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.scrollView addSubview:view6];
-    
-    UIButton *btn3 = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn3.frame = CGRectMake(0, view6.bottom, kScreen_Width, 40);
-    //    [btn2 setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
-    [btn3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    btn3.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    btn3.titleLabel.font = [UIFont systemFontOfSize:13];
-    [btn3 setTitle:@"  提醒铃声" forState:UIControlStateNormal];
-    btn3.backgroundColor = [UIColor whiteColor];
-    [btn3 addTarget:self action:@selector(musicAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.scrollView addSubview:btn3];
-    
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-7-12, (btn3.height-10)/2.0, 7, 10)];
-    //            imgView.backgroundColor = [UIColor redColor];
-    imgView.image = [UIImage imageNamed:@"assistor"];
-    [btn3 addSubview:imgView];
-    
-    UILabel *musicLab = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width-200-30, 0,200, btn3.height)];
-    musicLab.font = [UIFont systemFontOfSize:12];
-//    timeLab.text = @"早起者";
-    musicLab.textAlignment = NSTextAlignmentRight;
-    musicLab.textColor = [UIColor colorWithHexString:@"#727272"];
-    [btn3 addSubview:musicLab];
-    self.musicLab = musicLab;
-    
-    if (_model.musicName) {
-        musicLab.text = _model.musicName;
-
-    }
-    
-    // 灰色条
-    UIView *view7 = [[UIView alloc] initWithFrame:CGRectMake(0, btn3.bottom, kScreen_Width, view4.height)];
-    view7.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.scrollView addSubview:view7];
-    
-    UILabel *volumeLab = [[UILabel alloc] initWithFrame:CGRectMake(0, view7.bottom, kScreen_Width, 40)];
-    volumeLab.font = [UIFont systemFontOfSize:13];
-    volumeLab.text = @"  铃声音量";
-    volumeLab.userInteractionEnabled = YES;
-    volumeLab.textAlignment = NSTextAlignmentLeft;
-//    remindLab.textColor = [UIColor colorWithHexString:@"#EDEEEE"];
-    [self.scrollView addSubview:volumeLab];
-    
-//    //自定义MPVolumeView 高度不能改变其他都可以
-//    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(75, 0, kScreen_Width -75-10, volumeLab.height)];
-//    //把自定义的MPVolumeView贴在view上
-////    [self.view addSubview: volumeView];
-//    
-//    //寻找建立UISlider;
-//    UISlider* slider = nil;
-//    //设置音量大小
-//    slider.value = 0.7;
-//    for (UIView *view in [volumeView subviews]){
-//        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
-//            slider = (UISlider*)view;
-////            volumeViewSlider.backgroundColor = [UIColor yellowColor];
-//            break;
-//        }
-//    }
-    
-    UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(75, 0, kScreen_Width -75-10, volumeLab.height)];
-//    [slider addTarget:self action:@selector(sliderMethod:) forControlEvents:UIControlEventValueChanged];
-//    [slider setMaximumValue:1];
-//    [slider setMinimumValue:0];
-//    UIImage *image = [self OriginImage:[UIImage imageNamed:@"green"] scaleToSize:CGSizeMake(20, 20)];
-    [slider setMinimumTrackTintColor:[UIColor colorWithHexString:@"#59A33A"]];
-    [slider setMaximumTrackTintColor:[UIColor colorWithHexString:@"#EDEEEE"]];
-    [slider setThumbImage:[UIImage imageNamed:@"green"] forState:UIControlStateNormal];
-    [volumeLab addSubview:slider];
-
-    self.scrollView.contentSize = CGSizeMake(kScreen_Width, volumeLab.bottom+15-64);
+    self.view3 = view3;
     
     
+    // 右上角按钮
+    UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn2.frame = CGRectMake(0, 0, 18, 18);
+    [btn2 setImage:[UIImage imageNamed:@"setting"] forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn2];
+    [btn2 addTarget:self action:@selector(setAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    // 睡眠分析
+    [self initSleepView];
 
 }
+
+- (void)initSleepView
+{
+    UILabel *fenxiLab = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view3.bottom+10, kScreen_Width-20, 18)];
+    fenxiLab.font = [UIFont systemFontOfSize:16];
+    fenxiLab.text = @"睡眠分析";
+    fenxiLab.textAlignment = NSTextAlignmentLeft;
+    fenxiLab.textColor = [UIColor blackColor];
+    [self.scrollView addSubview:fenxiLab];
+    
+    UILabel *startLab = [[UILabel alloc] initWithFrame:CGRectMake(10, fenxiLab.bottom+11, 35, 11)];
+    startLab.font = [UIFont boldSystemFontOfSize:10];
+    startLab.text = @"23:34";
+    startLab.textAlignment = NSTextAlignmentLeft;
+    startLab.textColor = [UIColor colorWithHexString:@"#5B5B5B"];
+//    startLab.backgroundColor = [UIColor redColor];
+    [self.scrollView addSubview:startLab];
+    self.startLab = startLab;
+    
+    // 灰色条
+    UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(startLab.right, startLab.center.y-.25, kScreen_Width-startLab.right-12, .5)];
+    line1.backgroundColor = [UIColor colorWithHexString:@"#AFAFAF"];
+    [self.scrollView addSubview:line1];
+    
+    UILabel *endLab = [[UILabel alloc] initWithFrame:CGRectMake(10, startLab.bottom+41, startLab.width, 11)];
+    endLab.font = [UIFont boldSystemFontOfSize:10];
+    endLab.text = @"03:34";
+    endLab.textAlignment = NSTextAlignmentLeft;
+    endLab.textColor = [UIColor colorWithHexString:@"#5B5B5B"];
+    //    startLab.backgroundColor = [UIColor redColor];
+    [self.scrollView addSubview:endLab];
+    self.endLab = endLab;
+    
+    [self dateFormatterStart:self.clock.startDate end:self.clock.endDate];
+
+
+    
+    // 灰色条
+    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(endLab.right, endLab.bottom-2, line1.width, .5)];
+    line2.backgroundColor = [UIColor colorWithHexString:@"#AFAFAF"];
+    [self.scrollView addSubview:line2];
+    
+    for (int i=0; i<4; i++) {
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(line1.left, line1.bottom+10+i*(1+10), line1.width, 1)];
+        [self drawDashLine:line lineLength:2 lineSpacing:4 lineColor:[UIColor colorWithHexString:@"#C3C3C3"]];
+//        lineImg.backgroundColor = [UIColor redColor];
+        // 添加到控制器的view上
+        [self.scrollView addSubview:line];
+    }
+    
+    NSArray *weekArr = @[@"周一",@"二",@"三",@"四",@"五",@"六",@"日"];
+    for (int i=0; i<weekArr.count; i++) {
+        
+        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(line2.left+i*(line2.width/weekArr.count), line2.bottom+11, line2.width/weekArr.count, 15)];
+        lab.font = [UIFont systemFontOfSize:14];
+        lab.text = weekArr[i];
+        lab.textAlignment = NSTextAlignmentCenter;
+        lab.textColor = [UIColor colorWithHexString:@"#999999"];
+        //    startLab.backgroundColor = [UIColor redColor];
+        [self.scrollView addSubview:lab];
+        
+        if (i == 0) {
+            lab.textAlignment = NSTextAlignmentLeft;
+
+        }
+        if (i == weekArr.count-1) {
+            lab.textAlignment = NSTextAlignmentRight;
+            
+        }
+    }
+    
+    
+    self.scrollView.contentSize = CGSizeMake(kScreen_Width, line2.bottom+35);
+}
+
 
 - (void)setWeekMethod
 {
@@ -416,69 +336,34 @@
 }
 
 
-
-
-// 日期动作
-- (void)weekAction:(UIButton *)btn
+- (void)setAction
 {
-    NSString *numStr = [NSString stringWithFormat:@"%ld",(long)btn.tag];
-    btn.selected = !btn.selected;
-    
-    if (btn.selected) {
-        btn.backgroundColor = [UIColor colorWithHexString:@"#59A43A"];
-        [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    SleepSettingVC *vc = [[SleepSettingVC alloc] init];
+    vc.title = @"睡眠设置";
+    vc.model = self.model;
+    vc.settingBlock = ^{
         
-        if (![_model.weekDay containsObject:numStr]) {
-            [_model.weekDay addObject:numStr];
-        }
-    }
-    else {
-        btn.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
-        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
-        if ([_model.weekDay containsObject:numStr]) {
-            [_model.weekDay removeObject:numStr];
-        }
-        
-    }
-    
-    [self setWeekMethod];
-    
-    if (_model.isOpen) {
-        [self createLocalNotification];
-
-    }
-    
-
-    
-//    [InfoCache archiveObject:_model toFile:ClockPath];
-
-}
-
-// 选择铃声
-- (void)musicAction:(UIButton *)btn
-{
-    
-    MusicSelectVC *vc = [[MusicSelectVC alloc] init];
-    vc.block = ^(NSString *name) {
-        self.musicLab.text = name;
-        _model.musicName = name;
-//        [InfoCache archiveObject:_model toFile:ClockPath];
+        [self setWeekMethod];
+        [InfoCache archiveObject:_model toFile:ClockPath];
         if (_model.isOpen) {
-            [self createLocalNotification];
             
+            [self createLocalNotification];
+    
         }
-
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 
+
+
 // 打开或关闭闹钟
-- (void)setAction:(UIButton *)btn
+- (void)controlAction:(UIButton *)btn
 {
     btn.selected = !btn.selected;
     _model.isOpen = btn.selected;
+    [InfoCache archiveObject:_model toFile:ClockPath];
+
     
     if (btn.selected) {
         [self createLocalNotification];
@@ -490,25 +375,8 @@
 
     }
 
-//    [InfoCache archiveObject:_model toFile:ClockPath];
 }
 
-// 提前提醒入睡
-- (void)remindAction:(UIButton *)btn
-{
-//    btn.selected = !btn.selected;
-    _model.tag = @(btn.tag);
-//    [InfoCache archiveObject:_model toFile:ClockPath];
-
-    self.lastBtn.selected = NO;
-    btn.selected = YES;
-    self.lastBtn = btn;
-
-    if (_model.isOpen) {
-        [self createLocalNotification];
-        
-    }
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -528,10 +396,11 @@
 // 停止拖动更新
 - (void)timesChanged:(TenClock *)clock startDate:(NSDate *)startDate endDate:(NSDate *)endDate
 {
+
     _model.startDate = startDate;
     _model.endDate = endDate;
     NSLog(@"------%@",startDate);
-    //    NSLog(@"------%@",endDate);
+    NSLog(@"------%@",endDate);
 //    [InfoCache archiveObject:_model toFile:ClockPath];
 //    [self dateFormatterStart:startDate end:endDate];
     if (_model.isOpen) {
@@ -577,6 +446,9 @@
     
     self.sleepLab2.text = startString;
     self.upLabel1.text = endString;
+    
+    self.startLab.text = startString;
+    self.endLab.text = endString;
 }
 
 #pragma mark - 闹钟方法
@@ -586,8 +458,6 @@
 {
     if (_model) {
         
-        [InfoCache archiveObject:_model toFile:ClockPath];
-
         // 时间格式化
         NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"HH:mm"];
@@ -639,6 +509,9 @@
         // 起床闹钟
         [SleepVC shutdownClock:@"WakeupID"];
         [SleepVC postLocalNotification:@"WakeupID" clockTime:endDate weekArr:_model.weekDay alertBody:@"该起床啦~" clockMusic:_model.musicName];
+        
+        [InfoCache archiveObject:_model toFile:ClockPath];
+
     }
     
 }
@@ -706,7 +579,8 @@
 
             //            newNotification.alertAction = @"查看闹钟";
             newNotification.repeatInterval = NSCalendarUnitWeekOfYear;
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:clockID forKey:@"ActivityClock"];
+//            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:clockID forKey:@"ActivityClock"];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:clockID,@"ActivityClock",newNotification.soundName,@"clockMusic",clockTime,@"clockTime", nil];
             newNotification.userInfo = userInfo;
             [[UIApplication sharedApplication] scheduleLocalNotification:newNotification];
         }
@@ -744,6 +618,31 @@
     }
 
 }
+
+/**
+ ** lineView:       需要绘制成虚线的view
+ ** lineLength:     虚线的宽度
+ ** lineSpacing:    虚线的间距
+ ** lineColor:      虚线的颜色
+ **/ - (void)drawDashLine:(UIView *)lineView lineLength:(int)lineLength lineSpacing:(int)lineSpacing lineColor:(UIColor *)lineColor {
+     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+     [shapeLayer setBounds:lineView.bounds];
+     [shapeLayer setPosition:CGPointMake(CGRectGetWidth(lineView.frame) / 2, CGRectGetHeight(lineView.frame))];
+     [shapeLayer setFillColor:[UIColor clearColor].CGColor];
+     //  设置虚线颜色为blackColor
+     [shapeLayer setStrokeColor:lineColor.CGColor];
+     //  设置虚线宽度
+     [shapeLayer setLineWidth:CGRectGetHeight(lineView.frame)];
+     [shapeLayer setLineJoin:kCALineJoinRound];
+     //  设置线宽，线间距
+     [shapeLayer setLineDashPattern:[NSArray arrayWithObjects:[NSNumber numberWithInt:lineLength], [NSNumber numberWithInt:lineSpacing], nil]];
+     //  设置路径
+     CGMutablePathRef path = CGPathCreateMutable();
+     CGPathMoveToPoint(path, NULL, 0, 0); CGPathAddLineToPoint(path, NULL,CGRectGetWidth(lineView.frame), 0); [shapeLayer setPath:path]; CGPathRelease(path);
+     //  把绘制好的虚线添加上来
+     [lineView.layer addSublayer:shapeLayer];
+ }
+
 
 
 //自定义滑块的大小    通过此方法可以更改滑块的任意大小和形状

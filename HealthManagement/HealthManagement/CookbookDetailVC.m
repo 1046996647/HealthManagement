@@ -11,26 +11,53 @@
 #import "TLCollectionViewLineLayout.h"
 #import "HXTagsView.h"
 #import "PaymentVC.h"
+#import "FoodCell.h"
 
 
-@interface CookbookDetailVC ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface CookbookDetailVC ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) TLCollectionViewLineLayout *lineLayout;
 @property (nonatomic,strong) UIPageControl *pageControl;
 @property (nonatomic,strong) UIScrollView *scrollView;
+@property (nonatomic,strong) UIView *borderView;
 
 
 // 内容视图
+@property (nonatomic,strong) UILabel *lab4;
 @property (nonatomic,strong) UILabel *lab1;
 @property(nonatomic,strong) UILabel *lab2;
 @property(nonatomic,strong) UILabel *lab3;
-@property(nonatomic,strong) HXTagsView *tagsView;
+@property(nonatomic,strong) UILabel *fitLab;
 
+@property(nonatomic,strong) HXTagsView *tagsView;
+@property(nonatomic,strong) UITableView *tableView;
+@property(nonatomic,strong) NSMutableArray *dataList;
+
+
+@property(nonatomic,strong) UILabel *moneyLab;
 
 @end
 
 @implementation CookbookDetailVC
+
+- (UITableView *)tableView
+{
+    if (!_tableView) {
+        //列表
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, self.fitLab.bottom+12, self.scrollView.width-20, 0) style:UITableViewStylePlain];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.layer.borderWidth = 1;
+        _tableView.layer.borderColor = [UIColor colorWithHexString:@"#FB8A00"].CGColor;
+        _tableView.layer.cornerRadius = 5;
+        _tableView.layer.masksToBounds = YES;
+        _tableView.scrollEnabled = NO;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        //        _tableView.backgroundColor = [UIColor redColor];
+    }
+    return _tableView;
+}
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
@@ -55,7 +82,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"鸡蛋蔬菜沙拉";
+    self.title = self.model.name;
     
 //    [self.view addSubview:self.collectionView];
     
@@ -78,7 +105,7 @@
     pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#B8B9BA"];
     pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#59A43A"];
     pageControl.hidesForSinglePage = YES;
-    pageControl.numberOfPages = 3;
+//    pageControl.numberOfPages = 3;
     pageControl.currentPage = 0;
     pageControl.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     _pageControl = pageControl;
@@ -89,7 +116,111 @@
     
     // 底部视图
     [self initBottomView];
+    
+    [self getRecipeItemInfo];
 }
+
+// 请求菜谱详情页
+- (void)getRecipeItemInfo
+{
+    [SVProgressHUD show];
+    
+    // 移除体质图片
+    for (UIView *view in self.scrollView.subviews) {
+        if (view.tag == 100) {
+            [view removeFromSuperview];
+        }
+    }
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:self.model.ID forKey:@"RecipeId"];
+//    [paramDic  setObject:@"2" forKey:@"UserId"];
+    //    [paramDic  setObject:self.latitude forKey:@"CoordY"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:RecipeItemInfo dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",responseObject);
+        
+        NSArray *arr = responseObject[@"ListData"];
+        if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                RecipeModel *model = [RecipeModel yy_modelWithJSON:dic];
+                [arrM addObject:model];
+            }
+            self.model = [arrM firstObject];
+            
+            _pageControl.numberOfPages = self.model.images.count;
+            [self.collectionView reloadData];
+            
+            _lab4.text = self.model.name;
+
+            // 体质
+            for (int i=0; i<self.model.Constitution.count; i++) {
+                
+                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-12-30-i*(30+5), _lab4.center.y-5, 30, 10)];
+                //        imgView.backgroundColor = [UIColor redColor];
+                imgView.tag = 100;
+                imgView.image = [UIImage imageNamed:self.model.Constitution[self.model.Constitution.count-1-i]];
+                [self.scrollView  addSubview:imgView];
+                
+            }
+            [_tagsView setTagAry:self.model.Tags delegate:nil];
+            
+            /////////////////////
+            NSMutableArray *arrM1 = [NSMutableArray array];
+            for (NSDictionary *dic in self.model.foodRecipe) {
+                RecipeItem1Model *model = [RecipeItem1Model yy_modelWithJSON:dic];
+                
+                if (model.ListFood.count > 0) {
+                    
+                    for (NSDictionary *dic in model.ListFood) {
+                        FoodModel *foodModel = [FoodModel yy_modelWithJSON:dic];
+                        
+                        NSInteger index = [model.ListFood indexOfObject:dic];
+                        
+                        NSString *text = nil;
+                        if (index == 0) {
+                            
+                            text = [NSString stringWithFormat:@"%@    %@ %@",model.RecipeItemName,foodModel.FoodName,foodModel.FoodWeight];
+                        }
+                        else {
+                            text = [NSString stringWithFormat:@"           %@ %@",foodModel.FoodName,foodModel.FoodWeight];
+                        }
+                        
+                        foodModel.text = text;
+//                        NSDictionary *dic = @{@"text":text,@"id":foodModel.FoodId};
+                        [arrM1 addObject:foodModel];
+                        
+                        NSLog(@"-----%@",text);
+                    }
+                }
+            }
+            
+            self.dataList = arrM1;
+            [self.tableView reloadData];
+
+            self.tableView.height = self.dataList.count*30;
+
+            
+            self.scrollView.contentSize = CGSizeMake(kScreen_Width, self.tableView.bottom+12);
+            
+            
+            self.moneyLab.text = [NSString stringWithFormat:@"￥ %@",self.model.price];
+
+        }
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+    }];
+}
+
 
 // 底部视图
 - (void)initBottomView
@@ -116,13 +247,14 @@
     // 费用
     UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(resBtn.right, resBtn.top, kScreen_Width-resBtn.width, resBtn.height)];
     moneyLab.font = [UIFont boldSystemFontOfSize:18];
-    moneyLab.text = @"￥ 89";
+//    moneyLab.text = @"￥ 89";
     moneyLab.textColor = [UIColor whiteColor];
     moneyLab.textAlignment = NSTextAlignmentCenter;
 //    moneyLab.backgroundColor = [UIColor whiteColor];
 //    moneyLab.backgroundColor = [UIColor colorWithRed:249 green:125 blue:47 alpha:1];
     moneyLab.backgroundColor = [UIColor colorWithHexString:@"#F97A23"];
     [self.view addSubview:moneyLab];
+    self.moneyLab = moneyLab;
     
     // 购物车
     UIButton *shopBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -150,37 +282,27 @@
     view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
     [self.scrollView addSubview:view];
     
-    _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(12, view.bottom+10, 100, 20)];
-    _lab1.font = [UIFont systemFontOfSize:14];
-    _lab1.text = @"鸡蛋蔬菜沙拉";
-    _lab1.textColor = [UIColor blackColor];
-    _lab1.textAlignment = NSTextAlignmentLeft;
+    _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(12, view.bottom+10, 100, 20)];
+    _lab4.font = [UIFont systemFontOfSize:14];
+//    _lab1.text = @"鸡蛋蔬菜沙拉";
+    _lab4.textColor = [UIColor blackColor];
+    _lab4.textAlignment = NSTextAlignmentLeft;
     //        _lab1.backgroundColor = [UIColor redColor];
-    [self.scrollView addSubview:_lab1];
+    [self.scrollView addSubview:_lab4];
     
-    // 体质
-    NSArray *bodyArr = @[@"temperament_1",@"temperament_2",@"temperament_3"];
-    for (int i=0; i<bodyArr.count; i++) {
-        
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-12-30-i*(30+5), _lab1.center.y-5, 30, 10)];
-        //        imgView.backgroundColor = [UIColor redColor];
-        imgView.image = [UIImage imageNamed:bodyArr[i]];
-        [self.scrollView  addSubview:imgView];
-        
-    }
     
-    UIImageView *lineImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _lab1.bottom+10, kScreen_Width, 1)];
+    UIImageView *lineImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _lab4.bottom+10, kScreen_Width, 1)];
     //        imgView.backgroundColor = [UIColor redColor];
     lineImgView.image = [UIImage imageNamed:@"dotted"];
     [self.scrollView  addSubview:lineImgView];
     
-    UIImageView *tagImg = [[UIImageView alloc] initWithFrame:CGRectMake(_lab1.left, lineImgView.bottom+10, 16, 16)];
+    UIImageView *tagImg = [[UIImageView alloc] initWithFrame:CGRectMake(_lab4.left, lineImgView.bottom+10, 16, 16)];
     tagImg.image = [UIImage imageNamed:@"tag"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.scrollView addSubview:tagImg];
     
     //单行滚动  ===============
-    NSArray *tagAry = @[@"红烧",@"油闷",@"清蒸"];
+//    NSArray *tagAry = @[@"红烧",@"油闷",@"清蒸"];
     //    单行不需要设置高度,内部根据初始化参数自动计算高度
     _tagsView = [[HXTagsView alloc] initWithFrame:CGRectMake(tagImg.right+12, tagImg.top-12, kScreen_Width-tagImg.right-12-12, 0)];
     _tagsView.type = 1;
@@ -193,7 +315,7 @@
     _tagsView.cornerRadius = 3;
     _tagsView.backgroundColor = [UIColor clearColor];
     _tagsView.borderColor = [UIColor grayColor];
-    [_tagsView setTagAry:tagAry delegate:nil];
+//    [_tagsView setTagAry:tagAry delegate:nil];
     [self.scrollView addSubview:_tagsView];
     
     NSString *str1 = @"88";
@@ -210,113 +332,12 @@
     //        fitLab.backgroundColor = [UIColor yellowColor];
     fitLab.attributedText = attStr;
     [self.scrollView addSubview:fitLab];
+    self.fitLab = fitLab;
     
-    // 有色边框
-    UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(10, fitLab.bottom+12, self.scrollView.width-20, 0)];
-    borderView.layer.borderWidth = 1;
-    borderView.layer.borderColor = [UIColor colorWithHexString:@"#FB8A00"].CGColor;
-    borderView.layer.cornerRadius = 5;
-    borderView.layer.masksToBounds = YES;
-    [self.scrollView addSubview:borderView];
+    // 表视图
+    [self.scrollView addSubview:self.tableView];
     
-    //--------------------------------------------
-    str1 = @"主食";
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
-    attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@    米饭290g",str1]];
-    NSRange range2 = {0,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range2];
     
-    _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 12, borderView.width-20, 14)];
-    _lab1.font = [UIFont systemFontOfSize:12];
-    //        _lab1.text = @"匹配度 58%";
-    _lab1.textColor = [UIColor grayColor];
-    _lab1.textAlignment = NSTextAlignmentLeft;
-    //        _lab1.backgroundColor = [UIColor redColor];
-    [borderView addSubview:_lab1];
-    _lab1.attributedText = attStr;
-    
-    UIImageView *img1 = [[UIImageView alloc] initWithFrame:CGRectMake(30, 0, 1, _lab1.height)];
-    img1.image = [UIImage imageNamed:@"xian"];
-    //        _imgView.backgroundColor = [UIColor redColor];
-    //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
-    [_lab1 addSubview:img1];
-    
-    NSArray *likeArr = @[@"recipes_2",@"recipes_1"];
-    for (int i=0; i<likeArr.count; i++) {
-        
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(_lab1.width-15-i*(15+10), (14-15)/2, 15, 15)];
-        //        imgView.backgroundColor = [UIColor redColor];
-        imgView.image = [UIImage imageNamed:likeArr[i]];
-        [_lab1  addSubview:imgView];
-        
-    }
-    
-    //--------------------------------------------
-    str1 = @"配菜";
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
-    attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@    黑木耳292g",str1]];
-    //        range1 = {2,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range2];
-    
-    _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(_lab1.left, _lab1.bottom+10, _lab1.width, 14)];
-    _lab2.font = [UIFont systemFontOfSize:12];
-    //        _lab1.text = @"匹配度 58%";
-    _lab2.textColor = [UIColor grayColor];
-    _lab2.textAlignment = NSTextAlignmentLeft;
-    //        _lab1.backgroundColor = [UIColor redColor];
-    [borderView addSubview:_lab2];
-    _lab2.attributedText = attStr;
-    
-    UIImageView *img2 = [[UIImageView alloc] initWithFrame:CGRectMake(30, 0, 1, _lab2.height)];
-    img2.image = [UIImage imageNamed:@"xian"];
-    //        _imgView.backgroundColor = [UIColor redColor];
-    [_lab2 addSubview:img2];
-    
-    for (int i=0; i<likeArr.count; i++) {
-        
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(_lab2.width-15-i*(15+10), (14-15)/2, 15, 15)];
-        //        imgView.backgroundColor = [UIColor redColor];
-        imgView.image = [UIImage imageNamed:likeArr[i]];
-        [_lab2  addSubview:imgView];
-        
-    }
-    
-    //--------------------------------------------
-    str1 = @"水果";
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
-    attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@    水果沙拉292g",str1]];
-    //        range1 = {2,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range2];
-
-    _lab3 = [[UILabel alloc] initWithFrame:CGRectMake(_lab1.left, _lab2.bottom+10, _lab1.width, 14)];
-    _lab3.font = [UIFont systemFontOfSize:12];
-    //        _lab1.text = @"匹配度 58%";
-    _lab3.textColor = [UIColor grayColor];
-    //        _lab1.textAlignment = NSTextAlignmentRight;
-    //        _lab1.backgroundColor = [UIColor redColor];
-    [borderView addSubview:_lab3];
-    _lab3.attributedText = attStr;
-    
-    UIImageView *img3 = [[UIImageView alloc] initWithFrame:CGRectMake(30, 0, 1, _lab3.height)];
-    img3.image = [UIImage imageNamed:@"xian"];
-    //        _imgView.backgroundColor = [UIColor redColor];
-    [_lab3 addSubview:img3];
-    
-    for (int i=0; i<likeArr.count; i++) {
-        
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(_lab3.width-15-i*(15+10), (14-15)/2, 15, 15)];
-        //        imgView.backgroundColor = [UIColor redColor];
-        imgView.image = [UIImage imageNamed:likeArr[i]];
-        [_lab3  addSubview:imgView];
-        
-    }
-
-    borderView.height = _lab3.bottom+12;
-    
-    self.scrollView.contentSize = CGSizeMake(kScreen_Width, borderView.bottom+12);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -325,15 +346,6 @@
 }
 
 #pragma mark UIScrollViewDelegate
-//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-//    CGFloat offsetX = scrollView.contentOffset.x;
-//    CGFloat width = self.lineLayout.itemSize.width + self.lineLayout.minimumLineSpacing;
-//    NSInteger item = offsetX/width;
-//    
-//    _pageControl.currentPage = item;
-//    
-//}
-
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat offsetX = scrollView.contentOffset.x;
@@ -343,17 +355,48 @@
     _pageControl.currentPage = item;
 }
 
-#pragma mark -
+#pragma mark - UITableViewDataSource
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 30;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    //    return self.dataArray.count;
+    return self.dataList.count;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    FoodCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (cell == nil) {
+        
+        cell = [[FoodCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.reloadFoodBlock = ^{
+            [self getRecipeItemInfo];
+        };
+    }
+    
+    FoodModel *model = self.dataList[indexPath.row];
+    
+    cell.model = model;
+
+    return cell;
+}
+
 #pragma mark UICollectionViewDatasoure
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 3;
+    return self.model.images.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     TLCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
     
 //    NSString *imageName = [NSString stringWithFormat:@"bg%zi.jpg", indexPath.item%3];
-    cell.imageView.image = [UIImage imageNamed:@"cook"];
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:self.model.images[indexPath.item]]];
     
     return cell;
 }

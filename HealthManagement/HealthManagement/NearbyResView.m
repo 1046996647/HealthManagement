@@ -8,6 +8,7 @@
 
 #import "NearbyResView.h"
 #import "NearbyRestaurantVC.h"
+#import "NSStringExt.h"
 
 @implementation NearbyResView
 
@@ -19,6 +20,8 @@
         self.backgroundColor = [UIColor whiteColor];
         
         [self initSubViews];
+        
+        self.viewArr = [NSMutableArray array];
     }
     return self;
 }
@@ -53,95 +56,112 @@
     scrollView.pagingEnabled = YES;
     scrollView.delegate = self;
     scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.contentSize = CGSizeMake(kScreen_Width*3, kWidth+10+20);
     [self addSubview:scrollView];
-    
-    for (int i=0; i<3; i++) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i*kScreen_Width, 0, kScreen_Width, scrollView.height)];
-        [scrollView addSubview:view];
-        
-        for (int j=0; j<3; j++) {
-            
-            UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(12+j*(kWidth+10), 0, kWidth, scrollView.height)];
-            [view addSubview:subView];
-
-            UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kWidth)];
-//            imgView.backgroundColor = [UIColor redColor];
-            imgView.image = [UIImage imageNamed:@"food"];
-            imgView.tag = 100+j;
-            imgView.layer.cornerRadius = 5;
-            imgView.layer.masksToBounds = YES;
-            [subView addSubview:imgView];
-            
-            UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(imgView.left, imgView.bottom+10, kWidth*2/3, 16)];
-            moneyLab.font = [UIFont systemFontOfSize:12];
-            //        moneyLab.textAlignment = NSTextAlignmentRight;
-            moneyLab.text = @"星巴克";
-            //        moneyLab.textColor = [UIColor redColor];
-//            moneyLab.backgroundColor = [UIColor yellowColor];
-            moneyLab.tag = 101+j;
-            [subView addSubview:moneyLab];
-            
-            UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kWidth-kWidth/3, imgView.bottom+12, kWidth/3, 14)];
-            fitLab.font = [UIFont systemFontOfSize:11];
-            fitLab.textAlignment = NSTextAlignmentRight;
-            fitLab.text = @"120m";
-            fitLab.tag = 102+j;
-            fitLab.textColor = [UIColor grayColor];
-            //        fitLab.backgroundColor = [UIColor yellowColor];
-            [subView addSubview:fitLab];
-        }
-
-        
-        [_viewArr addObject:view];
-        
-    }
+    self.scrollView = scrollView;
     
     // 添加pageControl
     UIPageControl * pageControl = [[UIPageControl alloc] init];
-    pageControl.frame = CGRectMake((kScreen_Width-20)/2, scrollView.bottom+10, 20, 20);
+    pageControl.frame = CGRectMake((kScreen_Width-20)/2, self.scrollView.bottom+10, 20, 20);
     pageControl.pageIndicatorTintColor = [UIColor colorWithHexString:@"#B8B9BA"];
     pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"#59A43A"];
     pageControl.hidesForSinglePage = YES;
-    pageControl.numberOfPages = 3;
     pageControl.currentPage = 0;
     _pageControl = pageControl;
     [self addSubview:_pageControl];
     
     self.height = _pageControl.bottom+10;
+    
 }
 
 // 跳转附近餐厅
 - (void)btnAction
 {
     NearbyRestaurantVC *vc = [[NearbyRestaurantVC alloc] init];
+    vc.latitude = self.latitude;
+    vc.longitude = self.longitude;
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)setModelArr:(NSArray *)modelArr
+- (void)setModelArr:(NSMutableArray *)modelArr
 {
     _modelArr = modelArr;
     
-    for (int i=0; i<_viewArr.count; i++) {
-        UIView *view = _viewArr[i];
-        
-        for (int j=0; j<view.subviews.count; j++) {
-            
-//            UIView *subView = view.subviews[j];
-//            UIImageView *imgView = (UIImageView *)[subView viewWithTag:100+j];
-//            UILabel *titleLab = (UILabel *)[subView viewWithTag:101+j];
-//            UILabel *moneyLab = (UILabel *)[subView viewWithTag:102+j];
+    // 移除之前添加的视图
+    if (_viewArr.count>0) {
+        for (UIView *view in _viewArr) {
+            for (UIView *view1 in view.subviews) {
+                [view1 removeFromSuperview];
+            }
         }
-
-//        NSLog(@"%@",view.subviews);
     }
+
+    NSInteger pageCount = modelArr.count / 3;
+    if (modelArr.count % 3 > 0) {
+        pageCount += 1;
+        
+        if (pageCount > 3) {
+            pageCount = 3;
+        }
+    }
+    
+    self.scrollView.contentSize = CGSizeMake(kScreen_Width*pageCount,0);
+    self.pageControl.numberOfPages = pageCount;
+    
+    NSInteger index = 0;
+    for (int i=0; i<pageCount; i++) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i*kScreen_Width, 0, kScreen_Width, self.scrollView.height)];
+        [self.scrollView addSubview:view];
+        
+        for (int j=0; j<3; j++) {
+            
+            if (index < modelArr.count) {// 控制个数
+                ResDetailModel *model = modelArr[index];
+                
+                UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(12+j*(kWidth+10), 0, kWidth, self.scrollView.height)];
+                [view addSubview:subView];
+                
+                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kWidth, kWidth)];
+                //            imgView.backgroundColor = [UIColor redColor];
+                [imgView sd_setImageWithURL:[NSURL URLWithString:model.titleImage]];
+                //            imgView.image = [UIImage imageNamed:@"food"];
+                imgView.tag = 100+j;
+                imgView.layer.cornerRadius = 5;
+                imgView.layer.masksToBounds = YES;
+                [subView addSubview:imgView];
+                
+                UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(imgView.left, imgView.bottom+10, kWidth*2/3-5, 16)];
+                moneyLab.font = [UIFont systemFontOfSize:12];
+                //        moneyLab.textAlignment = NSTextAlignmentRight;
+                moneyLab.text = model.name;
+                //        moneyLab.textColor = [UIColor redColor];
+                //            moneyLab.backgroundColor = [UIColor yellowColor];
+                moneyLab.tag = 101+j;
+                [subView addSubview:moneyLab];
+                
+                UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kWidth-kWidth/3-5, imgView.bottom+12, kWidth/3+5, 14)];
+                fitLab.font = [UIFont systemFontOfSize:11];
+                fitLab.textAlignment = NSTextAlignmentRight;
+                fitLab.text = [NSString meterToKilometer:model.distance];
+                fitLab.tag = 102+j;
+                fitLab.textColor = [UIColor grayColor];
+                //        fitLab.backgroundColor = [UIColor yellowColor];
+                [subView addSubview:fitLab];
+            }
+            index++;
+        }
+        
+        
+        [_viewArr addObject:view];
+        
+    }
+    
     
 }
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"%f",scrollView.contentOffset.x);
+//    NSLog(@"%f",scrollView.contentOffset.x);
     _pageControl.currentPage = scrollView.contentOffset.x/kScreen_Width;
 }
 

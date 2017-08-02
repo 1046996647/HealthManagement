@@ -9,6 +9,9 @@
 #import "SportVC.h"
 #import "PXLineChartView.h"
 #import "PointItem.h"
+#import "AppDelegate.h"
+
+
 @interface SportVC ()<PXLineChartViewDelegate>
 
 // -----------运动-----------------
@@ -37,6 +40,9 @@
 @property (nonatomic, strong) NSArray *xElements;//x轴数据
 @property (nonatomic, strong) NSArray *yElements;//y轴数据
 
+@property(nonatomic,strong)CMPedometer *pedometer;
+
+
 @end
 
 @implementation SportVC
@@ -56,39 +62,46 @@
     [self.view addSubview:scrollView];
     self.scrollView = scrollView;
     
+    // 灰色条
+    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 6)];
+    view1.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
+    [self.scrollView addSubview:view1];
+    
     // -----------运动-----------------
     UIButton *sportBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    sportBtn.frame = CGRectMake((kScreen_Width-120*scaleX)/2.0, 20, scaleX*120, scaleX*120);
+    sportBtn.frame = CGRectMake((kScreen_Width-350/2.0*scaleWidth)/2.0, view1.bottom+20, scaleWidth*350/2.0, scaleWidth*350/2.0);
     [sportBtn setImage:[UIImage imageNamed:@"lan"] forState:UIControlStateNormal];
-//    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
+    [sportBtn addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:sportBtn];
     
     UIView *sportView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     sportView.center = sportBtn.center;
+    sportView.userInteractionEnabled = NO;
 //    sportView.backgroundColor = [UIColor redColor];
     [scrollView addSubview:sportView];
     
-    UIImageView *sportImg = [[UIImageView alloc] initWithFrame:CGRectMake((sportView.width-16)/2.0-10-16, 0, 16, 16)];
+    UIImageView *sportImg = [[UIImageView alloc] initWithFrame:CGRectMake((sportView.width-24)/2.0-10-24, -5, 48/2, 54/2)];
     sportImg.image = [UIImage imageNamed:@"sport_2"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [sportView addSubview:sportImg];
     
-    _sportLab = [[UILabel alloc] initWithFrame:CGRectMake(sportImg.right+5, sportImg.center.y-7, 50, 14)];
-    _sportLab.font = [UIFont systemFontOfSize:12];
+    _sportLab = [[UILabel alloc] initWithFrame:CGRectMake(sportImg.right+5, sportImg.center.y-7.5, 100, 15)];
+    _sportLab.font = [UIFont boldSystemFontOfSize:14];
     _sportLab.text = @"尚未运动";
     _sportLab.textAlignment = NSTextAlignmentLeft;
     //        _lab5.textColor = [UIColor grayColor];
     [sportView addSubview:_sportLab];
     
-    _startLab = [[UILabel alloc] initWithFrame:CGRectMake(0, sportImg.bottom+15, sportView.width, 20)];
-    _startLab.font = [UIFont systemFontOfSize:18];
+    _startLab = [[UILabel alloc] initWithFrame:CGRectMake((sportView.width-sportBtn.width)/2.0, sportImg.bottom+16, sportBtn.width, 32)];
+    _startLab.font = [UIFont boldSystemFontOfSize:30];
     _startLab.text = @"点击开始";
+//    _startLab.userInteractionEnabled = YES;
     _startLab.textAlignment = NSTextAlignmentCenter;
-    //        _lab5.textColor = [UIColor grayColor];
+    _startLab.textColor = [UIColor colorWithHexString:@"#4F5152"];
     [sportView addSubview:_startLab];
     
-    _stepLab = [[UILabel alloc] initWithFrame:CGRectMake(0, _startLab.bottom+15, sportView.width, 14)];
-    _stepLab.font = [UIFont systemFontOfSize:12];
+    _stepLab = [[UILabel alloc] initWithFrame:CGRectMake(0, _startLab.bottom+18, sportView.width, 15)];
+    _stepLab.font = [UIFont boldSystemFontOfSize:14];
     _stepLab.text = @"步数";
     _stepLab.textAlignment = NSTextAlignmentCenter;
     _stepLab.textColor = [UIColor grayColor];
@@ -96,7 +109,7 @@
     
     // -----------时间-----------------
     UIButton *timeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    timeBtn.frame = CGRectMake(sportBtn.center.x-30-scaleX*100, sportBtn.center.y+10, scaleX*100, scaleX*100);
+    timeBtn.frame = CGRectMake(sportBtn.center.x-30-scaleWidth*282/2.0, sportBtn.center.y+10, scaleWidth*282/2.0, scaleWidth*282/2.0);
     [timeBtn setImage:[UIImage imageNamed:@"yew"] forState:UIControlStateNormal];
     //    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
     [scrollView insertSubview:timeBtn atIndex:0];
@@ -107,7 +120,7 @@
     //    sportView.backgroundColor = [UIColor redColor];
     [scrollView addSubview:timeView];
     
-    UIImageView *timeImg = [[UIImageView alloc] initWithFrame:CGRectMake((timeView.width-16)/2.0, 0, 16, 16)];
+    UIImageView *timeImg = [[UIImageView alloc] initWithFrame:CGRectMake((timeView.width-54/2)/2.0, 0, 54/2, 27)];
     timeImg.image = [UIImage imageNamed:@"sport_4"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [timeView addSubview:timeImg];
@@ -120,20 +133,20 @@
     [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#F89532"] range:range1];
     [attStr addAttribute:NSFontAttributeName
      
-                          value:[UIFont systemFontOfSize:16.0]
+                          value:[UIFont boldSystemFontOfSize:28]
      
                           range:range1];
     
-    _timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, timeImg.bottom+15, timeView.width, 18)];
-    _timeLab1.font = [UIFont systemFontOfSize:12];
+    _timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake((timeView.width-timeBtn.width)/2.0, timeImg.bottom+11, timeBtn.width, 29)];
+    _timeLab1.font = [UIFont boldSystemFontOfSize:14];
 //    _timeLab1.text = @"103 min";
     _timeLab1.textAlignment = NSTextAlignmentCenter;
     _timeLab1.textColor = [UIColor grayColor];
     [timeView addSubview:_timeLab1];
     _timeLab1.attributedText = attStr;
     
-    _timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _timeLab1.bottom+15, timeView.width, 14)];
-    _timeLab2.font = [UIFont systemFontOfSize:12];
+    _timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _timeLab1.bottom+11, timeView.width, 15)];
+    _timeLab2.font = [UIFont boldSystemFontOfSize:14];
     _timeLab2.text = @"时间";
     _timeLab2.textAlignment = NSTextAlignmentCenter;
     _timeLab2.textColor = [UIColor grayColor];
@@ -141,7 +154,7 @@
     
     // -----------距离-----------------
     UIButton *disBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    disBtn.frame = CGRectMake(sportBtn.center.x+30, sportBtn.center.y, scaleX*90, scaleX*90);
+    disBtn.frame = CGRectMake(sportBtn.center.x+40, sportBtn.center.y, scaleWidth*264/2.0, scaleWidth*264/2.0);
     [disBtn setImage:[UIImage imageNamed:@"red"] forState:UIControlStateNormal];
     //    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
     [scrollView insertSubview:disBtn atIndex:0];
@@ -151,32 +164,39 @@
     //    sportView.backgroundColor = [UIColor redColor];
     [scrollView addSubview:disView];
     
-    UIImageView *disImg = [[UIImageView alloc] initWithFrame:CGRectMake((disView.width-25)/2.0, 0, 25, 16)];
+    UIImageView *disImg = [[UIImageView alloc] initWithFrame:CGRectMake((disView.width-33)/2.0, 0, 33, 23)];
     disImg.image = [UIImage imageNamed:@"sport_3"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [disView addSubview:disImg];
     
     str1 = @"25";
     attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ km",str1]];
-//    NSRange range1 = {0,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#E966BD"] range:range1];
+    NSRange range2 = {0,[str1 length]};
+    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#E966BD"] range:range2];
+    [attStr addAttribute:NSFontAttributeName
+     
+                   value:[UIFont boldSystemFontOfSize:25]
+     
+                   range:range2];
     
-    _disLab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, disImg.bottom+15, disView.width, 18)];
-    _disLab1.font = [UIFont systemFontOfSize:12];
-    _disLab1.text = @"23 km";
+    _disLab1 = [[UILabel alloc] initWithFrame:CGRectMake((disView.width-disBtn.width)/2.0, disImg.bottom+11, disBtn.width, 26)];
+    _disLab1.font = [UIFont boldSystemFontOfSize:14];
+//    _disLab1.text = @"23 km";
     _disLab1.textAlignment = NSTextAlignmentCenter;
     _disLab1.textColor = [UIColor grayColor];
     [disView addSubview:_disLab1];
+    _disLab1.attributedText = attStr;
+
     
-    _disLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _disLab1.bottom+15, disView.width, 14)];
-    _disLab2.font = [UIFont systemFontOfSize:12];
+    _disLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _disLab1.bottom+11, disView.width, 15)];
+    _disLab2.font = [UIFont boldSystemFontOfSize:14];
     _disLab2.text = @"距离";
     _disLab2.textAlignment = NSTextAlignmentCenter;
     _disLab2.textColor = [UIColor grayColor];
     [disView addSubview:_disLab2];
     
     // 灰色条
-    UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(0, timeBtn.bottom+30, kScreen_Width, 10)];
+    UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(0, timeBtn.bottom+30, kScreen_Width, 6)];
     view2.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
     [self.scrollView addSubview:view2];
     self.view2 = view2;
@@ -188,7 +208,7 @@
 // 统计图
 - (void)initRecordView
 {
-    UIImageView *recordImg = [[UIImageView alloc] initWithFrame:CGRectMake(12, self.view2.bottom+12, 20, 20)];
+    UIImageView *recordImg = [[UIImageView alloc] initWithFrame:CGRectMake(12, self.view2.bottom+12, 18, 20)];
     recordImg.image = [UIImage imageNamed:@"sport_1"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.scrollView addSubview:recordImg];
@@ -196,7 +216,11 @@
     NSArray *items = @[@"日",@"月",@"年"];
     //创建分段控件实例
     UISegmentedControl *sc = [[UISegmentedControl alloc]initWithItems:items]; //用文字数组初始化
-    sc.frame = CGRectMake((kScreen_Width-200)/2, recordImg.center.y-15, 200, 30);
+    sc.frame = CGRectMake((kScreen_Width-180)/2, recordImg.center.y-10, 180, 18);
+    sc.layer.masksToBounds = YES;               //    默认为no，不设置则下面一句无效
+    sc.layer.cornerRadius = sc.height/2-2;               //    设置圆角大小，同UIView
+    sc.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
+    sc.layer.borderColor = [UIColor colorWithHexString:@"59A43A"].CGColor; //     边框颜色
     sc.tintColor = [UIColor colorWithHexString:@"#59A43A"];
     [self.scrollView addSubview:sc];
     
@@ -308,7 +332,7 @@
         label.textAlignment = NSTextAlignmentRight;//;
     }
     label.text = axisValue;
-    label.font = [UIFont systemFontOfSize:12];
+    label.font = [UIFont boldSystemFontOfSize:12];
     label.textColor = [UIColor blackColor];
     return label;
 }
@@ -329,12 +353,74 @@
     [self presentViewController:alertView animated:YES completion:nil];
 }
 
-//static bool fill = NO;
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    fill = !fill;
-//    self.lines = [self lines:fill];
-//    [_pXLineChartView reloadData];
-//}
+// 开始运动
+- (void)sportAction:(UIButton *)btn
+{
+    btn.selected = !btn.selected;
+    if (btn.selected) {
+        
+        _startLab.text = @"0";
+        _startLab.textColor = [UIColor colorWithHexString:@"#58B6DA"];
+
+
+        [self  gotoOpenStepCountFunction];
+        
+    }else{
+
+//        _startLab.textColor = [UIColor colorWithHexString:@"#4F5152"];
+        [self gotoCloseStepCountFucntion];
+        
+    }
+}
+
+
+-(void)gotoOpenStepCountFunction{
+    
+    _pedometer = [[AppDelegate share ] sharedPedometer];
+    
+    if ([CMPedometer isStepCountingAvailable]) {
+        [_pedometer startPedometerUpdatesFromDate:[NSDate date] withHandler:^(CMPedometerData * _Nullable pedometerData, NSError * _Nullable error) {
+            
+            if (error) {
+                NSLog(@"error====%@",error);
+
+                
+            }else {
+                NSLog(@"BBB步数====%@",pedometerData.numberOfSteps);
+                NSLog(@"BBB距离====%@",pedometerData.distance);
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                _startLab.text = [NSString stringWithFormat:@"%@",pedometerData.numberOfSteps];
+                    
+                });
+
+
+            }
+            
+        }];
+        
+    }else{
+        
+        NSLog(@"计步器不可用");
+        
+    }
+    
+    
+}
+
+-(void)gotoCloseStepCountFucntion{
+    
+    if ([CMPedometer isStepCountingAvailable]) {
+        
+        _pedometer = [[AppDelegate share] sharedPedometer];
+//        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"startStepCount"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+        [_pedometer stopPedometerUpdates];
+        
+    }
+    
+}
 
 
 @end

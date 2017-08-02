@@ -44,13 +44,13 @@
     
     // 附近餐厅按钮
     _nearbyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _nearbyBtn.frame = CGRectMake(0, 0, kScreen_Width/2.0, 50);
+    _nearbyBtn.frame = CGRectMake(0, 0, kScreen_Width/2.0, 40);
     [_nearbyBtn setImage:[UIImage imageNamed:@"icon_shop"] forState:UIControlStateNormal];
     [_nearbyBtn setImage:[UIImage imageNamed:@"Restaurant_1"] forState:UIControlStateSelected];
     _nearbyBtn.backgroundColor = [UIColor whiteColor];
     _nearbyBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0);
     _nearbyBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -8);
-    _nearbyBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _nearbyBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [_nearbyBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_nearbyBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     _nearbyBtn.tag = 100;
@@ -61,12 +61,12 @@
     
     // 推荐饮食按钮
     _recommendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _recommendBtn.frame = CGRectMake(kScreen_Width/2.0, _nearbyBtn.top, kScreen_Width/2.0, 50);
+    _recommendBtn.frame = CGRectMake(kScreen_Width/2.0, _nearbyBtn.top, kScreen_Width/2.0, 40);
     [_recommendBtn setImage:[UIImage imageNamed:@"Restaurant_2"] forState:UIControlStateNormal];
     [_recommendBtn setImage:[UIImage imageNamed:@"diet_2"] forState:UIControlStateSelected];
     _recommendBtn.backgroundColor = [UIColor whiteColor];
     //    _btn.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
-    _recommendBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+    _recommendBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [_recommendBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_recommendBtn setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     _recommendBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -8, 0, 0);
@@ -78,7 +78,7 @@
     [self.view addSubview:_recommendBtn];
     
     // 底线
-    _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, _recommendBtn.bottom, kScreen_Width/2.0, 3)];
+    _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, _recommendBtn.bottom, kScreen_Width/2.0, 1)];
     _bottomLine.backgroundColor = [UIColor colorWithHexString:@"#EA3D00"];
     [self.view addSubview:_bottomLine];
     
@@ -93,6 +93,69 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+//// 请求餐厅列表
+//- (void)getRestaurantListInfo
+//{
+//    
+//    [SVProgressHUD show];
+//    
+//    if (self.longitude) {
+//        
+//        NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+//        [paramDic  setValue:self.longitude forKey:@"CoordX"];
+//        [paramDic  setValue:self.latitude forKey:@"CoordY"];
+//        [paramDic  setValue:self.groupBy forKey:@"GroupBy"];
+//        [paramDic  setValue:@(self.pageNO) forKey:@"PageNo"];
+//        //    [paramDic  setObject:imgStr forKey:@"TypeValue"];
+//        
+//        [AFNetworking_RequestData requestMethodPOSTUrl:GetRestaurantListInfo dic:paramDic Succed:^(id responseObject) {
+//            
+//            [SVProgressHUD dismiss];
+//            
+//            NSLog(@"%@",responseObject);
+//            
+//            NSArray *arr = responseObject[@"ListData"];
+//            if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+//                
+//                if (self.pageNO == 1) {
+//                    [self.modelArr removeAllObjects];
+//                    
+//                    [self.tableView setContentOffset:CGPointMake(0,0) animated:NO];
+//                    
+//                }
+//                
+//                NSMutableArray *arrM = [NSMutableArray array];
+//                for (NSDictionary *dic in arr) {
+//                    ResDetailModel *model = [ResDetailModel yy_modelWithJSON:dic];
+//                    [arrM addObject:model];
+//                    
+//                    NSLog(@"---%@",model.name);
+//                    
+//                }
+//                [self.tableView.mj_footer endRefreshing];
+//                
+//                [self.modelArr addObjectsFromArray:arrM]; ;
+//                [self.tableView reloadData];
+//                
+//                self.pageNO++;
+//                
+//            }
+//            
+//            else {
+//                // 拿到当前的上拉刷新控件，变为没有更多数据的状态
+//                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+//            }
+//            
+//        } failure:^(NSError *error) {
+//            [SVProgressHUD dismiss];
+//            
+//            NSLog(@"%@",error);
+//            
+//        }];
+//    }
+//    
+//}
 
 - (void)exchangeAction:(UIButton *)btn
 {
@@ -135,16 +198,16 @@
         
         if (self.tag == 100) {
             
-            return 117;
+            return 131;
 
         }
         else {
-            return 117+5;
+            return 144;
 
         }
         
     }
-    return 70+24+10-9;
+    return 70+24+6;
 
 }
 
@@ -242,8 +305,6 @@
         }
         cell.type = 1;
 
-    //    cell.textLabel.text = self.dataArray[indexPath.row];
-    //    cell.textLabel.font = [UIFont systemFontOfSize:14];
         return cell;
 
     }

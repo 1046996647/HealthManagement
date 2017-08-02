@@ -23,4 +23,13 @@
  */
 + (NSString *)isSameMonth:(NSString*)dateStr;
 
+// 公里计算
++ (NSString *)meterToKilometer:(NSString *)meterStr;
+
+// 文本宽度
++ (CGSize)textLength:(NSString *)content font:(UIFont *)font;
+
+// 富文本
++ (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color;
+
 @end

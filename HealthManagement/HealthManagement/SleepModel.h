@@ -6,9 +6,8 @@
 //  Copyright © 2017年 ZhangWeiLiang. All rights reserved.
 //
 
-#import "YHCoderObject.h"
 
-@interface SleepModel : YHCoderObject
+@interface SleepModel : NSObject<NSCoding>
 
 @property (nonatomic,strong) NSMutableArray *weekDay;
 @property (nonatomic,assign) BOOL isOpen;

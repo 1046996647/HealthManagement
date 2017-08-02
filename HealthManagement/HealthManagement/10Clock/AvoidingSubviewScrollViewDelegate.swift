@@ -5,7 +5,7 @@
 
 import Foundation
 import UIKit
-public class ConditionallyScrollingTableView: UITableView {
+public class ConditionallyScrollingTableView: UIScrollView {
 
     public var avoidingView: UIView? = nil
     

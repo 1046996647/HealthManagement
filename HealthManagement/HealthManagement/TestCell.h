@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BodyModel.h"
+
+typedef void(^SendEasyModelBlock)(ContenModel *model);
+
 
 @interface TestCell : UITableViewCell
 
 @property(nonatomic,strong) UIButton *wechatBtn;
+@property(nonatomic,strong) ContenModel *model;
+@property(nonatomic,copy) SendEasyModelBlock block;
 
 
 @end
