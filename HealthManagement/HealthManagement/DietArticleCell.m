@@ -78,7 +78,8 @@
         
         _btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
         _btn1.frame = CGRectMake(_btn.right, _btn.top, 60, 11);
-        [_btn1 setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
+        [_btn1 setImage:[UIImage imageNamed:@"thumbs_normal"] forState:UIControlStateNormal];
+        [_btn1 setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateSelected];
         //    _nearbyBtn.backgroundColor = [UIColor redColor];
         _btn1.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
         _btn1.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -5);
@@ -116,6 +117,14 @@
     _lab4.text = model.aTime;
     [_btn setTitle:model.cilckCount forState:UIControlStateNormal];
     [_btn1 setTitle:model.loveCount forState:UIControlStateNormal];
+    
+    if (model.PointPraise.integerValue == 0) {
+        _btn1.selected = NO;
+    }
+    else {
+        _btn1.selected = YES;
+
+    }
 
 }
 

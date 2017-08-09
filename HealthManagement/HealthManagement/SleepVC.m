@@ -28,6 +28,14 @@
 @property (nonatomic,strong) UIView *view3;
 @property (nonatomic,strong) UILabel *startLab;
 @property (nonatomic,strong) UILabel *endLab;
+@property (nonatomic,strong) UIView *fenxiView;
+@property (nonatomic,strong) UIView *line2;
+@property (nonatomic,strong) UIView *currentView;
+@property (nonatomic,assign) NSInteger index;
+
+
+@property (nonatomic,assign) float sleepTime;
+
 
 
 //@property(nonatomic,strong) UIButton *lastBtn;
@@ -230,8 +238,68 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    
+    NSDate *date = [NSDate date];
+    NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+    [inputFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateStr = [inputFormatter stringFromDate:date];
+    
+    NSString *weekStr = [NSString dateToWeek:dateStr];
+    
+    NSArray *weekArr = @[@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日"];
+    
+    NSInteger index = [weekArr indexOfObject:weekStr];
+    self.index = index;
+    
+    // 每周一清楚上周数据
+    if (index == 0) {
+        [self.model.weekValue removeAllObjects];
+        for (int i=0; i<7; i++) {
+            UIView *view = [self.scrollView viewWithTag:200+i];
+            view.height = 0;
+        }
+    }
+    
+    // 当前周几
+    UILabel *lab = (UILabel *)[self.scrollView viewWithTag:100+index];
+    lab.textColor = [UIColor colorWithHexString:@"FD7B00"];
+    
+    UIView *view = (UILabel *)[self.scrollView viewWithTag:200+index];
+    self.currentView = view;
+    
+
+
+}
+
+// 视图变化
+- (void)changeAction
+{
+    float per = _sleepTime/24;
+    
+    NSLog(@"----%f",per);
+    self.model.weekValue[_index] = @(per);
+    
+    float height = 61.5;
+    self.fenxiView.height = per*height;
+    self.line2.bottom = self.fenxiView.height;
+    self.endLab.bottom = self.fenxiView.height;
+    
+    if (self.fenxiView.height>5.5) {
+        self.currentView.top = self.fenxiView.top+5.5;
+
+        self.currentView.height = self.fenxiView.height-5.5;
+
+    }
+
+}
+
 - (void)initSleepView
 {
+
     UILabel *fenxiLab = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view3.bottom+10, kScreen_Width-20, 18)];
     fenxiLab.font = [UIFont systemFontOfSize:16];
     fenxiLab.text = @"睡眠分析";
@@ -239,19 +307,24 @@
     fenxiLab.textColor = [UIColor blackColor];
     [self.scrollView addSubview:fenxiLab];
     
-    UILabel *startLab = [[UILabel alloc] initWithFrame:CGRectMake(10, fenxiLab.bottom+11, 35, 11)];
+    UIView *fenxiView = [[UIView alloc] initWithFrame:CGRectMake(0, fenxiLab.bottom+11, kScreen_Width, 0)];
+    fenxiView.clipsToBounds = YES;
+    [self.scrollView addSubview:fenxiView];
+    self.fenxiView = fenxiView;
+    
+    UILabel *startLab = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 35, 11)];
     startLab.font = [UIFont boldSystemFontOfSize:10];
     startLab.text = @"23:34";
     startLab.textAlignment = NSTextAlignmentLeft;
     startLab.textColor = [UIColor colorWithHexString:@"#5B5B5B"];
 //    startLab.backgroundColor = [UIColor redColor];
-    [self.scrollView addSubview:startLab];
+    [fenxiView addSubview:startLab];
     self.startLab = startLab;
     
     // 灰色条
     UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(startLab.right, startLab.center.y-.25, kScreen_Width-startLab.right-12, .5)];
     line1.backgroundColor = [UIColor colorWithHexString:@"#AFAFAF"];
-    [self.scrollView addSubview:line1];
+    [fenxiView addSubview:line1];
     
     UILabel *endLab = [[UILabel alloc] initWithFrame:CGRectMake(10, startLab.bottom+41, startLab.width, 11)];
     endLab.font = [UIFont boldSystemFontOfSize:10];
@@ -259,32 +332,61 @@
     endLab.textAlignment = NSTextAlignmentLeft;
     endLab.textColor = [UIColor colorWithHexString:@"#5B5B5B"];
     //    startLab.backgroundColor = [UIColor redColor];
-    [self.scrollView addSubview:endLab];
+    [fenxiView addSubview:endLab];
     self.endLab = endLab;
     
     [self dateFormatterStart:self.clock.startDate end:self.clock.endDate];
 
 
-    
     // 灰色条
     UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(endLab.right, endLab.bottom-2, line1.width, .5)];
     line2.backgroundColor = [UIColor colorWithHexString:@"#AFAFAF"];
-    [self.scrollView addSubview:line2];
+    [fenxiView addSubview:line2];
+    self.line2 = line2;
+    
     
     for (int i=0; i<4; i++) {
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(line1.left, line1.bottom+10+i*(1+10), line1.width, 1)];
         [self drawDashLine:line lineLength:2 lineSpacing:4 lineColor:[UIColor colorWithHexString:@"#C3C3C3"]];
 //        lineImg.backgroundColor = [UIColor redColor];
         // 添加到控制器的view上
-        [self.scrollView addSubview:line];
+        [fenxiView addSubview:line];
     }
     
+    
+    fenxiView.height = line2.bottom;
+    
+    float height = 61.5;
+
+    for (int i=0; i<7; i++) {
+        
+        float per = [self.model.weekValue[i] floatValue]/24;
+//        float per = .5;
+        
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(line2.left+i*(line2.width/7.0)+(line2.width/7.0)/2.0, fenxiView.top+(61.5-per*height-5.5), 3, per*height)];
+        view.layer.cornerRadius = view.width/2;
+        view.layer.masksToBounds = YES;
+        view.backgroundColor = [UIColor colorWithHexString:@"FD7B00"];
+        view.tag = 200+i;
+        // 添加到控制器的view上
+        [self.scrollView addSubview:view];
+        
+        if (i == 0) {
+            view.left = line2.left+10;
+            
+        }
+        if (i == 7-1) {
+            view.left = line2.right-3-6;
+        }
+    }
+
     NSArray *weekArr = @[@"周一",@"二",@"三",@"四",@"五",@"六",@"日"];
     for (int i=0; i<weekArr.count; i++) {
         
-        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(line2.left+i*(line2.width/weekArr.count), line2.bottom+11, line2.width/weekArr.count, 15)];
+        UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(line2.left+i*(line2.width/weekArr.count), fenxiView.bottom+11, line2.width/weekArr.count, 15)];
         lab.font = [UIFont systemFontOfSize:14];
         lab.text = weekArr[i];
+        lab.tag = 100+i;
         lab.textAlignment = NSTextAlignmentCenter;
         lab.textColor = [UIColor colorWithHexString:@"#999999"];
         //    startLab.backgroundColor = [UIColor redColor];
@@ -292,6 +394,7 @@
         
         if (i == 0) {
             lab.textAlignment = NSTextAlignmentLeft;
+//            lab.backgroundColor = [UIColor redColor];
 
         }
         if (i == weekArr.count-1) {
@@ -301,7 +404,7 @@
     }
     
     
-    self.scrollView.contentSize = CGSizeMake(kScreen_Width, line2.bottom+35);
+    self.scrollView.contentSize = CGSizeMake(kScreen_Width, fenxiView.bottom+35);
 }
 
 
@@ -412,6 +515,9 @@
 - (void)timesTotal:(TenClock *)clock time:(NSInteger)time
 {
 
+    self.sleepTime = time / 12.0;
+    [self changeAction];
+    
     NSString *str1 = [NSString stringWithFormat:@"%ld",(time / 12)];
     NSString *str2 = [NSString stringWithFormat:@"%ld",((time % 12) * 5)];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时%@分钟",str1, str2]];
@@ -645,21 +751,6 @@
 
 
 
-//自定义滑块的大小    通过此方法可以更改滑块的任意大小和形状
--(UIImage*) OriginImage:(UIImage*)image scaleToSize:(CGSize)size
-
-{
-    UIGraphicsBeginImageContext(size);//size为CGSize类型，即你所需要的图片尺寸
-    
-    [image drawInRect:CGRectMake(0,0, size.width, size.height)];
-    
-    UIImage* scaledImage =UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return scaledImage;
-    
-}
 
 
 

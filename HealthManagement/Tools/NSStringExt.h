@@ -30,6 +30,6 @@
 + (CGSize)textLength:(NSString *)content font:(UIFont *)font;
 
 // 富文本
-+ (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color;
++ (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color font:(UIFont *)font;
 
 @end

@@ -10,6 +10,8 @@
 #import "NearbyRestaurantTableViewCell.h"
 #import "DietArticleCell.h"
 #import "RecommendDietCell.h"
+#import "UITableView+EmptyData.h"
+
 
 @interface SearchResultVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -20,6 +22,11 @@
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) UIButton *lastBtn;
 @property(nonatomic,assign) NSInteger tag;
+
+@property(nonatomic,strong) NSMutableArray *resArr;
+@property(nonatomic,strong) NSMutableArray *dietArr;
+@property(nonatomic,strong) NSMutableArray *articleArr;
+
 
 @end
 
@@ -87,6 +94,8 @@
 
     [self.view addSubview:self.tableView];
     
+    [self searchVagueRestaurant];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,68 +103,97 @@
     // Dispose of any resources that can be recreated.
 }
 
-//// 请求餐厅列表
-//- (void)getRestaurantListInfo
-//{
-//    
-//    [SVProgressHUD show];
-//    
-//    if (self.longitude) {
-//        
-//        NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
-//        [paramDic  setValue:self.longitude forKey:@"CoordX"];
-//        [paramDic  setValue:self.latitude forKey:@"CoordY"];
-//        [paramDic  setValue:self.groupBy forKey:@"GroupBy"];
-//        [paramDic  setValue:@(self.pageNO) forKey:@"PageNo"];
-//        //    [paramDic  setObject:imgStr forKey:@"TypeValue"];
-//        
-//        [AFNetworking_RequestData requestMethodPOSTUrl:GetRestaurantListInfo dic:paramDic Succed:^(id responseObject) {
-//            
-//            [SVProgressHUD dismiss];
-//            
-//            NSLog(@"%@",responseObject);
-//            
-//            NSArray *arr = responseObject[@"ListData"];
-//            if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
-//                
-//                if (self.pageNO == 1) {
-//                    [self.modelArr removeAllObjects];
-//                    
-//                    [self.tableView setContentOffset:CGPointMake(0,0) animated:NO];
-//                    
-//                }
-//                
-//                NSMutableArray *arrM = [NSMutableArray array];
-//                for (NSDictionary *dic in arr) {
-//                    ResDetailModel *model = [ResDetailModel yy_modelWithJSON:dic];
-//                    [arrM addObject:model];
-//                    
-//                    NSLog(@"---%@",model.name);
-//                    
-//                }
-//                [self.tableView.mj_footer endRefreshing];
-//                
-//                [self.modelArr addObjectsFromArray:arrM]; ;
-//                [self.tableView reloadData];
-//                
-//                self.pageNO++;
-//                
-//            }
-//            
-//            else {
-//                // 拿到当前的上拉刷新控件，变为没有更多数据的状态
-//                [self.tableView.mj_footer endRefreshingWithNoMoreData];
-//            }
-//            
-//        } failure:^(NSError *error) {
-//            [SVProgressHUD dismiss];
-//            
-//            NSLog(@"%@",error);
-//            
-//        }];
-//    }
-//    
-//}
+// 搜索
+- (void)searchVagueRestaurant
+{
+    
+    [SVProgressHUD show];
+    
+    if (self.longitude) {
+        
+        NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+        [paramDic  setValue:self.longitude forKey:@"CoordX"];
+        [paramDic  setValue:self.latitude forKey:@"CoordY"];
+        [paramDic  setValue:@(1) forKey:@"PageNo"];
+        [paramDic  setObject:self.searchText forKey:@"Name"];
+        [paramDic  setObject:@"All" forKey:@"SearchType"];
+        
+        [AFNetworking_RequestData requestMethodPOSTUrl:SearchVagueRestaurant dic:paramDic Succed:^(id responseObject) {
+            
+            [SVProgressHUD dismiss];
+            [self.tableView.mj_footer endRefreshing];
+
+            
+            NSLog(@"%@",responseObject);
+            
+            NSNumber *code = responseObject[@"HttpCode"];
+            
+            if (code.integerValue == 200) {
+                
+                NSArray *arr = responseObject[@"ListData"];
+                if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+                    
+                    NSMutableArray *arrM = [NSMutableArray array];
+                    for (NSDictionary *dic in arr) {
+                        ResDetailModel *model = [ResDetailModel yy_modelWithJSON:dic];
+                        [arrM addObject:model];
+                        
+                        
+                    }
+                    self.resArr = arrM;
+                    
+                    
+                }
+                
+                NSArray *arr2 = responseObject[@"ListData2"];
+                if ([arr2 isKindOfClass:[NSArray class]] && arr2.count > 0) {
+                    
+                    NSMutableArray *arrM2 = [NSMutableArray array];
+                    for (NSDictionary *dic in arr2) {
+                        ArticleModel *model = [ArticleModel yy_modelWithJSON:dic];
+                        [arrM2 addObject:model];
+                        
+                        
+                    }
+                    self.articleArr = arrM2;
+
+                    
+                }
+                
+                NSArray *arr3 = responseObject[@"ListData3"];
+                if ([arr3 isKindOfClass:[NSArray class]] && arr3.count > 0) {
+                    
+                    NSMutableArray *arrM3 = [NSMutableArray array];
+                    for (NSDictionary *dic in arr3) {
+                        RecipeModel *model = [RecipeModel yy_modelWithJSON:dic];
+                        [arrM3 addObject:model];
+                        
+                        
+                    }
+                    self.dietArr = arrM3;
+                    
+                    
+                }
+                
+                [self.tableView reloadData];
+
+            }
+            
+
+            
+        } failure:^(NSError *error) {
+            
+            [SVProgressHUD dismiss];
+            
+            [self.tableView.mj_footer endRefreshing];
+
+            
+            NSLog(@"%@",error);
+            
+        }];
+    }
+    
+}
 
 - (void)exchangeAction:(UIButton *)btn
 {
@@ -213,12 +251,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    return self.dataArray.count;
-    if (section == 0) {
-        return 3;
+    if (self.resArr.count==0 && self.dietArr.count==0 && self.articleArr.count==0) {
+        [tableView tableViewDisplayWitMsg:@"搜索无结果~" ifNecessaryForRowCount:0];
     }
     else {
-        return 9;
+        [tableView tableViewDisplayWitMsg:@"搜索无结果~" ifNecessaryForRowCount:1];
+
+    }
+    
+    if (section == 0) {
+        
+        if (self.tag == 100) {
+            return self.resArr.count;
+
+        }
+        else {
+            return self.dietArr.count;
+
+        }
+    }
+    else {
+        return self.articleArr.count;
     }
 }
 
@@ -228,7 +281,15 @@
         return 0;
     }
     else {
-        return 25;
+        
+        if (self.articleArr.count > 0) {
+            return 25;
+
+        }
+        else {
+            return 0;
+
+        }
     }
 }
 
@@ -276,8 +337,10 @@
                 cell = [[NearbyRestaurantTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"firstCell"];
                 
             }
-            //    cell.textLabel.text = self.dataArray[indexPath.row];
-            //    cell.textLabel.font = [UIFont systemFontOfSize:14];
+            
+            ResDetailModel *model = self.resArr[indexPath.row];
+            cell.model = model;
+
             return cell;
         }
         else {
@@ -288,8 +351,9 @@
                 cell = [[RecommendDietCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"threeCell"];
                 
             }
-            //    cell.textLabel.text = self.dataArray[indexPath.row];
-            //    cell.textLabel.font = [UIFont systemFontOfSize:14];
+            RecipeModel *model = self.dietArr[indexPath.row];
+            cell.model = model;
+
             return cell;
             
         }
@@ -303,7 +367,9 @@
             
             cell = [[DietArticleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"secondCell"];
         }
-        cell.type = 1;
+//        cell.type = 1;
+        ArticleModel *model = self.articleArr[indexPath.row];
+        cell.model = model;
 
         return cell;
 

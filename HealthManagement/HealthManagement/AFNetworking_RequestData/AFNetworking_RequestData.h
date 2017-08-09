@@ -9,6 +9,9 @@
 
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking.h>
+
+
 typedef void(^Success)(id responseObject);
 typedef void(^Failure)(NSError *error);
 @interface AFNetworking_RequestData : NSObject

@@ -187,6 +187,15 @@
     [volumeLab addSubview:slider];
     self.slider = slider;
     
+    if (self.model.volume < 0) {
+        self.slider.value = [SleepSettingVC getSystemVolumValue];
+
+    }
+    else {
+        self.slider.value = self.model.volume;
+        
+    }
+    
     
     baseView.height = volumeLab.bottom;
     
@@ -199,6 +208,9 @@
     [btn2 setTitleColor:[UIColor colorWithHexString:@"#59A43A"] forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn2];
     [btn2 addTarget:self action:@selector(finishAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeChange:) name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
 }
 
 -(void)volumeChange:(NSNotification*)notifi{
@@ -208,16 +220,18 @@
         NSLog(@"铃声改变");
     }else if ([style isEqualToString:@"Audio/Video"]){
         NSLog(@"音量改变 当前值:%f",value);
-//        self.slider.value = value;
+        self.slider.value = value;
+        self.model.volume = value;
     }
 }
 
 - (void)sliderMethod:(UISlider *)sender
 {
-    
+    [SleepSettingVC setSysVolumWith:sender.value];
+
 }
 
-
+//
 
 #pragma mark - 音量控制
 /*

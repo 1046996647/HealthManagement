@@ -10,7 +10,7 @@
 #define RequestUrl_h
 
 // 线上
-//#define BaseUrl  @"http:// 106.14.218.31:8020/"
+//#define BaseUrl  @"http://106.14.218.31:8020/API/"
 
 // 线下
 #define BaseUrl  @"http://192.168.10.100:8051/API/"
@@ -41,6 +41,12 @@
 
 // 饮食文章列表
 #define GetArticleListInfo  [NSString stringWithFormat:@"%@Article/GetArticleListInfo",BaseUrl]
+
+// 文章点赞
+#define ArticlePointPraise  [NSString stringWithFormat:@"%@Article/ArticlePointPraise",BaseUrl]
+
+// 文章查看
+#define ArticleClick  [NSString stringWithFormat:@"%@Article/ArticleClick",BaseUrl]
 
 // 获取验证码
 #define SendMail  [NSString stringWithFormat:@"%@User/SendMail",BaseUrl]
@@ -74,5 +80,11 @@
 
 // 5.5	用户偏好
 #define SelectUserPreference  [NSString stringWithFormat:@"%@User/SelectUserPreference",BaseUrl]
+
+// 5.5	上传图片
+#define UploadUserHeadImage  [NSString stringWithFormat:@"%@User/UploadUserHeadImage",BaseUrl]
+
+#define UploadImage  [NSString stringWithFormat:@"%@User/UploadImage",BaseUrl]
+
 
 #endif /* RequestUrl_h */

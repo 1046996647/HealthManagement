@@ -7,7 +7,12 @@
 //
 
 #import "BaseViewController.h"
+#import "RecipeModel.h"
+
 
 @interface PaymentVC : BaseViewController
+
+@property(nonatomic,strong) RecipeModel *model;
+
 
 @end

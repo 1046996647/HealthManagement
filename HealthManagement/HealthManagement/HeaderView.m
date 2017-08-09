@@ -63,8 +63,9 @@
     NSString *str1 = @"4";
 //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
 //    self.money = str1;
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"升级还需%@积分",str1]];
-    NSRange range1 = {4,[str1 length]};
+//    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"升级还需%@积分",str1]];
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"还需%@积分",str1]];
+    NSRange range1 = {2,[str1 length]};
     [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range1];
     
     _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(_btn.right, _btn.top, 90, 18)];
@@ -99,7 +100,8 @@
     [_btn1 setTitleColor:[UIColor colorWithHexString:@"#868788"] forState:UIControlStateNormal];
     _btn1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
 //    _btn1.backgroundColor = [UIColor redColor];
-    [_btn1 setTitle:@" 今日已进行有氧运动" forState:UIControlStateNormal];
+//    [_btn1 setTitle:@" 今日已进行有氧运动" forState:UIControlStateNormal];
+    [_btn1 setTitle:@" 今日已做运动" forState:UIControlStateNormal];
     [self addSubview:_btn1];
     
     //-----------附近餐厅-----------
@@ -152,6 +154,7 @@
 //    _userLocationLab.backgroundColor = [UIColor redColor];
     _userLocationLab.font = [UIFont systemFontOfSize:12];
     _userLocationLab.textColor = [UIColor whiteColor];
+    _userLocationLab.userInteractionEnabled = YES;
     [self addSubview:_userLocationLab];
     
 
@@ -171,9 +174,16 @@
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self.tf resignFirstResponder];
+    if (textField.text.length == 0) {
+        [self.tf resignFirstResponder];
+
+        return YES;
+    }
     SearchResultVC *vc = [[SearchResultVC alloc] init];
     vc.title = @"搜索结果";
+    vc.longitude = self.longitude;
+    vc.latitude = self.latitude;
+    vc.searchText = textField.text;
     [self.viewController.navigationController pushViewController:vc animated:YES];
     return YES;
 }

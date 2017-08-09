@@ -22,6 +22,8 @@ typedef void(^ReloadBlock)(void);
 @property(nonatomic,strong) UIImageView *imgView1;
 @property(nonatomic,strong) UIImageView *imgView2;
 @property(nonatomic,strong) UIImageView *imgView3;
+@property(nonatomic,strong) UIImageView *countImgView;
+
 @property(nonatomic,strong) UILabel *lab1;
 @property(nonatomic,strong) UILabel *lab2;
 @property(nonatomic,strong) UILabel *lab3;

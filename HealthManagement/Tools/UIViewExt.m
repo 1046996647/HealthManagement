@@ -189,4 +189,73 @@ CGRect CGRectMoveToCenter(CGRect rect, CGPoint center)
 	
 	self.frame = newframe;	
 }
+
+// UILabel
++ (UILabel *)labelWithframe:(CGRect)frame text:(NSString *)text font:(UIFont *)font textAlignment:(NSTextAlignment)textAlignment textColor:(NSString *)color
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.font = font;
+    label.text = text;
+    label.textAlignment = textAlignment;
+    //        _lab1.backgroundColor = [UIColor redColor];545354
+    label.textColor = [UIColor colorWithHexString:color];
+    
+    return label;
+}
+
+// UIImageView
++ (UIImageView *)imgViewWithframe:(CGRect)frame icon:(NSString *)icon
+{
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:frame];
+    imgView.image = [UIImage imageNamed:icon];
+    return imgView;
+}
+
+// UIButton
++ (UIButton *)buttonWithframe:(CGRect)frame text:(NSString *)text font:(UIFont *)font textColor:(NSString *)color backgroundColor:(NSString *)backColor normal:(NSString *)normal selected:(NSString *)selected
+{
+    UIButton *button = [[UIButton alloc] initWithFrame:frame];
+    
+    [button setImage:[UIImage imageNamed:normal] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:selected] forState:UIControlStateSelected];
+    [button setTitleColor:[UIColor colorWithHexString:@"#A4A4A4"] forState:UIControlStateNormal];
+    [button setTitle:text forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor colorWithHexString:backColor];
+    button.titleLabel.font = font;
+    
+    return button;
+}
+
+// UITextField
++ (UITextField *)textFieldWithframe:(CGRect)frame placeholder:(NSString *)placeholder font:(UIFont *)font leftFrame:(CGRect)leftFrame leftIcon:(NSString *)leftIcon
+{
+    
+    UIImageView *leftView = [[UIImageView alloc] initWithFrame:leftFrame];
+    leftView.contentMode = UIViewContentModeScaleAspectFit;
+    leftView.image = [UIImage imageNamed:leftIcon];
+    
+    UITextField *tf = [[UITextField alloc] initWithFrame:frame];
+    
+    tf.placeholder = placeholder;
+    tf.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tf.font = font;
+//    tf.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    tf.leftViewMode = UITextFieldViewModeAlways;
+    tf.leftView = leftView;
+    
+    return tf;
+}
+
+
+// 在view中获取viewController
+- (UIViewController *)viewController
+{
+    UIResponder *responder = self.nextResponder;
+    while (![responder isKindOfClass:[UIViewController class]] && responder != nil) {
+        responder = responder.nextResponder;
+    }
+    return (UIViewController *)responder;
+}
+
+
 @end

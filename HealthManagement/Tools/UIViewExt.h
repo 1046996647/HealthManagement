@@ -29,4 +29,22 @@ CGRect  CGRectMoveToCenter(CGRect rect, CGPoint center);
 - (void) moveBy: (CGPoint) delta;
 - (void) scaleBy: (CGFloat) scaleFactor;
 - (void) fitInSize: (CGSize) aSize;
+
+// UILabel
++ (UILabel *)labelWithframe:(CGRect)frame font:(UIFont *)font textAlignment:(NSTextAlignment)textAlignment textColor:(NSString *)color;
+
+// UIImageView
++ (UIImageView *)imgViewWithframe:(CGRect)frame icon:(NSString *)icon;
+
+// UIButton
++ (UIButton *)buttonWithframe:(CGRect)frame text:(NSString *)text font:(UIFont *)font textColor:(NSString *)color backgroundColor:(NSString *)backColor normal:(NSString *)normal selected:(NSString *)selected;
+
+// UITextField
++ (UITextField *)textFieldWithframe:(CGRect)frame placeholder:(NSString *)placeholder font:(UIFont *)font leftFrame:(CGRect)leftFrame leftIcon:(NSString *)leftIcon;
+
+
+// 在view中获取viewController
+- (UIViewController *)viewController;
+
+
 @end

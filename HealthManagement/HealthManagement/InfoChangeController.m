@@ -53,6 +53,12 @@
     [_tv becomeFirstResponder];
     [self.view addSubview:_tv];
     _tv.keyboardType = UIKeyboardTypeNumberPad;
+    [_tv addTarget:self action:@selector(valueChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    if ([self.title isEqualToString:@"名字"]) {
+        _tv.keyboardType = UIKeyboardTypeDefault;
+
+    }
     
 //    if ([self.title isEqualToString:@"身高"]) {
 //
@@ -129,24 +135,12 @@
     [self.view endEditing:YES];
 }
 
-
-//#pragma mark - Notification Method
-//-(void)textViewEditChanged:(NSNotification *)obj
-//{
-//    
-//    UITextView *textView = (UITextView *)obj.object;
-//    
-//    if ([textView.text containsString:@"\n"]) {
-//        
-//        NSMutableString *mStr = [NSMutableString stringWithString:textView.text];
-//        [mStr deleteCharactersInRange:NSMakeRange(mStr.length-1, 1)];
-//        textView.text = mStr;
-//        [self saveAction];
-//        return;
-//    }
-//    
-////    [self.view computeWordCountWithTextView:_tv remindLab:_remindLab warningLabel:_limitLab maxNumber:fontNum];
-//}
+- (void)valueChange:(UITextField *)tf
+{
+    if (tf.text.length > 12) {
+        tf.text = [tf.text substringToIndex:12];
+    }
+}
 
 
 

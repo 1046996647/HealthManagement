@@ -10,9 +10,13 @@
 #import "PXLineChartView.h"
 #import "PointItem.h"
 #import "AppDelegate.h"
+#import "LZQTimerLabel.h"
+#import "NSStringExt.h"
+#import "CAAnimation+HCAnimation.h"
 
 
-@interface SportVC ()<PXLineChartViewDelegate>
+
+@interface SportVC ()<PXLineChartViewDelegate,LZQTimerLabelDelegate>
 
 // -----------运动-----------------
 @property(nonatomic,strong) UILabel *sportLab;
@@ -32,6 +36,9 @@
 // -----------其他-----------------
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) UIView *view2;
+
+@property (nonatomic,strong)LZQTimerLabel *oneLabel;
+
 
 // -----------统计图-----------------
 @property (nonatomic, strong) PXLineChartView *pXLineChartView;
@@ -74,16 +81,23 @@
     [sportBtn addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:sportBtn];
     
-    UIView *sportView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-    sportView.center = sportBtn.center;
+    [CAAnimation showScaleAnimationInView:sportBtn Repeat:1 Autoreverses:NO FromValue:0.0 ToValue:1.0 Duration:1.0];
+
+
+
+    
+    UIView *sportView = [[UIView alloc] initWithFrame:CGRectMake((sportBtn.width-80)/2.0, (sportBtn.height-80)/2.0, 80, 80)];
+//    sportView.center = sportBtn.center;
     sportView.userInteractionEnabled = NO;
 //    sportView.backgroundColor = [UIColor redColor];
-    [scrollView addSubview:sportView];
+    [sportBtn addSubview:sportView];
     
     UIImageView *sportImg = [[UIImageView alloc] initWithFrame:CGRectMake((sportView.width-24)/2.0-10-24, -5, 48/2, 54/2)];
     sportImg.image = [UIImage imageNamed:@"sport_2"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [sportView addSubview:sportImg];
+    
+    
     
     _sportLab = [[UILabel alloc] initWithFrame:CGRectMake(sportImg.right+5, sportImg.center.y-7.5, 100, 15)];
     _sportLab.font = [UIFont boldSystemFontOfSize:14];
@@ -107,6 +121,7 @@
     _stepLab.textColor = [UIColor grayColor];
     [sportView addSubview:_stepLab];
     
+    
     // -----------时间-----------------
     UIButton *timeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     timeBtn.frame = CGRectMake(sportBtn.center.x-30-scaleWidth*282/2.0, sportBtn.center.y+10, scaleWidth*282/2.0, scaleWidth*282/2.0);
@@ -115,27 +130,18 @@
     [scrollView insertSubview:timeBtn atIndex:0];
     self.timeBtn = timeBtn;
     
-    UIView *timeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-    timeView.center = timeBtn.center;
+    [CAAnimation showScaleAnimationInView:timeBtn Repeat:1 Autoreverses:NO FromValue:0.0 ToValue:1.0 Duration:1.5];
+
+    
+    UIView *timeView = [[UIView alloc] initWithFrame:CGRectMake((timeBtn.width-80)/2.0, (timeBtn.height-80)/2.0, 80, 80)];
     //    sportView.backgroundColor = [UIColor redColor];
-    [scrollView addSubview:timeView];
+    [timeBtn addSubview:timeView];
     
     UIImageView *timeImg = [[UIImageView alloc] initWithFrame:CGRectMake((timeView.width-54/2)/2.0, 0, 54/2, 27)];
     timeImg.image = [UIImage imageNamed:@"sport_4"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [timeView addSubview:timeImg];
     
-    NSString *str1 = @"103";
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ min",str1]];
-    NSRange range1 = {0,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#F89532"] range:range1];
-    [attStr addAttribute:NSFontAttributeName
-     
-                          value:[UIFont boldSystemFontOfSize:28]
-     
-                          range:range1];
     
     _timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake((timeView.width-timeBtn.width)/2.0, timeImg.bottom+11, timeBtn.width, 29)];
     _timeLab1.font = [UIFont boldSystemFontOfSize:14];
@@ -143,7 +149,9 @@
     _timeLab1.textAlignment = NSTextAlignmentCenter;
     _timeLab1.textColor = [UIColor grayColor];
     [timeView addSubview:_timeLab1];
-    _timeLab1.attributedText = attStr;
+    
+    NSMutableAttributedString *attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ min",@"0"] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
+    _timeLab1.attributedText = attr;
     
     _timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _timeLab1.bottom+11, timeView.width, 15)];
     _timeLab2.font = [UIFont boldSystemFontOfSize:14];
@@ -159,25 +167,18 @@
     //    [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
     [scrollView insertSubview:disBtn atIndex:0];
     
-    UIView *disView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
-    disView.center = disBtn.center;
+    [CAAnimation showScaleAnimationInView:disBtn Repeat:1 Autoreverses:NO FromValue:0.0 ToValue:1.0 Duration:2.0];
+
+    
+    UIView *disView = [[UIView alloc] initWithFrame:CGRectMake((disBtn.width-80)/2.0, (disBtn.height-80)/2.0, 80, 80)];
     //    sportView.backgroundColor = [UIColor redColor];
-    [scrollView addSubview:disView];
+    [disBtn addSubview:disView];
     
     UIImageView *disImg = [[UIImageView alloc] initWithFrame:CGRectMake((disView.width-33)/2.0, 0, 33, 23)];
     disImg.image = [UIImage imageNamed:@"sport_3"];
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [disView addSubview:disImg];
     
-    str1 = @"25";
-    attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ km",str1]];
-    NSRange range2 = {0,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#E966BD"] range:range2];
-    [attStr addAttribute:NSFontAttributeName
-     
-                   value:[UIFont boldSystemFontOfSize:25]
-     
-                   range:range2];
     
     _disLab1 = [[UILabel alloc] initWithFrame:CGRectMake((disView.width-disBtn.width)/2.0, disImg.bottom+11, disBtn.width, 26)];
     _disLab1.font = [UIFont boldSystemFontOfSize:14];
@@ -185,7 +186,9 @@
     _disLab1.textAlignment = NSTextAlignmentCenter;
     _disLab1.textColor = [UIColor grayColor];
     [disView addSubview:_disLab1];
-    _disLab1.attributedText = attStr;
+    
+    attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ km",@"0"] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
+    _disLab1.attributedText = attr;
 
     
     _disLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _disLab1.bottom+11, disView.width, 15)];
@@ -200,6 +203,9 @@
     view2.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
     [self.scrollView addSubview:view2];
     self.view2 = view2;
+    
+    // 计时器
+    _oneLabel = [[LZQTimerLabel alloc] initWithLabel:nil andTimerType:LZQTimerLabelTypeWithNormal withDelegate:self];
     
     // 统计图
     [self initRecordView];
@@ -222,14 +228,16 @@
     sc.layer.borderWidth = 1;                   //    边框宽度，重新画边框，若不重新画，可能会出现圆角处无边框的情况
     sc.layer.borderColor = [UIColor colorWithHexString:@"59A43A"].CGColor; //     边框颜色
     sc.tintColor = [UIColor colorWithHexString:@"#59A43A"];
+    sc.selectedSegmentIndex = 0;
     [self.scrollView addSubview:sc];
+    [sc addTarget:self action:@selector(didClicksegmentedControlAction:)forControlEvents:UIControlEventValueChanged];
     
-    _pXLineChartView = [[PXLineChartView alloc] initWithFrame:CGRectMake(-25, sc.bottom, kScreen_Width, 200)];
+    _pXLineChartView = [[PXLineChartView alloc] initWithFrame:CGRectMake(-25, sc.bottom, kScreen_Width, 250)];
     _pXLineChartView.delegate = self;
 //    _pXLineChartView.backgroundColor = [UIColor redColor];
     [self.scrollView addSubview:_pXLineChartView];
     
-    self.scrollView.contentSize = CGSizeMake(kScreen_Width, _pXLineChartView.bottom+12-64);
+    self.scrollView.contentSize = CGSizeMake(kScreen_Width, _pXLineChartView.bottom+12);
     
     _xElements = @[@"6.27",@"6.28",@"6.29",@"6.30",@"7.1",@"7.2",@"7.3"];
     _yElements = @[@"1000",@"2000",@"3000",@"4000",@"5000"];
@@ -242,6 +250,30 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)didClicksegmentedControlAction:(UISegmentedControl *)Seg
+{
+    NSInteger Index = Seg.selectedSegmentIndex;
+    NSLog(@"Index %ld", Index);
+
+    switch (Index)
+    {
+        case 0:
+            
+            break;
+        case 1:
+            
+            break;
+        case 2:
+            
+            break;
+
+        default:
+            
+            break;
+    }
+    
+}
+
 - (NSArray *)lines:(BOOL)fill {
     //    NSArray *pointsArr1 = @[@{@"xValue" : @"16-2", @"yValue" : @"1000"},
     //                           @{@"xValue" : @"16-4", @"yValue" : @"2000"},
@@ -252,12 +284,12 @@
     //                           @{@"xValue" : @"17-02", @"yValue" : @"1100"},
     //                           @{@"xValue" : @"17-04", @"yValue" : @"1500"}];
     
-    NSArray *pointsArr1 = @[@{@"xValue" : @"6.27", @"yValue" : @"2000"},
+    NSArray *pointsArr1 = @[@{@"xValue" : @"6.27", @"yValue" : @"500"},
                             @{@"xValue" : @"6.28", @"yValue" : @"2200"},
                             @{@"xValue" : @"6.29", @"yValue" : @"3000"},
                             @{@"xValue" : @"6.30", @"yValue" : @"3750"},
                             @{@"xValue" : @"7.1", @"yValue" : @"3800"},
-                            @{@"xValue" : @"7.2", @"yValue" : @"4000"},
+                            @{@"xValue" : @"7.2", @"yValue" : @"5000"},
                             @{@"xValue" : @"7.3", @"yValue" : @"2000"}];
     
     //    NSMutableArray *points = @[].mutableCopy;
@@ -308,7 +340,7 @@
              gridHide : @0,
              pointHide : @0,
              pointFont : [UIFont systemFontOfSize:10],
-             firstYAsOrigin : @1,
+             firstYAsOrigin : @0,
              scrollAnimation : @1,
              scrollAnimationDuration : @"2"};
 }
@@ -340,18 +372,18 @@
 - (NSArray<id<PointItemProtocol>> *)plotsOflineIndex:(NSUInteger)lineIndex {
     return self.lines[lineIndex];
 }
-//点击point回调响应
-- (void)elementDidClickedWithPointSuperIndex:(NSUInteger)superidnex pointSubIndex:(NSUInteger)subindex {
-    PointItem *item = self.lines[superidnex][subindex];
-    NSString *xTitle = item.time;
-    NSString *yTitle = item.price;
-    UIAlertController *alertView = [UIAlertController alertControllerWithTitle:yTitle
-                                                                       message:[NSString stringWithFormat:@"x：%@ \ny：%@",xTitle,yTitle] preferredStyle:UIAlertControllerStyleAlert];
-    [alertView addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-    }]];
-    [self presentViewController:alertView animated:YES completion:nil];
-}
+////点击point回调响应
+//- (void)elementDidClickedWithPointSuperIndex:(NSUInteger)superidnex pointSubIndex:(NSUInteger)subindex {
+//    PointItem *item = self.lines[superidnex][subindex];
+//    NSString *xTitle = item.time;
+//    NSString *yTitle = item.price;
+//    UIAlertController *alertView = [UIAlertController alertControllerWithTitle:yTitle
+//                                                                       message:[NSString stringWithFormat:@"x：%@ \ny：%@",xTitle,yTitle] preferredStyle:UIAlertControllerStyleAlert];
+//    [alertView addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        
+//    }]];
+//    [self presentViewController:alertView animated:YES completion:nil];
+//}
 
 // 开始运动
 - (void)sportAction:(UIButton *)btn
@@ -359,15 +391,30 @@
     btn.selected = !btn.selected;
     if (btn.selected) {
         
+        // 开始计时
+        [_oneLabel start];
+
+        
+        _sportLab.text = @"正在运动";
+        
         _startLab.text = @"0";
         _startLab.textColor = [UIColor colorWithHexString:@"#58B6DA"];
+        
+        NSMutableAttributedString *attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ min",@"0"] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
+        _timeLab1.attributedText = attr;
+        
+        attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ km",@"0"] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
+        _disLab1.attributedText = attr;
 
 
         [self  gotoOpenStepCountFunction];
         
     }else{
+        
+        // 运动结束
+        [_oneLabel pause];
 
-//        _startLab.textColor = [UIColor colorWithHexString:@"#4F5152"];
+        _sportLab.text = @"今日运动";
         [self gotoCloseStepCountFucntion];
         
     }
@@ -391,7 +438,11 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
-                _startLab.text = [NSString stringWithFormat:@"%@",pedometerData.numberOfSteps];
+                    
+                    _startLab.text = [NSString stringWithFormat:@"%@",pedometerData.numberOfSteps];
+                    
+                    NSMutableAttributedString *attr = [NSString text:[NSString stringWithFormat:@"%.1f",pedometerData.distance.floatValue/1000] fullText:[NSString stringWithFormat:@"%.1f km",pedometerData.distance.floatValue/1000] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
+                    _disLab1.attributedText = attr;
                     
                 });
 
@@ -421,6 +472,16 @@
     }
     
 }
+
+#pragma mark - LZQTimerLabelDelegate
+//定时器更新的时间
+- (void)updateTimer:(NSString *)date
+{
+    NSLog(@"-----%@",date);// 停止后会变为0
+    NSMutableAttributedString *attr = [NSString text:date fullText:[NSString stringWithFormat:@"%@ min",date] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
+    _timeLab1.attributedText = attr;
+}
+
 
 
 @end

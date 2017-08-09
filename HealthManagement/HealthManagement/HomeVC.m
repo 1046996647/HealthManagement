@@ -25,7 +25,7 @@
 @property(nonatomic,strong) NSNumber *longitude;// 经度
 @property(nonatomic,assign) NSInteger pageNO;// 页数
 @property (nonatomic,strong) NSMutableArray *dataArr;
-@property (nonatomic,assign) BOOL isFirst;
+//@property (nonatomic,assign) BOOL isFirst;
 @property (nonatomic,assign) BOOL isRefresh;
 
 
@@ -159,8 +159,17 @@
     self.tableView.tableHeaderView = headView;
     [self.view addSubview:self.tableView];
     self.headView = headView;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(locationAction:)];
+    [self.headView.userLocationLab addGestureRecognizer:tap];
 
 
+}
+
+// 重新定位
+- (void)locationAction:(UIGestureRecognizer *)tap
+{
+    [_locService startUserLocationService];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -206,17 +215,9 @@
 {
     //    [_locService stopUserLocationService];//定位完成停止位置更新(导致反检索失败)
     NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
-    
+
     self.latitude = @(userLocation.location.coordinate.latitude);
     self.longitude = @(userLocation.location.coordinate.longitude);
-    
-    if (!self.isFirst) {// 避免自动多次定位导致多次请求
-        
-        self.isFirst = YES;
-        // 请求餐厅列表
-        [self getTitlePage];
-    }
-
     
     //地理反编码
     BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
@@ -245,12 +246,24 @@
 
 {
     
-    NSLog(@"address:%@----%@",result.addressDetail,result.address);
-    
     if (result) {
+        
+        NSLog(@"address:%@----%@",result.addressDetail,result.address);
+
         // 定位
         BMKPoiInfo *poiInfo = [result.poiList firstObject];
         self.headView.userLocationLab.text = poiInfo.name;
+        
+        self.headView.latitude = self.latitude;
+        self.headView.longitude = self.longitude;
+        
+//        if (!self.isFirst) {// 避免自动多次定位导致多次请求
+//            
+//            self.isFirst = YES;
+//
+//        }
+        // 请求餐厅列表
+        [self getTitlePage];
     }
     else {
         

@@ -154,7 +154,7 @@
 // 公里计算
 + (NSString *)meterToKilometer:(NSString *)meterStr
 {
-    if (meterStr.integerValue > 1000) {
+    if (meterStr.integerValue >= 1000) {
         return [NSString stringWithFormat:@"%.2fkm",meterStr.integerValue/1000.0];
     }
     else {
@@ -173,12 +173,21 @@
 }
 
 // 富文本
-+ (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color
++ (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color font:(UIFont *)font
 {
 
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:fullText];
     NSRange range = {location,[text length]};
     [attStr addAttribute:NSForegroundColorAttributeName value:color range:range];
+    
+    if (font) {
+        [attStr addAttribute:NSFontAttributeName
+         
+                       value:font
+         
+                       range:range];
+    }
+    
     return attStr;
     
 }

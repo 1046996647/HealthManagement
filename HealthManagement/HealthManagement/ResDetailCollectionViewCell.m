@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 80)];
+        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 242/2, 192/2)];
 //        _imgView.image = [UIImage imageNamed:@"food"];
 //        _imgView.backgroundColor = [UIColor redColor];
         _imgView.layer.cornerRadius = 6;

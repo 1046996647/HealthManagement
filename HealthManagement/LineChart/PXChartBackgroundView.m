@@ -131,7 +131,10 @@ static char OperationKey;
     }
     for (int i = 0; i < lines; i++) {
         CGContextRef ctx = UIGraphicsGetCurrentContext();
+        
         UIBezierPath *path = [[UIBezierPath alloc] init];
+        
+        
         CGContextSetLineWidth(ctx, 0.5);
         NSArray<id<PointItemProtocol>> *points = nil;
         if (_delegate && [_delegate respondsToSelector:@selector(plotsOflineIndex:)]) {
@@ -204,7 +207,7 @@ static char OperationKey;
                 pointButton.layer.borderWidth = .5;
 
                 
-                // 原点
+                // 圆点
                 [self addSubview:pointButton];
             }
             
@@ -238,6 +241,7 @@ static char OperationKey;
             
             //draw lines
             [path addLineToPoint:CGPointMake(pointCenterX, pointCenterY)];
+            
             
             endXPoint = CGPointMake(pointCenterX, [_yAxisView pointOfYcoordinate:@"0"]);
         }

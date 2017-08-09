@@ -9,6 +9,7 @@
 #import "NearbyResView.h"
 #import "NearbyRestaurantVC.h"
 #import "NSStringExt.h"
+#import "ResDetailVC.h"
 
 @implementation NearbyResView
 
@@ -124,10 +125,15 @@
                 //            imgView.backgroundColor = [UIColor redColor];
                 [imgView sd_setImageWithURL:[NSURL URLWithString:model.titleImage]];
                 //            imgView.image = [UIImage imageNamed:@"food"];
-                imgView.tag = 100+j;
+                imgView.tag = index;
                 imgView.layer.cornerRadius = 5;
                 imgView.layer.masksToBounds = YES;
+                imgView.userInteractionEnabled = YES;
                 [subView addSubview:imgView];
+                
+                // 手势
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+                [imgView addGestureRecognizer:tap];
                 
                 UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(imgView.left, imgView.bottom+10, kWidth*2/3-5, 16)];
                 moneyLab.font = [UIFont systemFontOfSize:12];
@@ -156,6 +162,18 @@
     }
     
     
+}
+
+- (void)tapAction:(UIGestureRecognizer *)tap
+{
+    NSInteger index = tap.view.tag;
+    ResDetailModel *model = _modelArr[index];
+
+    ResDetailVC *vc = [[ResDetailVC alloc] init];
+    vc.model = model;
+    vc.latitude = self.latitude;
+    vc.longitude = self.longitude;
+    [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UIScrollViewDelegate

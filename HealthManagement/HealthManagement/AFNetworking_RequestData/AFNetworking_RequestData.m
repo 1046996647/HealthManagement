@@ -8,7 +8,6 @@
 
 
 #import "AFNetworking_RequestData.h"
-#import <AFNetworking.h>
 
 
 @implementation AFNetworking_RequestData

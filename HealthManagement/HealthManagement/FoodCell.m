@@ -18,9 +18,9 @@
 //        self.contentView.backgroundColor = [UIColor redColor];
         
         _lab1 = [[UILabel alloc] initWithFrame:CGRectZero];
-        _lab1.font = [UIFont systemFontOfSize:12];
+        _lab1.font = [UIFont boldSystemFontOfSize:12];
 //        _lab1.text = text;
-        _lab1.textColor = [UIColor grayColor];
+        _lab1.textColor = [UIColor colorWithHexString:@"#676767"];
         _lab1.textAlignment = NSTextAlignmentLeft;
         //                _lab1.backgroundColor = [UIColor redColor];
         [self.contentView addSubview:_lab1];
@@ -132,6 +132,12 @@
         NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:model.text];
         NSRange range2 = {0,2};
         [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range2];
+        [attStr addAttribute:NSFontAttributeName
+         
+                       value:[UIFont boldSystemFontOfSize:13]
+         
+                       range:range2];
+        
         _lab1.attributedText = attStr;
         
         _img1.hidden = NO;

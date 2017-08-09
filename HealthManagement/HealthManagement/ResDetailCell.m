@@ -7,6 +7,7 @@
 //
 
 #import "ResDetailCell.h"
+#import "NSStringExt.h"
 
 @implementation ResDetailCell
 
@@ -17,7 +18,7 @@
         
         self.backgroundColor = [UIColor whiteColor];
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12, 0, kScreen_Width-24, 0)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10, 0, kScreen_Width-20, 0)];
 //        view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
         view.layer.cornerRadius = 6;
         view.layer.masksToBounds = YES;
@@ -26,7 +27,7 @@
         [self.contentView addSubview:view];
         self.view = view;
         
-        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.width, 70)];
+        _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.width, 85)];
 //        _imgView.image = [UIImage imageNamed:@"long"];
 //        _imgView.backgroundColor = [UIColor redColor];
 //        _imgView.layer.cornerRadius = 6;
@@ -50,39 +51,40 @@
         
         
         
-        UIImageView *moneyImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _imgView.bottom+12, 14, 14)];
+        UIImageView *moneyImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _imgView.bottom+12, 16, 16)];
         //        imgView.backgroundColor = [UIColor redColor];
         moneyImgView.image = [UIImage imageNamed:@"money"];
         [view addSubview:moneyImgView];
         
         _btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _btn.frame = CGRectMake(moneyImgView.right+10, moneyImgView.center.y-10, 100, 20);
+        _btn.frame = CGRectMake(moneyImgView.right+5, moneyImgView.center.y-10, 100, 20);
         _btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         //    _nearbyBtn.backgroundColor = [UIColor redColor];
-        _btn.titleLabel.font = [UIFont systemFontOfSize:14];
+        _btn.titleLabel.font = [UIFont boldSystemFontOfSize:14];
         [_btn setTitleColor:[UIColor colorWithHexString:@"#FD4900"] forState:UIControlStateNormal];
 //        [_btn setTitle:@"59" forState:UIControlStateNormal];
         [view addSubview:_btn];
         
         _btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-        _btn2.frame = CGRectMake(view.width-20-12, _btn.top, 20, 20);
-        [_btn2 setImage:[UIImage imageNamed:@"Restaurant_11"] forState:UIControlStateNormal];
-        [_btn2 setImage:[UIImage imageNamed:@"Restaurant_12"] forState:UIControlStateSelected];
+        _btn2.frame = CGRectMake(view.width-20-2, _btn.top, 20, 20);
+        [_btn2 setImage:[UIImage imageNamed:@"Restaurant_12"] forState:UIControlStateNormal];
+        [_btn2 setImage:[UIImage imageNamed:@"Restaurant_11"] forState:UIControlStateSelected];
         [_btn2 addTarget:self action:@selector(expendAction:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:_btn2];
         
         
         _btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
         _btn1.frame = CGRectMake(_btn2.left-50, _btn2.center.y-7.5, 50, 15);
-        _btn1.titleLabel.font = [UIFont systemFontOfSize:12];
+        _btn1.titleLabel.font = [UIFont boldSystemFontOfSize:12];
         [_btn1 setTitleColor:[UIColor colorWithHexString:@"#8650F4"] forState:UIControlStateNormal];
 //        [_btn1 setTitle:@"584份" forState:UIControlStateNormal];
         [view addSubview:_btn1];
         
-        UIImageView *countImgView = [[UIImageView alloc] initWithFrame:CGRectMake(_btn1.left-20, _btn2.center.y-7.5, 15, 15)];
+        UIImageView *countImgView = [[UIImageView alloc] initWithFrame:CGRectMake(_btn1.left-20, _btn2.center.y-8.5, 17, 17)];
         //        imgView.backgroundColor = [UIColor redColor];
         countImgView.image = [UIImage imageNamed:@"Restaurant_10"];
         [view addSubview:countImgView];
+        self.countImgView = countImgView;
                 
         //------------------------------------
         UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, _btn2.bottom, view.width, 80)];
@@ -117,7 +119,7 @@
     // 体质
     for (int i=0; i<model.Constitution.count; i++) {
         
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(_lab4.right+5+i*(30+5), (self.alphaView.height-10)/2.0, 30, 10)];
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(_lab4.right+5+i*(30+5), (self.alphaView.height-12)/2.0, 30, 12)];
         //        imgView.backgroundColor = [UIColor redColor];
         imgView.image = [UIImage imageNamed:model.Constitution[i]];
         [self.alphaView addSubview:imgView];
@@ -125,7 +127,12 @@
     }
     
     [_btn setTitle:model.price forState:UIControlStateNormal];
+    
+    textSize = [NSString textLength:[NSString stringWithFormat:@"%@份",model.sales] font:_btn1.titleLabel.font];
+    _btn1.frame = CGRectMake(_btn2.left-26, _btn2.center.y-7.5, textSize.width, 15);
     [_btn1 setTitle:[NSString stringWithFormat:@"%@份",model.sales] forState:UIControlStateNormal];
+    
+    self.countImgView.frame = CGRectMake(_btn1.left-20, _btn2.center.y-6, 17, 12);
     
     UIImageView *lineImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 5, self.view.width, 1)];
     //        imgView.backgroundColor = [UIColor redColor];
@@ -141,16 +148,13 @@
     for (int i = 0; i<arrM.count; i++) {
         RecipeItemModel *model = arrM[i];
         NSString *str1 = model.RecipeItemName;
-        //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-        //    self.money = str1;
-        NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@    %@",str1,model.ListFood]];
-        NSRange range1 = {0,[str1 length]};
-        [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range1];
+        
+        NSMutableAttributedString *attStr = [NSString text:str1 fullText:[NSString stringWithFormat:@"%@    %@",str1,model.ListFood] location:0 color:[UIColor blackColor] font:[UIFont boldSystemFontOfSize:13]];
         
         _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 10+i*(14+10), _imgView.width-10, 14)];
-        _lab1.font = [UIFont systemFontOfSize:12];
+        _lab1.font = [UIFont boldSystemFontOfSize:12];
         //        _lab1.text = @"匹配度 58%";
-        _lab1.textColor = [UIColor grayColor];
+        _lab1.textColor = [UIColor colorWithHexString:@"#676767"];
         //        _lab1.textAlignment = NSTextAlignmentRight;
         //        _lab1.backgroundColor = [UIColor redColor];
         [self.view1 addSubview:_lab1];

@@ -48,13 +48,6 @@
     self.window.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     [self.window makeKeyAndVisible];
     
-    // 是否是第一次启动(针对本地推送 应用删除再安装还会出现之前的本地推送设置)
-    if (![InfoCache getValueForKey:@"IsFirstLaunch"]) {
-        [InfoCache saveValue:@(YES) forKey:@"IsFirstLaunch"];
-        UIApplication *app = [UIApplication sharedApplication];
-        // 删除所有本地推送
-        [app cancelAllLocalNotifications];
-    }
     
     // ios8后，需要添加这个注册，才能得到授权
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
@@ -76,6 +69,23 @@
     [self isLoginedState];
     
     
+    // 是否是第一次启动(针对本地推送 应用删除再安装还会出现之前的本地推送设置)
+    if (![InfoCache getValueForKey:@"IsFirstLaunch"]) {
+        [InfoCache saveValue:@(YES) forKey:@"IsFirstLaunch"];
+        UIApplication *app = [UIApplication sharedApplication];
+        // 删除所有本地推送
+        [app cancelAllLocalNotifications];
+    }
+    
+    
+    //接收通知参数(本地)
+    UILocalNotification *notification=[launchOptions valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    
+    if (notification) {
+        [self userInfo:notification];
+
+    }
+
     
     return YES;
 }
@@ -99,34 +109,11 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     NSLog(@"noti:%@",notification);
     
-    // 获取通知所带的数据
-    NSString *clockTime = [notification.userInfo objectForKey:@"clockTime"];
-    
-    // 播放音频
-    NSString *clockMusic = [notification.userInfo objectForKey:@"clockMusic"];
-    NSString *path = [[NSBundle mainBundle]pathForResource:clockMusic ofType:nil];
-    NSURL *url = [NSURL fileURLWithPath:path];
-    _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
-//    _audioPlayer.delegate = self;
-    _audioPlayer.numberOfLoops = 0; // 不循环
-    [_audioPlayer prepareToPlay]; // 准备播放，加载音频文件到缓存
-    [self.audioPlayer play];
-    
-    NSString *clockID = [notification.userInfo objectForKey:@"ActivityClock"];
-
-    if ([clockID isEqualToString:@"WakeupID"]) {
-        self.clockView = [[ClockView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height)];
-        self.clockView.timeStr = clockTime;
-        [self.window addSubview:self.clockView];
+    if (notification) {
         
-        __weak typeof(self) weakSelf = self;
-        self.clockView.block = ^{
-            if ([weakSelf.audioPlayer isPlaying]) {
-                [weakSelf.audioPlayer pause];
-            }
-        };
+        [self userInfo:notification];
+        
     }
-    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -153,6 +140,38 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+// 闹钟提醒试图
+- (void)userInfo:(UILocalNotification *)notification
+{
+    // 获取通知所带的数据
+    NSString *clockTime = [notification.userInfo objectForKey:@"clockTime"];
+    
+    // 播放音频
+    NSString *clockMusic = [notification.userInfo objectForKey:@"clockMusic"];
+    NSString *path = [[NSBundle mainBundle]pathForResource:clockMusic ofType:nil];
+    NSURL *url = [NSURL fileURLWithPath:path];
+    _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
+    //    _audioPlayer.delegate = self;
+    _audioPlayer.numberOfLoops = 0; // 不循环
+    [_audioPlayer prepareToPlay]; // 准备播放，加载音频文件到缓存
+    [self.audioPlayer play];
+    
+    NSString *clockID = [notification.userInfo objectForKey:@"ActivityClock"];
+    
+    if ([clockID isEqualToString:@"WakeupID"]) {
+        self.clockView = [[ClockView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height)];
+        self.clockView.timeStr = clockTime;
+        [self.window addSubview:self.clockView];
+        
+        __weak typeof(self) weakSelf = self;
+        self.clockView.block = ^{
+            if ([weakSelf.audioPlayer isPlaying]) {
+                [weakSelf.audioPlayer pause];
+            }
+        };
+    }
 }
 
 

@@ -15,6 +15,8 @@
 @property (nonatomic,strong) NSDate *endDate;
 @property (nonatomic,strong) NSNumber *tag;// 就寝提醒
 @property (nonatomic,copy) NSString *musicName;
+@property (nonatomic,assign) float volume;
+@property (nonatomic,strong) NSMutableArray *weekValue;
 
 
 @end

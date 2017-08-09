@@ -11,7 +11,8 @@
 #import <WebKit/WebKit.h>
 
 
-@interface DietArticleDetailVC ()
+
+@interface DietArticleDetailVC ()<WKUIDelegate,WKNavigationDelegate>
 
 @property(nonatomic,strong) UIView *headerView;
 @property(nonatomic,strong) UIImageView *imgView3;
@@ -24,6 +25,10 @@
 @property(nonatomic,strong) UIButton *btn1;
 @property(nonatomic,strong) HXTagsView *tagsView;
 @property (strong, nonatomic) WKWebView *webView;
+ @property (strong, nonatomic) UIProgressView *progressView;
+
+@property (copy, nonatomic) NSString *Opertion;
+
 
 
 @end
@@ -71,7 +76,8 @@
     
     _btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
     _btn1.frame = CGRectMake(_btn.right, _btn.top, 60, 11);
-    [_btn1 setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
+    [_btn1 setImage:[UIImage imageNamed:@"thumbs_normal"] forState:UIControlStateNormal];
+    [_btn1 setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateSelected];
     //    _nearbyBtn.backgroundColor = [UIColor redColor];
     _btn1.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
     _btn1.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -5);
@@ -80,6 +86,15 @@
     _btn1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [_btn1 setTitle:self.model.loveCount forState:UIControlStateNormal];
     [self.headerView addSubview:_btn1];
+    [_btn1 addTarget:self action:@selector(thumbAction:) forControlEvents:UIControlEventTouchUpInside];
+    _btn1.tag = 100;
+    
+    if (_model.PointPraise.integerValue == 0) {
+        _btn1.selected = NO;
+    }
+    else {
+        _btn1.selected = YES;
+    }
     
     _imgView3 = [[UIImageView alloc] initWithFrame:CGRectMake(_lab4.left, _lab4.bottom+12, 16, 16)];
     _imgView3.image = [UIImage imageNamed:@"tag"];
@@ -107,21 +122,152 @@
     self.headerView.height = _imgView3.bottom;
     
     _webView = [[WKWebView alloc] initWithFrame:CGRectMake(8, self.headerView.bottom+10, kScreen_Width-16, kScreen_Height-64-self.headerView.bottom)];
-//    _webView.UIDelegate = self;
-//    _webView.navigationDelegate = self;
+    _webView.UIDelegate = self;
+    _webView.navigationDelegate = self;
     [self.view addSubview:_webView];
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.model.url]]];
+    
+    _progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(0, 0, kScreen_Width,2)];
+    _progressView.trackTintColor = [UIColor clearColor];
+//    _progressView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_progressView];
+    
+    [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew| NSKeyValueObservingOptionOld context:nil];
     
     
 //    // 监听
 //    [_webView addObserver:self forKeyPath:@"scrollView.contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:@"DJWebKitContext"];
     
+    [self articleCilck];
+
 
 }
+
+- (void)thumbAction:(UIButton *)sender
+{
+    
+    if (_btn1.selected == YES) {
+        
+        self.Opertion = @"Delete";
+        
+    }
+    else {
+        
+        self.Opertion = @"Insert";
+
+    }
+    
+    [self articlePointPraise];
+}
+
+// 文章点赞
+- (void)articlePointPraise
+{
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:self.Opertion forKey:@"Opertion"];
+    [paramDic  setObject:self.model.ArticleId forKey:@"OtherId"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:ArticlePointPraise dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",responseObject);
+        
+        NSNumber *code = responseObject[@"HttpCode"];
+        if (code.integerValue == 200) {
+            
+            if (_btn1.selected == YES) {
+                
+                _btn1.selected = NO;
+                
+                self.model.PointPraise = @0;
+                
+                self.model.loveCount = [NSString stringWithFormat:@"%ld",self.model.loveCount.integerValue-1];
+                [_btn1 setTitle:self.model.loveCount forState:UIControlStateNormal];
+
+            }
+            else {
+                
+                _btn1.selected = YES;
+                
+                self.model.PointPraise = @1;
+
+                self.model.loveCount = [NSString stringWithFormat:@"%ld",self.model.loveCount.integerValue+1];
+
+                [_btn1 setTitle:self.model.loveCount forState:UIControlStateNormal];
+
+
+            }
+            
+            if (self.block) {
+                self.block(self.model);
+            }
+            
+        }
+        
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        
+    }];
+}
+
+
+// 文章查看
+- (void)articleCilck
+{
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:self.model.ArticleId forKey:@"Id"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:ArticleClick dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",responseObject);
+        
+        
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        
+    }];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    NSLog(@" %s,change = %@",__FUNCTION__,change);
+    if ([keyPath isEqual: @"estimatedProgress"] && object == _webView) {
+        [self.progressView setAlpha:1.0f];
+        [self.progressView setProgress:_webView.estimatedProgress animated:YES];
+        if(_webView.estimatedProgress >= 1.0f)
+        {
+            [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                [self.progressView setAlpha:0.0f];
+            } completion:^(BOOL finished) {
+                [self.progressView setProgress:0.0f animated:NO];
+            }];
+        }
+    }
+    else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+- (void)dealloc {
+    [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
+    
+    // if you have set either WKWebView delegate also set these to nil here
+    [_webView setNavigationDelegate:nil];
+    [_webView setUIDelegate:nil];
 }
 
 //// 监听方法

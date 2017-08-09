@@ -179,15 +179,17 @@
     if (_axisAttributes[scrollAnimationDuration]) {
         duration = [_axisAttributes[scrollAnimationDuration] floatValue];
     }
-    if ([_axisAttributes[scrollAnimation] boolValue] && self.scrollView.contentSize.width > CGRectGetWidth(self.scrollView.frame)) {
-        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            
-            [self.scrollView setContentOffset:CGPointMake(0,0)];
-            
-        } completion:^(BOOL finished) {
-            
-        }];
-    }
+    [self.scrollView setContentOffset:CGPointMake(0,0)];
+
+//    if ([_axisAttributes[scrollAnimation] boolValue] && self.scrollView.contentSize.width > CGRectGetWidth(self.scrollView.frame)) {
+//        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+//            
+//            [self.scrollView setContentOffset:CGPointMake(0,0)];
+//            
+//        } completion:^(BOOL finished) {
+//            
+//        }];
+//    }
 }
 
 - (void)reloadData {

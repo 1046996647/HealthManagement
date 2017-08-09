@@ -40,7 +40,7 @@
     
     UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 10, 19)];
     
-    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(80, 312/2, kScreen_Width-160, 43)];
+    UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(80, 312/2*scaleWidth, kScreen_Width-160, 43)];
     tf.layer.cornerRadius = 3;
     tf.layer.borderColor = [UIColor colorWithHexString:@"#79A72B"].CGColor;
     tf.layer.borderWidth = .5;
@@ -123,7 +123,7 @@
     [self.view addSubview:registerBtn];
     [registerBtn addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *otherLab = [[UILabel alloc] initWithFrame:CGRectMake((kScreen_Width-65)/2.0, registerBtn.bottom+178/2, 65, 14)];
+    UILabel *otherLab = [[UILabel alloc] initWithFrame:CGRectMake((kScreen_Width-65)/2.0, registerBtn.bottom+178/2*scaleWidth, 65, 14)];
     otherLab.font = [UIFont systemFontOfSize:9];
     otherLab.text = @"其他登录方式";
     otherLab.textAlignment = NSTextAlignmentCenter;
@@ -139,7 +139,7 @@
     [self.view addSubview:view2];
     
     UIButton *wechatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    wechatBtn.frame = CGRectMake((kScreen_Width-92/2)/2, otherLab.bottom+30, 92/2.0, 92/2.0);
+    wechatBtn.frame = CGRectMake((kScreen_Width-92/2)/2, otherLab.bottom+30*scaleWidth, 92/2.0, 92/2.0);
     [wechatBtn setImage:[UIImage imageNamed:@"Login_3"] forState:UIControlStateNormal];
     [self.view addSubview:wechatBtn];
     

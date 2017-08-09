@@ -19,6 +19,7 @@
 @property(nonatomic,copy) NSString *aTime;
 @property(nonatomic,strong) NSArray *tags;
 @property(nonatomic,copy) NSString *url;
+@property(nonatomic,strong) NSNumber *PointPraise;
 
 
 

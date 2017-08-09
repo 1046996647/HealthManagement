@@ -14,6 +14,8 @@
 #import "IntegrationCell.h"
 #import "NavgationBarView.h"
 #import "IntergrationRecordVC.h"
+#import "CAAnimation+HCAnimation.h"
+
 
 @interface PersonalCenterVC ()<UITableViewDelegate,UITableViewDataSource,NavHeadTitleViewDelegate>
 
@@ -105,7 +107,7 @@
     [self.headView addSubview:headImg];
     self.headImg = headImg;
     
-    UILabel *userNameLab = [[UILabel alloc] initWithFrame:CGRectMake(headImg.right+12, headImg.top+54/2, 60, 18)];
+    UILabel *userNameLab = [[UILabel alloc] initWithFrame:CGRectMake(headImg.right+12, headImg.top+54/2, 150, 19)];
     userNameLab.font = [UIFont boldSystemFontOfSize:17];
 //    userNameLab.text = @"zcz123";
     //        _lab1.textColor = [UIColor grayColor];
@@ -121,53 +123,53 @@
     
 //    NSArray *imgArr = @[@"male",@"age_male",@"height_male",@"weight_male"];
     
-    UIImageView *sexImg = [[UIImageView alloc] initWithFrame:CGRectMake(userNameLab.left, userNameLab.bottom+20, 16, 16)];
+    UIImageView *sexImg = [[UIImageView alloc] initWithFrame:CGRectMake(userNameLab.left, userNameLab.bottom+20, 16*scaleWidth, 16*scaleWidth)];
 //    sexImg.image = [UIImage imageNamed:imgArr[0]];
     [self.headView addSubview:sexImg];
     self.sexImg = sexImg;
     
-    UILabel *sexLab = [[UILabel alloc] initWithFrame:CGRectMake(sexImg.right+3, sexImg.center.y-7, 20, 15)];
-    sexLab.font = [UIFont boldSystemFontOfSize:13];
+    UILabel *sexLab = [[UILabel alloc] initWithFrame:CGRectMake(sexImg.right+3, sexImg.center.y-7, 20*scaleWidth, 15)];
+    sexLab.font = [UIFont boldSystemFontOfSize:13*scaleWidth];
 //    sexLab.text = @"男";
 //    sexLab.backgroundColor = [UIColor redColor];
     sexLab.textColor = [UIColor colorWithHexString:@"#696969"];
     [self.headView addSubview:sexLab];
     self.sexLab = sexLab;
     
-    UIImageView *yearImg = [[UIImageView alloc] initWithFrame:CGRectMake(sexLab.right+15*scaleWidth, sexImg.top, 16, 16)];
+    UIImageView *yearImg = [[UIImageView alloc] initWithFrame:CGRectMake(sexLab.right+13*scaleWidth, sexImg.top, 16*scaleWidth, 16*scaleWidth)];
 //    yearImg.image = [UIImage imageNamed:imgArr[1]];
     [self.headView addSubview:yearImg];
     self.yearImg = yearImg;
     
-    UILabel *yearLab = [[UILabel alloc] initWithFrame:CGRectMake(yearImg.right+3, yearImg.center.y-7, 40, 15)];
-    yearLab.font = [UIFont boldSystemFontOfSize:13];
-//    yearLab.text = @"31岁";
+    UILabel *yearLab = [[UILabel alloc] initWithFrame:CGRectMake(yearImg.right+3, yearImg.center.y-7, 35*scaleWidth, 15)];
+    yearLab.font = [UIFont boldSystemFontOfSize:13*scaleWidth];
+//    yearLab.text = @"311岁";
 //    yearLab.backgroundColor = [UIColor redColor];
     yearLab.textColor = [UIColor colorWithHexString:@"#696969"];
     [self.headView addSubview:yearLab];
     self.yearLab = yearLab;
     
-    UIImageView *heightImg = [[UIImageView alloc] initWithFrame:CGRectMake(yearLab.right+15*scaleWidth, sexImg.top, 16, 16)];
+    UIImageView *heightImg = [[UIImageView alloc] initWithFrame:CGRectMake(yearLab.right+13*scaleWidth, sexImg.top, 16*scaleWidth, 16*scaleWidth)];
 //    heightImg.image = [UIImage imageNamed:imgArr[2]];
     [self.headView addSubview:heightImg];
     self.heightImg = heightImg;
     
-    UILabel *heightLab = [[UILabel alloc] initWithFrame:CGRectMake(heightImg.right+3, heightImg.center.y-7, 45, 15)];
-    heightLab.font = [UIFont boldSystemFontOfSize:13];
+    UILabel *heightLab = [[UILabel alloc] initWithFrame:CGRectMake(heightImg.right+3, heightImg.center.y-7, 45*scaleWidth, 15)];
+    heightLab.font = [UIFont boldSystemFontOfSize:13*scaleWidth];
 //    heightLab.text = @"176cm";
 //    heightLab.backgroundColor = [UIColor redColor];
     heightLab.textColor = [UIColor colorWithHexString:@"#696969"];
     [self.headView addSubview:heightLab];
     self.heightLab = heightLab;
     
-    UIImageView *weightImg = [[UIImageView alloc] initWithFrame:CGRectMake(heightLab.right+15*scaleWidth, sexImg.top, 16, 16)];
+    UIImageView *weightImg = [[UIImageView alloc] initWithFrame:CGRectMake(heightLab.right+13*scaleWidth, sexImg.top, 16*scaleWidth, 16*scaleWidth)];
 //    weightImg.image = [UIImage imageNamed:imgArr[3]];
     [self.headView addSubview:weightImg];
     self.weightImg = weightImg;
     
-    UILabel *weightLab = [[UILabel alloc] initWithFrame:CGRectMake(weightImg.right+3, heightImg.center.y-7, 40, 15)];
-    weightLab.font = [UIFont boldSystemFontOfSize:13];
-//    weightLab.text = @"72kg";
+    UILabel *weightLab = [[UILabel alloc] initWithFrame:CGRectMake(weightImg.right+3, heightImg.center.y-7, 40*scaleWidth, 15)];
+    weightLab.font = [UIFont boldSystemFontOfSize:13*scaleWidth];
+//    weightLab.text = @"722kg";
 //    weightLab.backgroundColor = [UIColor redColor];
     weightLab.textColor = [UIColor colorWithHexString:@"#696969"];
     [self.headView addSubview:weightLab];
@@ -243,7 +245,9 @@
     [_sleepBtn setImage:[UIImage imageNamed:@"leaf"] forState:UIControlStateNormal];
     [_sleepBtn setAttributedTitle:attStr forState:UIControlStateNormal];
     [treeImg addSubview:_sleepBtn];
-//    [_sleepBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
+    [_sleepBtn addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [CAAnimation showMoveAnimationInView:_sleepBtn Position:CGPointMake(_sleepBtn.layer.position.x, _sleepBtn.layer.position.y+5) Repeat:0 Autoreverses:YES Duration:1.5];
     
     str1 = @"+1";
     //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
@@ -265,6 +269,11 @@
     [_dietBtn setImage:[UIImage imageNamed:@"leaf"] forState:UIControlStateNormal];
     [_dietBtn setAttributedTitle:attStr forState:UIControlStateNormal];
     [treeImg addSubview:_dietBtn];
+    [_dietBtn addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    
+    [CAAnimation showMoveAnimationInView:_dietBtn Position:CGPointMake(_dietBtn.layer.position.x, _dietBtn.layer.position.y+5) Repeat:0 Autoreverses:YES Duration:0.8];
+
     
     str1 = @"+2";
     //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
@@ -286,11 +295,29 @@
     [_sportBtn setImage:[UIImage imageNamed:@"leaf"] forState:UIControlStateNormal];
     [_sportBtn setAttributedTitle:attStr forState:UIControlStateNormal];
     [treeImg addSubview:_sportBtn];
+    [_sportBtn addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    
+    [CAAnimation showMoveAnimationInView:_sportBtn Position:CGPointMake(_sportBtn.layer.position.x, _sportBtn.layer.position.y+5) Repeat:0 Autoreverses:YES Duration:1.0];
+
     
     
     [self initSubViews];
     
     
+}
+
+- (void)addAction:(UIButton *)btn
+{
+    
+    btn.userInteractionEnabled = NO;
+    
+    [CAAnimation clearAnimationInView:btn];
+
+    [CAAnimation showScaleAnimationInView:btn Repeat:1 Autoreverses:NO FromValue:(float)1.0 ToValue:(float)0.5 Duration:1.0];
+    [CAAnimation showOpacityAnimationInView:btn Alpha:0 Repeat:1 Autoreverses:NO Duration:1.0];
+    [CAAnimation showMoveAnimationInView:btn Position:CGPointMake(self.treeImg.width/2, self.treeImg.height/2) Repeat:1 Autoreverses:NO Duration:1.0];
+//    [CAAnimation showRotateAnimationInView:btn Degree:2*M_PI Direction:AxisZ Repeat:0 Duration:1.0];
 }
 
 - (void)initSubViews

@@ -12,6 +12,7 @@
 #import "HXTagsView.h"
 #import "PaymentVC.h"
 #import "FoodCell.h"
+#import "NSStringExt.h"
 
 
 @interface CookbookDetailVC ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UITableViewDelegate,UITableViewDataSource>
@@ -161,7 +162,7 @@
             // 体质
             for (int i=0; i<self.model.Constitution.count; i++) {
                 
-                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-12-30-i*(30+5), _lab4.center.y-5, 30, 10)];
+                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-12-30-i*(30+5), _lab4.center.y-6, 30, 12)];
                 //        imgView.backgroundColor = [UIColor redColor];
                 imgView.tag = 100;
                 imgView.image = [UIImage imageNamed:self.model.Constitution[self.model.Constitution.count-1-i]];
@@ -169,6 +170,29 @@
                 
             }
             [_tagsView setTagAry:self.model.Tags delegate:nil];
+            
+            NSInteger percentage = self.model.ConstitutionPercentage.integerValue;
+            
+            UIColor *color = nil;
+            
+            if (90 < percentage) {
+                color = [UIColor colorWithHexString:@"#ff0000"];
+            }
+            if (80 < percentage && percentage <= 90) {
+                color = [UIColor colorWithHexString:@"#107909"];
+            }
+            if (70 < percentage && percentage <= 80) {
+                color = [UIColor colorWithHexString:@"#7d28fb"];
+            }
+            if (60 < percentage && percentage <= 70) {
+                color = [UIColor colorWithHexString:@"#0d8bf6"];
+            }
+            if (60 >= percentage) {
+                color = [UIColor colorWithHexString:@"#666666"];
+            }
+            
+            NSMutableAttributedString *attr = [NSString text:self.model.ConstitutionPercentage fullText:[NSString stringWithFormat:@"匹配度%@%%",self.model.ConstitutionPercentage] location:3 color:color font:nil];
+            self.fitLab.attributedText = attr;
             
             /////////////////////
             NSMutableArray *arrM1 = [NSMutableArray array];
@@ -188,7 +212,7 @@
                             text = [NSString stringWithFormat:@"%@    %@ %@",model.RecipeItemName,foodModel.FoodName,foodModel.FoodWeight];
                         }
                         else {
-                            text = [NSString stringWithFormat:@"           %@ %@",foodModel.FoodName,foodModel.FoodWeight];
+                            text = [NSString stringWithFormat:@"            %@ %@",foodModel.FoodName,foodModel.FoodWeight];
                         }
                         
                         foodModel.text = text;
@@ -270,6 +294,7 @@
 {
     
     PaymentVC *vc = [[PaymentVC alloc] init];
+    vc.model = self.model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -318,19 +343,13 @@
 //    [_tagsView setTagAry:tagAry delegate:nil];
     [self.scrollView addSubview:_tagsView];
     
-    NSString *str1 = @"88";
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"匹配度%@%%",str1]];
-    NSRange range1 = {3,[str1 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#107909"] range:range1];
+
     UILabel *fitLab = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width-100-12, tagImg.center.y-7, 100, 14)];
     fitLab.font = [UIFont systemFontOfSize:12];
     fitLab.textAlignment = NSTextAlignmentRight;
     //        fitLab.text = @"";
     fitLab.textColor = [UIColor grayColor];
     //        fitLab.backgroundColor = [UIColor yellowColor];
-    fitLab.attributedText = attStr;
     [self.scrollView addSubview:fitLab];
     self.fitLab = fitLab;
     

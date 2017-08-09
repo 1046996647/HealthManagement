@@ -18,6 +18,9 @@
 //-----------定位-----------
 @property(nonatomic,strong) UILabel *userLocationLab;
 
+@property(nonatomic,strong) NSNumber *latitude;// 纬度
+@property(nonatomic,strong) NSNumber *longitude;// 经度
+
 //-----------搜索-----------
 @property(nonatomic,strong) UITextField *tf;
 

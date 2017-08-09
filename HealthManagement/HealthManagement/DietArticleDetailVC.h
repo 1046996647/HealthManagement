@@ -9,10 +9,16 @@
 #import "BaseViewController.h"
 #import "ArticleModel.h"
 
+typedef void(^ArticleRefreshBlock)(ArticleModel *model);
+
+
 
 @interface DietArticleDetailVC : BaseViewController
 
 @property(nonatomic,strong) ArticleModel *model;
+
+@property (nonatomic,copy) ArticleRefreshBlock block;
+
 
 
 @end

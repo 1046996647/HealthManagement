@@ -119,7 +119,27 @@
     
     [_imgView sd_setImageWithURL:[NSURL URLWithString:model.titleImage]];
     
-    NSMutableAttributedString *attr = [NSString text:[NSString stringWithFormat:@" %@",model.ConstitutionPercentage] fullText:[NSString stringWithFormat:@"匹配度 %@%%",model.ConstitutionPercentage] location:3 color:[UIColor colorWithHexString:@"#0d8bf6"]];
+    NSInteger percentage = model.ConstitutionPercentage.integerValue;
+    
+    UIColor *color = nil;
+    
+    if (90 < percentage) {
+        color = [UIColor colorWithHexString:@"#ff0000"];
+    }
+    if (80 < percentage && percentage <= 90) {
+        color = [UIColor colorWithHexString:@"#107909"];
+    }
+    if (70 < percentage && percentage <= 80) {
+        color = [UIColor colorWithHexString:@"#7d28fb"];
+    }
+    if (60 < percentage && percentage <= 70) {
+        color = [UIColor colorWithHexString:@"#0d8bf6"];
+    }
+    if (60 >= percentage) {
+        color = [UIColor colorWithHexString:@"#666666"];
+    }
+    
+    NSMutableAttributedString *attr = [NSString text:[NSString stringWithFormat:@" %@",model.ConstitutionPercentage] fullText:[NSString stringWithFormat:@"匹配度 %@%%",model.ConstitutionPercentage] location:3 color:color font:nil];
     _lab1.attributedText = attr;
 
     

@@ -21,6 +21,12 @@
         self.tag = @(0);
         self.musicName = @"布谷鸟";
         
+        self.weekValue = [NSMutableArray array];
+
+        for (int i=0; i<7; i++) {
+            [self.weekValue addObject:@0.0];
+        }
+        
     }
     return self;
 }

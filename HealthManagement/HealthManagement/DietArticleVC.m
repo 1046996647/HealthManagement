@@ -96,6 +96,12 @@
     
     [self.view addSubview:self.tableView];
     
+    // 下拉刷新
+    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [self headerRefresh];
+    }];
+    
     // 上拉刷新
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         
@@ -112,6 +118,16 @@
     [self getArticleListInfo];
 }
 
+- (void)headerRefresh
+{
+    self.pageNO = 1;
+    if (self.modelArr.count > 0) {
+        [self.modelArr removeAllObjects];
+
+    }
+    [self getArticleListInfo];
+}
+
 // 饮食文章列表
 - (void)getArticleListInfo
 {
@@ -120,14 +136,20 @@
 
     }
 
+    PersonModel *person = [InfoCache unarchiveObjectWithFile:Person];
+
     NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
-    [paramDic  setObject:@2 forKey:@"Id"];
+    [paramDic  setObject:person.UserId forKey:@"Id"];
     [paramDic  setObject:@(self.pageNO) forKey:@"PageNo"];
     //    [paramDic  setObject:imgStr forKey:@"TypeValue"];
     
     [AFNetworking_RequestData requestMethodPOSTUrl:GetArticleListInfo dic:paramDic Succed:^(id responseObject) {
         
         [SVProgressHUD dismiss];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+
+
         
         NSLog(@"%@",responseObject);
         
@@ -151,7 +173,6 @@
                 ArticleModel *model = [ArticleModel yy_modelWithJSON:dic];
                 [arrM addObject:model];
             }
-            [self.tableView.mj_footer endRefreshing];
             
             [self.modelArr addObjectsFromArray:arrM]; ;
             [self.tableView reloadData];
@@ -168,6 +189,9 @@
         
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
+
         
         NSLog(@"%@",error);
         
@@ -194,10 +218,16 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    __block ArticleModel *articleModel = self.modelArr[indexPath.row];
+    
     DietArticleDetailVC *vc = [[DietArticleDetailVC alloc] init];
     vc.title = @"推荐饮食";
-    vc.model = self.modelArr[indexPath.row];
+    vc.model = articleModel;
     [self.navigationController pushViewController:vc animated:YES];
+    vc.block = ^(ArticleModel *model) {
+        articleModel = model;
+        [self.tableView reloadData];
+    };
 }
 
 
@@ -209,7 +239,11 @@
         cell = [[DietArticleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"articleCell"];
         
     }
-    cell.model = self.modelArr[indexPath.row];
+    
+    if (self.modelArr.count > 0) {
+        cell.model = self.modelArr[indexPath.row];
+
+    }
     return cell;
 }
 
