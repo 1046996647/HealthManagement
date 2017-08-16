@@ -57,7 +57,7 @@
     [SVProgressHUD show];
     
     NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
-    [paramDic  setObject:self.model.ID forKey:@"id"];
+    [paramDic  setObject:self.resID forKey:@"id"];
     [paramDic  setObject:self.longitude forKey:@"CoordX"];
     [paramDic  setObject:self.latitude forKey:@"CoordY"];
     
@@ -94,7 +94,7 @@
 {
     
     NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
-    [paramDic  setObject:self.model.ID forKey:@"id"];
+    [paramDic  setObject:self.resID forKey:@"id"];
 //    [paramDic  setObject:self.longitude forKey:@"CoordX"];
 //    [paramDic  setObject:self.latitude forKey:@"CoordY"];
     

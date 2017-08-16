@@ -15,6 +15,9 @@
 #import <BaiduMapAPI_Base/BMKBaseComponent.h>//引入base相关所有的头文件
 
 @interface AppDelegate ()<BMKGeneralDelegate>
+{
+    SystemSoundID soundID;
+}
 
 @property (strong, nonatomic) BMKMapManager *mapManager;
 @property (strong, nonatomic) ClockView *clockView;
@@ -100,6 +103,7 @@
     }
     else {
         TabBarController *tabVC = [[TabBarController alloc] init];
+        self.tabVC = tabVC;
         self.window.rootViewController = tabVC;
     }
 }
@@ -145,8 +149,7 @@
 // 闹钟提醒试图
 - (void)userInfo:(UILocalNotification *)notification
 {
-    // 获取通知所带的数据
-    NSString *clockTime = [notification.userInfo objectForKey:@"clockTime"];
+    
     
     // 播放音频
     NSString *clockMusic = [notification.userInfo objectForKey:@"clockMusic"];
@@ -158,20 +161,25 @@
     [_audioPlayer prepareToPlay]; // 准备播放，加载音频文件到缓存
     [self.audioPlayer play];
     
-    NSString *clockID = [notification.userInfo objectForKey:@"ActivityClock"];
     
-    if ([clockID isEqualToString:@"WakeupID"]) {
-        self.clockView = [[ClockView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height)];
-        self.clockView.timeStr = clockTime;
-        [self.window addSubview:self.clockView];
-        
-        __weak typeof(self) weakSelf = self;
-        self.clockView.block = ^{
-            if ([weakSelf.audioPlayer isPlaying]) {
-                [weakSelf.audioPlayer pause];
-            }
-        };
-    }
+//    NSString *clockMusic = [notification.userInfo objectForKey:@"clockMusic"];
+//    NSString *path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/%@.%@",clockMusic,@"caf"];
+//    if (clockMusic) {
+//        AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:clockMusic], &soundID);
+//        AudioServicesPlaySystemSound(soundID);
+//        
+//    }
+    
+    self.clockView = [[ClockView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height)];
+    self.clockView.info = notification.userInfo;
+    [self.window addSubview:self.clockView];
+    
+    __weak typeof(self) weakSelf = self;
+    self.clockView.block = ^{
+        if ([weakSelf.audioPlayer isPlaying]) {
+            [weakSelf.audioPlayer pause];
+        }
+    };
 }
 
 

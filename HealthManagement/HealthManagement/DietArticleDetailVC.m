@@ -41,47 +41,47 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 0)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, -93, kScreen_Width, 0)];
     headerView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:headerView];
+//    [self.view addSubview:headerView];
     self.headerView = headerView;
     
-    _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 12, kScreen_Width-20, 20)];
-    _lab2.font = [UIFont boldSystemFontOfSize:16];
+    _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 12, kScreen_Width, 21)];
+    _lab2.font = [UIFont boldSystemFontOfSize:20];
     _lab2.text = self.model.title;
     _lab2.textAlignment = NSTextAlignmentLeft;
     //        _lab1.textColor = [UIColor grayColor];
     [self.headerView addSubview:_lab2];
     
     
-    _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+12, 120, 11)];
-    _lab4.font = [UIFont boldSystemFontOfSize:10];
+    _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+12, 140, 13)];
+    _lab4.font = [UIFont boldSystemFontOfSize:12];
     _lab4.text = self.model.aTime;
-    _lab4.textAlignment = NSTextAlignmentRight;
+    _lab4.textAlignment = NSTextAlignmentLeft;
     //        _lab4.backgroundColor = [UIColor redColor];
     _lab4.textColor = [UIColor grayColor];
     [self.headerView addSubview:_lab4];
     
     _btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btn.frame = CGRectMake(_lab4.right+15, _lab4.center.y-5.5, 60, 11);
+    _btn.frame = CGRectMake(_lab4.right+15, _lab4.center.y-5.5, 60, 13);
     [_btn setImage:[UIImage imageNamed:@"browse"] forState:UIControlStateNormal];
     //        _btn.backgroundColor = [UIColor redColor];
     _btn.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
     _btn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -5);
-    _btn.titleLabel.font = [UIFont boldSystemFontOfSize:10];
+    _btn.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     [_btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     _btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [_btn setTitle:self.model.cilckCount forState:UIControlStateNormal];
     [self.headerView addSubview:_btn];
     
     _btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btn1.frame = CGRectMake(_btn.right, _btn.top, 60, 11);
+    _btn1.frame = CGRectMake(_btn.right, _btn.top, 60, 13);
     [_btn1 setImage:[UIImage imageNamed:@"thumbs_normal"] forState:UIControlStateNormal];
     [_btn1 setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateSelected];
     //    _nearbyBtn.backgroundColor = [UIColor redColor];
     _btn1.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
     _btn1.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -5);
-    _btn1.titleLabel.font = [UIFont boldSystemFontOfSize:10];
+    _btn1.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     [_btn1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     _btn1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [_btn1 setTitle:self.model.loveCount forState:UIControlStateNormal];
@@ -125,6 +125,9 @@
     _webView.UIDelegate = self;
     _webView.navigationDelegate = self;
     [self.view addSubview:_webView];
+    [_webView.scrollView addSubview:headerView];
+    _webView.scrollView.contentInset = UIEdgeInsetsMake(93, 0, 0, 0);
+
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.model.url]]];
     
     _progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(0, 0, kScreen_Width,2)];

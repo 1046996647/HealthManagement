@@ -96,7 +96,7 @@
     
     [overView removeFromSuperview];
     overView = nil;
-    if (btn.tag == 0) {
+    if (btn.tag == 1) {
     
         if (self.fileDeleteBlock) {
             _fileDeleteBlock();

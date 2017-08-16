@@ -8,11 +8,13 @@
 
 #import "BaseViewController.h"
 #import "RecipeModel.h"
+#import "ResDetailModel.h"
 
 
 @interface PaymentVC : BaseViewController
 
 @property(nonatomic,strong) RecipeModel *model;
+@property(nonatomic,strong) ResDetailModel *model1;
 
 
 @end

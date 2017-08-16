@@ -8,9 +8,9 @@
 
 #import "InfoChangeController.h"
 
-#define nickNum 12
+#define weightNum 3
 //#define telNum 11
-#define personalSign 12
+#define heightNum 3
 
 @interface InfoChangeController ()
 {
@@ -60,16 +60,16 @@
 
     }
     
-//    if ([self.title isEqualToString:@"身高"]) {
-//
-//        fontNum = nickNum;
-//
-//
-//    } else {
-//
-//        fontNum = personalSign;
-//
-//    }
+    if ([self.title isEqualToString:@"身高"]) {
+
+        fontNum = heightNum;
+
+
+    } else if ([self.title isEqualToString:@"体重"]) {
+
+        fontNum = weightNum;
+
+    }
 
     //导航栏的确定按钮
     [self initRightBtn];
@@ -137,8 +137,8 @@
 
 - (void)valueChange:(UITextField *)tf
 {
-    if (tf.text.length > 12) {
-        tf.text = [tf.text substringToIndex:12];
+    if (tf.text.length > fontNum) {
+        tf.text = [tf.text substringToIndex:fontNum];
     }
 }
 

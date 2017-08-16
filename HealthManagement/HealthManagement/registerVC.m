@@ -12,6 +12,7 @@
 #import "CountDownServer.h"
 #import "AppDelegate.h"
 #import "LoginVC.h"
+#import "NavigationController.h"
 
 
 #define kCountDownForVerifyCode @"CountDownForVerifyCode"
@@ -21,6 +22,7 @@
 
 @property(nonatomic,strong) UITextField *tf;
 @property(nonatomic,strong) UITextField *validTf;
+@property(nonatomic,strong) UITextField *oldPasswordTf;
 @property(nonatomic,strong) UITextField *passwordTf;
 @property(nonatomic,strong) UITextField *confirmPasswordTf;
 @property(nonatomic,strong) UIButton *getBtn;
@@ -154,33 +156,33 @@
     [confirmPasswordTf addTarget:self action:@selector(editChangeAction:) forControlEvents:UIControlEventEditingChanged];
 
 
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(7, tf.bottom, kScreen_Width-14, .5)];
-    view.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
-    [self.view addSubview:view];
+    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(7, tf.bottom, kScreen_Width-14, .5)];
+    view1.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
+    [self.view addSubview:view1];
     
-    view = [[UIView alloc] initWithFrame:CGRectMake(getBtn.left, getBtn.top+2, .5, tf.height-4)];
-    view.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
-    [self.view addSubview:view];
+    UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(getBtn.left, getBtn.top+2, .5, tf.height-4)];
+    view2.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
+    [self.view addSubview:view2];
     
-    view = [[UIView alloc] initWithFrame:CGRectMake(7, validTf.bottom, kScreen_Width-14, .5)];
-    view.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
-    [self.view addSubview:view];
+    UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(7, validTf.bottom, kScreen_Width-14, .5)];
+    view3.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
+    [self.view addSubview:view3];
     
-    view = [[UIView alloc] initWithFrame:CGRectMake(50, passwordTf.bottom, kScreen_Width-50-7, .5)];
-    view.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
-    [self.view addSubview:view];
+    UIView *view4 = [[UIView alloc] initWithFrame:CGRectMake(50, passwordTf.bottom, kScreen_Width-50-7, .5)];
+    view4.backgroundColor = [UIColor colorWithHexString:@"#D7D8D7"];
+    [self.view addSubview:view4];
     
     
     UIButton *registerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    registerBtn.frame = CGRectMake(30/2, confirmPasswordTf.bottom+69, kScreen_Width-30, 98/2);
+    registerBtn.frame = CGRectMake(30/2, confirmPasswordTf.bottom+74/2, kScreen_Width-30, 98/2);
     registerBtn.layer.cornerRadius = 5;;
     registerBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     registerBtn.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     registerBtn.layer.masksToBounds = YES;
     [self.view addSubview:registerBtn];
     [registerBtn addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
-//    registerBtn.userInteractionEnabled = NO;
-    registerBtn.userInteractionEnabled = YES;// 测试
+    registerBtn.userInteractionEnabled = NO;
+//    registerBtn.userInteractionEnabled = YES;// 测试
     self.registerBtn = registerBtn;
     
     if ([self.title isEqualToString:@"注册"]) {
@@ -189,6 +191,47 @@
     }
     else {
         [registerBtn setTitle:@"确定" forState:UIControlStateNormal];
+
+    }
+    
+    if ([self.title isEqualToString:@"修改密码"]) {
+        self.tf.hidden = YES;
+        self.validTf.hidden = YES;
+        self.passwordTf.rightView = nil;
+        self.getBtn.hidden = YES;
+        
+        leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 55, 19)];
+        leftView.contentMode = UIViewContentModeScaleAspectFit;
+        leftView.image = [UIImage imageNamed:@"password_3"];
+        
+        UITextField *oldPasswordTf = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 116/2)];
+        oldPasswordTf.placeholder = @"旧密码";
+        oldPasswordTf.secureTextEntry = YES;
+        oldPasswordTf.clearButtonMode = UITextFieldViewModeWhileEditing;
+        oldPasswordTf.font = [UIFont systemFontOfSize:14];
+        [oldPasswordTf setValue:[UIFont systemFontOfSize:14] forKeyPath:@"_placeholderLabel.font"];
+        [oldPasswordTf setValue:[UIColor colorWithHexString:@"#A4A4A4"] forKeyPath:@"_placeholderLabel.textColor"];
+        oldPasswordTf.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
+        oldPasswordTf.leftViewMode = UITextFieldViewModeAlways;
+        oldPasswordTf.rightViewMode = UITextFieldViewModeAlways;
+        oldPasswordTf.leftView = leftView;
+        oldPasswordTf.rightView = rightView;
+//        oldPasswordTf.tag = 100;
+        //    tf.tintColor = [UIColor blueColor];
+        [self.view addSubview:oldPasswordTf];
+        self.oldPasswordTf = oldPasswordTf;
+        [oldPasswordTf addTarget:self action:@selector(editChangeAction:) forControlEvents:UIControlEventEditingChanged];
+        
+        self.passwordTf.top = oldPasswordTf.bottom;
+        self.confirmPasswordTf.top = passwordTf.bottom;
+        self.registerBtn.top = confirmPasswordTf.bottom+74/2;
+        
+        view1.hidden = YES;
+        view2.hidden = YES;
+//        view3.top = oldPasswordTf.bottom;
+        view3.frame = CGRectMake(50, oldPasswordTf.bottom, kScreen_Width-50-7, .5);
+        view4.top = passwordTf.bottom;
+
 
     }
     
@@ -203,11 +246,13 @@
 {
     btn.selected = !btn.selected;
     if (btn.selected) {
+        self.oldPasswordTf.secureTextEntry = NO;
         self.passwordTf.secureTextEntry = NO;
         self.confirmPasswordTf.secureTextEntry = NO;
 
     }
     else {
+        self.oldPasswordTf.secureTextEntry = YES;
         self.passwordTf.secureTextEntry = YES;
         self.confirmPasswordTf.secureTextEntry = YES;
 
@@ -249,7 +294,6 @@
         
         NSNumber *code = [responseObject objectForKey:@"HttpCode"];
         
-        
         if (200 == [code integerValue]) {
             NSString *msg = [responseObject objectForKey:@"Message"];
             
@@ -276,7 +320,7 @@
 
 - (void)registerAction
 {
-
+    [self.view endEditing:YES];
 
     if (![self.passwordTf.text isEqualToString:self.confirmPasswordTf.text]) {
         [self.view makeToast:@"密码不一致"];
@@ -296,10 +340,17 @@
         
         registStr = MailRegister;
         
-    } else if ([self.title isEqualToString:@"忘记密码"] ||[self.title isEqualToString:@"修改密码"])
+    } else if ([self.title isEqualToString:@"忘记密码"])
     {
         registStr = ResetUserPassword;
         
+    }
+    else {
+        registStr = ModifyUserPassword;
+        [paramDic  setValue:self.oldPasswordTf.text forKey:@"OldPassword"];
+        [paramDic  setValue:self.passwordTf.text forKey:@"NewPassword"];
+
+
     }
     
     [AFNetworking_RequestData requestMethodPOSTUrl:registStr dic:paramDic Succed:^(id responseObject) {
@@ -327,14 +378,30 @@
                 [self.navigationController pushViewController:vc animated:YES];
             } else if ([self.title isEqualToString:@"忘记密码"])
             {
-                 [[NSNotificationCenter defaultCenter] postNotificationName:@"kLoginNotification" object:nil];
+                [self.view makeToast:@"密码重置成功"];
+
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"kLoginNotification" object:nil];
+
+                });
 
             } else if ([self.title isEqualToString:@"修改密码"])
             {
                 
-                AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-                LoginVC *tabVC = [[LoginVC alloc] init];
-                delegate.window.rootViewController = tabVC;
+                [self.view makeToast:@"密码修改成功"];
+                [InfoCache saveValue:@0 forKey:@"LoginedState"];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    LoginVC *loginVC = [[LoginVC alloc] init];
+                    NavigationController *nav = [[NavigationController alloc] initWithRootViewController:loginVC];
+                    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    delegate.window.rootViewController = nav;
+                    
+                });
+
+                
             }
 
         }
@@ -392,14 +459,27 @@
 
 - (void)editChangeAction:(UITextField *)textField
 {
-    
-    if (self.tf.text.length > 0 && self.validTf.text.length > 0 && self.passwordTf.text.length > 0 && self.confirmPasswordTf.text.length > 0) {
-        self.registerBtn.userInteractionEnabled = YES;
-        self.registerBtn.backgroundColor=[UIColor colorWithHexString:@"#BD2F3B"];
-    } else {
-        self.registerBtn.userInteractionEnabled = NO;
-        self.registerBtn.backgroundColor=[UIColor colorWithHexString:@"#cccccc"];
+    if (![self.title isEqualToString:@"修改密码"]) {
+        if (self.tf.text.length > 0 && self.validTf.text.length > 0 && self.passwordTf.text.length > 0 && self.confirmPasswordTf.text.length > 0) {
+            self.registerBtn.userInteractionEnabled = YES;
+            self.registerBtn.backgroundColor=[UIColor colorWithHexString:@"#BD2F3B"];
+        } else {
+            self.registerBtn.userInteractionEnabled = NO;
+            self.registerBtn.backgroundColor=[UIColor colorWithHexString:@"#cccccc"];
+        }
     }
+    else {
+        
+        if (self.oldPasswordTf.text.length > 0 && self.passwordTf.text.length > 0 && self.confirmPasswordTf.text.length > 0) {
+            self.registerBtn.userInteractionEnabled = YES;
+            self.registerBtn.backgroundColor=[UIColor colorWithHexString:@"#BD2F3B"];
+        } else {
+            self.registerBtn.userInteractionEnabled = NO;
+            self.registerBtn.backgroundColor=[UIColor colorWithHexString:@"#cccccc"];
+        }
+    }
+        
+
     
     if (textField.tag == 100) {
         self.confirmPasswordTf.text = @"";

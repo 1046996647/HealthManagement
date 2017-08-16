@@ -1,13 +1,13 @@
 //
-//  ZWLSlider.h
+//  ScrollView.h
 //  HealthManagement
 //
-//  Created by ZhangWeiLiang on 2017/7/17.
+//  Created by ZhangWeiLiang on 2017/8/9.
 //  Copyright © 2017年 ZhangWeiLiang. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ZWLSlider : UISlider
+@interface ScrollView : UIScrollView
 
 @end

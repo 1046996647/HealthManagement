@@ -192,5 +192,74 @@
     
 }
 
+//在开发中我们经常需要判断一个时期是今天还是昨天，或者是之前的日子。代码如下：
+
+//计算  距离现在的时间
++ (NSString *)getUTCFormateDate:(NSDate *)newsDate
+
+{
+
+    NSString *dateContent;
+    
+    NSTimeInterval secondsPerDay = 24 * 60 * 60;
+    
+    NSDate *today=[[NSDate alloc] init];
+    
+    NSDate *yearsterDay =  [[NSDate alloc] initWithTimeIntervalSinceNow:-secondsPerDay];
+    
+    NSDate *qianToday =  [[NSDate alloc] initWithTimeIntervalSinceNow:-2*secondsPerDay];
+    
+    //假设这是你要比较的date：NSDate *yourDate = ……
+    
+    //日历
+    
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    
+    NSDateComponents* comp1 = [calendar components:unitFlags fromDate:newsDate];
+    
+    NSDateComponents* comp2 = [calendar components:unitFlags fromDate:yearsterDay];
+    
+    NSDateComponents* comp3 = [calendar components:unitFlags fromDate:qianToday];
+    
+    NSDateComponents* comp4 = [calendar components:unitFlags fromDate:today];
+    
+    if ( comp1.year == comp2.year && comp1.month == comp2.month && comp1.day == comp2.day) {
+        
+        dateContent = @"昨天";
+        
+    }
+    
+    else if (comp1.year == comp3.year && comp1.month == comp3.month && comp1.day == comp3.day)
+        
+    {
+        
+        dateContent = @"前天";
+        
+    }
+    
+    else if (comp1.year == comp4.year && comp1.month == comp4.month && comp1.day == comp4.day)
+        
+    {
+        
+        dateContent = @"今天";
+        
+    }
+    
+    else
+        
+    {
+        
+        //返回0说明该日期不是今天、昨天、前天
+        
+        dateContent = @"0";
+        
+    }
+    
+    return dateContent;
+    
+}
+
 
 @end

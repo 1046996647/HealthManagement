@@ -8,7 +8,6 @@
 
 #import "SleepVC.h"
 #import "HealthManagement-Swift.h"
-#import "ZWLSlider.h"
 #import "SleepModel.h"
 #import "NSStringExt.h"
 #import "SleepSettingVC.h"
@@ -29,6 +28,7 @@
 @property (nonatomic,strong) UILabel *startLab;
 @property (nonatomic,strong) UILabel *endLab;
 @property (nonatomic,strong) UIView *fenxiView;
+@property (nonatomic,strong) UIView *line1;
 @property (nonatomic,strong) UIView *line2;
 @property (nonatomic,strong) UIView *currentView;
 @property (nonatomic,assign) NSInteger index;
@@ -271,7 +271,7 @@
     UIView *view = (UILabel *)[self.scrollView viewWithTag:200+index];
     self.currentView = view;
     
-
+    [self changeAction];
 
 }
 
@@ -283,9 +283,20 @@
     NSLog(@"----%f",per);
     self.model.weekValue[_index] = @(per);
     
+    if (_model.isOpen) {
+        [InfoCache archiveObject:_model toFile:ClockPath];
+
+    }
+
+    
     float height = 61.5;
     self.fenxiView.height = per*height;
     self.line2.bottom = self.fenxiView.height;
+    
+    if (self.line2.bottom < self.line1.bottom) {
+        self.line2.bottom = self.line1.bottom;
+    }
+    
     self.endLab.bottom = self.fenxiView.height;
     
     if (self.fenxiView.height>5.5) {
@@ -325,6 +336,7 @@
     UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(startLab.right, startLab.center.y-.25, kScreen_Width-startLab.right-12, .5)];
     line1.backgroundColor = [UIColor colorWithHexString:@"#AFAFAF"];
     [fenxiView addSubview:line1];
+    self.line1 = line1;
     
     UILabel *endLab = [[UILabel alloc] initWithFrame:CGRectMake(10, startLab.bottom+41, startLab.width, 11)];
     endLab.font = [UIFont boldSystemFontOfSize:10];
@@ -360,8 +372,8 @@
 
     for (int i=0; i<7; i++) {
         
-        float per = [self.model.weekValue[i] floatValue]/24;
-//        float per = .5;
+        float per = [self.model.weekValue[i] floatValue];
+//        float per = .600132;
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(line2.left+i*(line2.width/7.0)+(line2.width/7.0)/2.0, fenxiView.top+(61.5-per*height-5.5), 3, per*height)];
         view.layer.cornerRadius = view.width/2;
@@ -371,13 +383,13 @@
         // 添加到控制器的view上
         [self.scrollView addSubview:view];
         
-        if (i == 0) {
-            view.left = line2.left+10;
-            
-        }
-        if (i == 7-1) {
-            view.left = line2.right-3-6;
-        }
+//        if (i == 0) {
+//            view.left = line2.left+10;
+//            
+//        }
+//        if (i == 7-1) {
+//            view.left = line2.right-3-6;
+//        }
     }
 
     NSArray *weekArr = @[@"周一",@"二",@"三",@"四",@"五",@"六",@"日"];
@@ -392,15 +404,15 @@
         //    startLab.backgroundColor = [UIColor redColor];
         [self.scrollView addSubview:lab];
         
-        if (i == 0) {
-            lab.textAlignment = NSTextAlignmentLeft;
-//            lab.backgroundColor = [UIColor redColor];
-
-        }
-        if (i == weekArr.count-1) {
-            lab.textAlignment = NSTextAlignmentRight;
-            
-        }
+//        if (i == 0) {
+//            lab.textAlignment = NSTextAlignmentLeft;
+////            lab.backgroundColor = [UIColor redColor];
+//
+//        }
+//        if (i == weekArr.count-1) {
+//            lab.textAlignment = NSTextAlignmentRight;
+//            
+//        }
     }
     
     
@@ -680,8 +692,11 @@
         if (newNotification) {
             newNotification.fireDate = newFireDate;
             newNotification.alertBody = alertBody;
-//            newNotification.soundName = @"7557.wav";
-            newNotification.soundName = [NSString stringWithFormat:@"%@.caf", clockMusic];
+            
+//            NSString *path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/%@.%@",@"alarm",@"caf"];
+
+//            newNotification.soundName = path;
+            newNotification.soundName = [NSString stringWithFormat:@"%@.caf", @"梦幻"];
 
             //            newNotification.alertAction = @"查看闹钟";
             newNotification.repeatInterval = NSCalendarUnitWeekOfYear;

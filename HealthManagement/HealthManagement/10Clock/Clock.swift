@@ -543,7 +543,8 @@ open class TenClock : UIControl{
                 } else {
                     pointMover = nil
             }
-        case pathLayer:
+//        case pathLayer://可同时滑
+        case trackLayer:
             if (shouldMoveHead) {
             		pointMover = pointerMoverProducer({ pt in
                 		let x = CGVector(from: self.bounds.center,

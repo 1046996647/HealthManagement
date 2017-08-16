@@ -13,6 +13,7 @@
 #import "PaymentVC.h"
 #import "FoodCell.h"
 #import "NSStringExt.h"
+#import "ResDetailVC.h"
 
 
 @interface CookbookDetailVC ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UITableViewDelegate,UITableViewDataSource>
@@ -255,6 +256,8 @@
 //    [resBtn setImage:[UIImage imageNamed:@"recipes_4"] forState:UIControlStateNormal];
     resBtn.backgroundColor = [UIColor colorWithHexString:@"#0F8EDE"];
     [self.view addSubview:resBtn];
+    [resBtn addTarget:self action:@selector(resAction) forControlEvents:UIControlEventTouchUpInside];
+
     
     UIImageView *resImgView = [[UIImageView alloc] initWithFrame:CGRectMake((resBtn.width-15)/2.0, 5, 15, 15)];
     //        imgView.backgroundColor = [UIColor redColor];
@@ -286,15 +289,32 @@
     [shopBtn setImage:[UIImage imageNamed:@"shopCar"] forState:UIControlStateNormal];
     [shopBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:shopBtn];
+    
 
     
+}
+
+- (void)resAction
+{
+    
+    if (self.mark == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        ResDetailVC *vc = [[ResDetailVC alloc] init];
+        vc.resID = self.model.RestaurantId;
+        vc.latitude = self.latitude;
+        vc.longitude = self.longitude;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+
 }
 
 - (void)btnAction
 {
     
     PaymentVC *vc = [[PaymentVC alloc] init];
-    vc.model = self.model;
+    vc.model = self.model; 
     [self.navigationController pushViewController:vc animated:YES];
 }
 

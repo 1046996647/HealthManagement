@@ -7,6 +7,7 @@
 //
 
 #import "DietRecordCell.h"
+#import "DietRecordDetailVC.h"
 //#import "NSStringExt.h"
 
 @implementation DietRecordCell
@@ -21,7 +22,8 @@
         _imgView.backgroundColor = [UIColor redColor];
         _imgView.layer.cornerRadius = 6;
         _imgView.layer.masksToBounds = YES;
-        _imgView.contentMode = UIViewContentModeScaleAspectFit;
+        _imgView.clipsToBounds = YES;
+        _imgView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:_imgView];
         
         
@@ -54,6 +56,7 @@
         _btn.frame = CGRectMake(kScreen_Width-50-12, _lab2.bottom+5, 50, 20);
         [_btn setImage:[UIImage imageNamed:@"home_6"] forState:UIControlStateNormal];
         [self.contentView addSubview:_btn];
+        [_btn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
         
         _lab3 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+5, 200, 20)];
         _lab3.text = @"吉野家  2017年12月10日12:80:00";
@@ -64,6 +67,13 @@
         
     }
     return self;
+}
+
+- (void)btnAction
+{
+    DietRecordDetailVC *vc = [[DietRecordDetailVC alloc] init];
+    vc.title = @"订单详情";
+    [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
 //- (void)setModel:(PayRecordModel *)model
@@ -77,15 +87,6 @@
 //    _lab4.text = [NSString stringWithFormat:@"交易流水号 : %@",model.payId];
 //}
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
-}
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
 
 @end

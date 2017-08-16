@@ -75,6 +75,8 @@
 //        imgView.userInteractionEnabled = YES;
 //        imgView.image = [UIImage imageNamed:@"food"];
         [view addSubview:imgView];
+        imgView.clipsToBounds = YES;
+        imgView.contentMode = UIViewContentModeScaleAspectFill;
 
         
         UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, imgView.bottom, kRWidth-10, 20)];
@@ -125,11 +127,11 @@
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kBigWidth, _bigView.height-60)];
 //    imgView.backgroundColor = [UIColor redColor];
     imgView.tag = 10;
-    imgView.contentMode = UIViewContentModeScaleAspectFill;
 //    imgView.image = [UIImage imageNamed:@"food"];
     [_bigView addSubview:imgView];
 //    imgView.userInteractionEnabled = YES;
-
+    imgView.clipsToBounds = YES;
+    imgView.contentMode = UIViewContentModeScaleAspectFill;
 
     
     UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(5, _bigView.height-30-20, kBigWidth-10, 18)];
@@ -265,6 +267,9 @@
 
     CookbookDetailVC *vc = [[CookbookDetailVC alloc] init];
     vc.model = model;
+    vc.mark = 1;
+    vc.latitude = self.latitude;
+    vc.longitude = self.longitude;
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 

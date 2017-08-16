@@ -102,9 +102,12 @@
     if (_delegate && [_delegate respondsToSelector:@selector(numberOfElementsCountWithAxisType:)]) {
         _xElements = [_delegate numberOfElementsCountWithAxisType:AxisTypeX];
     }
+
     CGFloat scrollHeight = CGRectGetHeight(self.frame);
     CGFloat scrollWidth = CGRectGetWidth(self.frame)-_yWidth;
-    CGFloat yHeight = CGRectGetHeight(self.frame)-_xHeight;
+//    CGFloat yHeight = CGRectGetHeight(self.frame)-_xHeight;
+    // 修改的
+    CGFloat yHeight = CGRectGetHeight(self.frame)-_xHeight-25;
     CGFloat xWidth = CGRectGetWidth(self.frame)-_yWidth;
     if (xWidth<(_xElements+1)*_xInterval) {
         xWidth=(_xElements+1)*_xInterval;

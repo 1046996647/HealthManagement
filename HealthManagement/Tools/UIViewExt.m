@@ -208,6 +208,8 @@ CGRect CGRectMoveToCenter(CGRect rect, CGPoint center)
 {
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:frame];
     imgView.image = [UIImage imageNamed:icon];
+    imgView.clipsToBounds = YES;
+    imgView.contentMode = UIViewContentModeScaleAspectFill;
     return imgView;
 }
 
@@ -218,7 +220,7 @@ CGRect CGRectMoveToCenter(CGRect rect, CGPoint center)
     
     [button setImage:[UIImage imageNamed:normal] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:selected] forState:UIControlStateSelected];
-    [button setTitleColor:[UIColor colorWithHexString:@"#A4A4A4"] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithHexString:color] forState:UIControlStateNormal];
     [button setTitle:text forState:UIControlStateNormal];
     button.backgroundColor = [UIColor colorWithHexString:backColor];
     button.titleLabel.font = font;

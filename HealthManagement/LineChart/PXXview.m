@@ -50,7 +50,9 @@
     if (self.axisAttributes[yAxisColor]) {
         self.xlineView.backgroundColor = self.axisAttributes[yAxisColor];
     }
-    self.xlineView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), 1);
+//    self.xlineView.frame = CGRectMake(0, 25, CGRectGetWidth(self.frame), 1);
+    // 修改的
+    self.xlineView.frame = CGRectMake(0, 25, CGRectGetWidth(self.frame), 1);
     [self addSubview:self.xlineView];
     NSUInteger elementCons = 0;
     if (_delegate && [_delegate respondsToSelector:@selector(numberOfElementsCountWithAxisType:)]) {
@@ -67,19 +69,25 @@
         NSDictionary *attr = @{NSFontAttributeName : elementView.font};
         CGSize elementSize = [elementView.text sizeWithAttributes:attr];
         elementView.frame = CGRectMake(0,
-                                    CGRectGetHeight(self.frame)-elementSize.height,
+                                    CGRectGetHeight(self.frame)-elementSize.height+25,
                                        elementSize.width,
                                        elementSize.height);
         elementView.center = CGPointMake(_xElementInterval*(i+1), elementView.center.y);
 //        elementView.backgroundColor = [UIColor redColor];
         [self addSubview:elementView];
         
+        // 修改的
         // 小灰圆点
-        UILabel *circleLab = [[UILabel alloc] initWithFrame:CGRectMake((elementView.width-6)/2.0, -13, 6, 6)];
+        UILabel *circleLab = [[UILabel alloc] initWithFrame:CGRectMake((elementView.width-6)/2.0, -13.5, 6, 6)];
         circleLab.layer.cornerRadius = circleLab.width/2.0;
         circleLab.layer.masksToBounds = YES;
         circleLab.backgroundColor = [UIColor grayColor];
         [elementView addSubview:circleLab];
+        
+        if (i == elementCons-1) {
+            circleLab.backgroundColor = [UIColor blackColor];
+
+        }
 
         
         NSString *xTitle = @"";

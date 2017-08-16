@@ -14,6 +14,7 @@
 #import "PopViewVC.h"
 #import "UIImage+UIImageExt.h"
 #import "InfoChangeController.h"
+#import "ModifyTelFirstVC.h"
 
 
 @interface SettingVC ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -42,6 +43,11 @@
     return _tableView;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -67,6 +73,9 @@
     exitBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16];
     [self.view addSubview:exitBtn];
     [exitBtn addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserBodyInfo) name:@"kRefreshNotification" object:nil];
     
 }
 
@@ -176,6 +185,12 @@
     }
     if (indexPath.row == 2) {
         
+        ModifyTelFirstVC *vc = [[ModifyTelFirstVC alloc] init];
+        vc.title = @"修改手机号码";
+        vc.phone = cell.detailTextLabel.text;
+
+        [self.navigationController pushViewController:vc animated:YES];
+        
     }
     if (indexPath.row == 3) {
         
@@ -229,7 +244,10 @@
     UIImage *img = info[UIImagePickerControllerOriginalImage];
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    
+    //通过判断picker的sourceType，如果是拍照则保存到相册去
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImageWriteToSavedPhotosAlbum(img, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }
 //    NSData *data = [UIImage imageCompressForWidth:img targetWidth:100];
     
     NSData *data = [UIImage imageOrientation:img];
@@ -237,57 +255,57 @@
 
     [self uploadImage:data];
     
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    
-//    NSDictionary *dict = @{@"username":@"Saup"};
-    
-    //formData: 专门用于拼接需要上传的数据,在此位置生成一个要上传的数据体
-    [manager POST:UploadImage parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        
-//        UIImage *image =[UIImage imageNamed:@"moon"];
-//        NSData *data = UIImagePNGRepresentation(img);
-        NSData *data = UIImageJPEGRepresentation(img,.5);
-        
-        
-        // 在网络开发中，上传文件时，是文件不允许被覆盖，文件重名
-        // 要解决此问题，
-        // 可以在上传时使用当前的系统事件作为文件名
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        // 设置时间格式
-        formatter.dateFormat = @"yyyyMMddHHmmss";
-        NSString *str = [formatter stringFromDate:[NSDate date]];
-        NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
-        
-        //上传
-        /*
-         此方法参数
-         1. 要上传的[二进制数据]
-         2. 对应网站上[upload.php中]处理文件的[字段"file"]
-         3. 要保存在服务器上的[文件名]
-         4. 上传文件的[mimeType]
-         */
-        [formData appendPartWithFileData:data name:@"file" fileName:fileName mimeType:@"image/png"];
-        
-        NSLog(@"------%@",formData);
-
-        
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-        //上传进度
-        // @property int64_t totalUnitCount;     需要下载文件的总大小
-        // @property int64_t completedUnitCount; 当前已经下载的大小
-        //
-        // 给Progress添加监听 KVO
-        NSLog(@"%f",1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"上传成功 %@", responseObject);
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        NSLog(@"上传失败 %@", error);
-    }];
+//    
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    
+////    NSDictionary *dict = @{@"username":@"Saup"};
+//    
+//    //formData: 专门用于拼接需要上传的数据,在此位置生成一个要上传的数据体
+//    [manager POST:UploadImage parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+//        
+////        UIImage *image =[UIImage imageNamed:@"moon"];
+////        NSData *data = UIImagePNGRepresentation(img);
+//        NSData *data = UIImageJPEGRepresentation(img,.5);
+//        
+//        
+//        // 在网络开发中，上传文件时，是文件不允许被覆盖，文件重名
+//        // 要解决此问题，
+//        // 可以在上传时使用当前的系统事件作为文件名
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        // 设置时间格式
+//        formatter.dateFormat = @"yyyyMMddHHmmss";
+//        NSString *str = [formatter stringFromDate:[NSDate date]];
+//        NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
+//        
+//        //上传
+//        /*
+//         此方法参数
+//         1. 要上传的[二进制数据]
+//         2. 对应网站上[upload.php中]处理文件的[字段"file"]
+//         3. 要保存在服务器上的[文件名]
+//         4. 上传文件的[mimeType]
+//         */
+//        [formData appendPartWithFileData:data name:@"file" fileName:fileName mimeType:@"image/png"];
+//        
+//        NSLog(@"------%@",formData);
+//
+//        
+//    } progress:^(NSProgress * _Nonnull uploadProgress) {
+//        
+//        //上传进度
+//        // @property int64_t totalUnitCount;     需要下载文件的总大小
+//        // @property int64_t completedUnitCount; 当前已经下载的大小
+//        //
+//        // 给Progress添加监听 KVO
+//        NSLog(@"%f",1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount);
+//        
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSLog(@"上传成功 %@", responseObject);
+//        
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        
+//        NSLog(@"上传失败 %@", error);
+//    }];
     
     
 }
@@ -299,8 +317,16 @@
     
 }
 
+//此方法就在UIImageWriteToSavedPhotosAlbum的上方
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    NSLog(@"已保存");
+}
+
 - (void)uploadImage:(NSData *)data
 {
+    [SVProgressHUD show];
+
+    
     NSString *encodedImageStr = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     
 //    NSLog(@"!!!!!!%@",encodedImageStr);
@@ -352,8 +378,6 @@
 // 保存用户信息
 - (void)saveAction
 {
-    [SVProgressHUD show];
-    
     
     NSMutableDictionary *paramDic=[[NSMutableDictionary  alloc]initWithCapacity:0];
     [paramDic  setValue:self.person.name
@@ -363,7 +387,8 @@
     
     [AFNetworking_RequestData requestMethodPOSTUrl:SetUserBodyInfo dic:paramDic Succed:^(id responseObject) {
         
-        
+        [SVProgressHUD dismiss];
+
         NSLog(@"%@",responseObject);
         
         NSNumber *code = [responseObject objectForKey:@"HttpCode"];

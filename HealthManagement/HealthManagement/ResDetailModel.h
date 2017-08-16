@@ -15,6 +15,8 @@
 @property(nonatomic,copy) NSString *consumption;
 @property(nonatomic,copy) NSString *discount;
 @property(nonatomic,copy) NSString *distance;
+@property(nonatomic,strong) NSNumber *cusLikeOrNot;
+
 
 @property(nonatomic,copy) NSString *ID;
 @property(nonatomic,copy) NSString *titleImage;

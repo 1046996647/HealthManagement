@@ -10,4 +10,10 @@
 
 @interface PayOnlineVC : BaseViewController
 
+@property(nonatomic,copy) NSString *money;
+@property(nonatomic,copy) NSString *resName;
+@property(nonatomic,copy) NSString *time;
+//@property(nonatomic,copy) NSString *address;
+
+
 @end

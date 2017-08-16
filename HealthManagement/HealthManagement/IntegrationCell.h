@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "IntergrationModel.h"
 
 @interface IntegrationCell : UITableViewCell
 
 @property(nonatomic,strong) UILabel *hositoryLab;
+@property(nonatomic,strong) IntergrationModel *model;
 
 
 @end

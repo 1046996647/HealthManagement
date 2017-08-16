@@ -20,7 +20,8 @@
 //        _imgView.backgroundColor = [UIColor redColor];
         _imgView.layer.cornerRadius = 6;
         _imgView.layer.masksToBounds = YES;
-//        _imgView.contentMode = UIViewContentModeScaleAspectFit;
+        _imgView.clipsToBounds = YES;
+        _imgView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:_imgView];
     }
     return self;

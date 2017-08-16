@@ -31,7 +31,7 @@ CGRect  CGRectMoveToCenter(CGRect rect, CGPoint center);
 - (void) fitInSize: (CGSize) aSize;
 
 // UILabel
-+ (UILabel *)labelWithframe:(CGRect)frame font:(UIFont *)font textAlignment:(NSTextAlignment)textAlignment textColor:(NSString *)color;
++ (UILabel *)labelWithframe:(CGRect)frame text:(NSString *)text font:(UIFont *)font textAlignment:(NSTextAlignment)textAlignment textColor:(NSString *)color;
 
 // UIImageView
 + (UIImageView *)imgViewWithframe:(CGRect)frame icon:(NSString *)icon;

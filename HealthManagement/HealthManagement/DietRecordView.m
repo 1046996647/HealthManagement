@@ -7,6 +7,7 @@
 //
 
 #import "DietRecordView.h"
+#import "DietRecordVC.h"
 
 @implementation DietRecordView
 
@@ -48,8 +49,18 @@
     btn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     //    btn.backgroundColor = [UIColor redColor];
     [self addSubview:btn];
+    [btn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
+
     
     self.height = btn.height;
+}
+
+// 跳转附近餐厅
+- (void)btnAction
+{
+    DietRecordVC *vc = [[DietRecordVC alloc] init];
+    vc.title = @"饮食记录";
+    [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
 @end

@@ -222,6 +222,7 @@
 
                 AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
                 TabBarController *tabVC = [[TabBarController alloc] init];
+                delegate.tabVC = tabVC;
                 delegate.window.rootViewController = tabVC;
             }
             

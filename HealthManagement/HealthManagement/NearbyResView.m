@@ -129,6 +129,8 @@
                 imgView.layer.cornerRadius = 5;
                 imgView.layer.masksToBounds = YES;
                 imgView.userInteractionEnabled = YES;
+                imgView.clipsToBounds = YES;
+                imgView.contentMode = UIViewContentModeScaleAspectFill;
                 [subView addSubview:imgView];
                 
                 // 手势
@@ -170,7 +172,7 @@
     ResDetailModel *model = _modelArr[index];
 
     ResDetailVC *vc = [[ResDetailVC alloc] init];
-    vc.model = model;
+    vc.resID = model.ID;
     vc.latitude = self.latitude;
     vc.longitude = self.longitude;
     [self.viewController.navigationController pushViewController:vc animated:YES];

@@ -21,6 +21,9 @@
 // 1.5	搜索信息
 #define SearchVagueRestaurant  [NSString stringWithFormat:@"%@Restaurant/SearchVagueRestaurant",BaseUrl]
 
+// 1.5	热门搜索
+#define HotSearch  [NSString stringWithFormat:@"%@Restaurant/HotSearch",BaseUrl]
+
 // 餐厅列表
 #define GetRestaurantListInfo  [NSString stringWithFormat:@"%@Restaurant/GetRestaurantListInfo",BaseUrl]
 
@@ -35,6 +38,9 @@
 
 // 菜谱详情页
 #define RecipeItemInfo  [NSString stringWithFormat:@"%@Recipe/RecipeItemInfo",BaseUrl]
+
+// 支付详情页
+#define RecipeItemInfoForPay  [NSString stringWithFormat:@"%@Recipe/RecipeItemInfoForPay",BaseUrl]
 
 // 用户喜不喜欢
 #define CustomerLikeOrNot  [NSString stringWithFormat:@"%@Restaurant/CustomerLikeOrNot",BaseUrl]
@@ -54,8 +60,18 @@
 // 5.2	手机注册
 #define MailRegister  [NSString stringWithFormat:@"%@User/MailRegister",BaseUrl]
 
-// 5.2	密码重置
+// 5.2	忘记密码
 #define ResetUserPassword  [NSString stringWithFormat:@"%@User/ResetUserPassword",BaseUrl]
+
+// 5.2	修改密码
+#define ModifyUserPassword  [NSString stringWithFormat:@"%@User/ModifyUserPassword",BaseUrl]
+
+// 5.2	验证旧手机
+#define VerificationCode  [NSString stringWithFormat:@"%@User/VerificationCode",BaseUrl]
+
+// 5.2	更换新手机
+#define ModifyUserPhone  [NSString stringWithFormat:@"%@User/ModifyUserPhone",BaseUrl]
+
 
 // 4.1	简易版问卷列表
 #define GetQuestionExpressList  [NSString stringWithFormat:@"%@Question/GetQuestionExpressList",BaseUrl]
@@ -81,10 +97,32 @@
 // 5.5	用户偏好
 #define SelectUserPreference  [NSString stringWithFormat:@"%@User/SelectUserPreference",BaseUrl]
 
+// 餐厅收藏
+#define UserPreferenceRest  [NSString stringWithFormat:@"%@Restaurant/UserPreferenceRest",BaseUrl]
+
+
+// 5.5	运动数据更新
+#define UpLoadSportInfo  [NSString stringWithFormat:@"%@Sport/UpLoadSportInfo",BaseUrl]
+
+// 5.5	获取运动信息列表
+#define GetSportList  [NSString stringWithFormat:@"%@Sport/GetSportList",BaseUrl]
+
 // 5.5	上传图片
 #define UploadUserHeadImage  [NSString stringWithFormat:@"%@User/UploadUserHeadImage",BaseUrl]
 
 #define UploadImage  [NSString stringWithFormat:@"%@User/UploadImage",BaseUrl]
+
+// 5.5	增加积分
+#define AddScoreRecord  [NSString stringWithFormat:@"%@Score/AddScoreRecord",BaseUrl]
+
+// 5.5	获得积分列表
+#define GetScoreList  [NSString stringWithFormat:@"%@/Score/GetScoreList",BaseUrl]
+
+// 5.5	获得未获取分数列表
+#define GetClickScore  [NSString stringWithFormat:@"%@/Score/GetClickScore",BaseUrl]
+
+// 5.5	积分点击
+#define ClickScore  [NSString stringWithFormat:@"%@/Score/ClickScore",BaseUrl]
 
 
 #endif /* RequestUrl_h */

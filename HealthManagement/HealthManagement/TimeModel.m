@@ -23,5 +23,17 @@
 
 @implementation IntergrationRecordModel
 
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+    
+    
+    self.fullPayTime = dic[@"Time"];
+    self.fullPayTime = [self.fullPayTime substringToIndex:10];
+    //        self.payTime = dic[@"payTime"];
+    self.Time = [self.fullPayTime substringToIndex:7];
+    
+    
+    return YES;
+}
+
 
 @end

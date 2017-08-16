@@ -13,6 +13,9 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) TabBarController *tabVC;
+
+
 
 + (AppDelegate *)share;
 

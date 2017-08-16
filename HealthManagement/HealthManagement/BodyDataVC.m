@@ -9,6 +9,7 @@
 #import "BodyDataVC.h"
 #import "ZWLDatePickerView.h"
 #import "InfoChangeController.h"
+#import "LabourIntensityVC.h"
 
 @interface BodyDataVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -260,8 +261,7 @@
     
     if (indexPath.row == 0) {
         
-        ZWLDatePickerView *datepickerView = [[ZWLDatePickerView alloc] initWithFrame:CGRectMake(0,kScreen_Height - 270, kScreen_Width, 270)];
-        datepickerView.type = 1;
+        ZWLDatePickerView *datepickerView = [[ZWLDatePickerView alloc] initWithFrame:CGRectMake(0,kScreen_Height - 270, kScreen_Width, 270) datePickerMode:UIDatePickerModeDate];
         datepickerView.dateStr = cell.detailTextLabel.text;
         datepickerView.dataBlock = ^(NSString *str,NSString *str1) {
             self.person.BirthDay = str1;
@@ -314,13 +314,24 @@
                 
             }
             else {
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ cm",str];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ kg",str];
                 
             }
         };
         
     }
     if (indexPath.row == 3) {
+        
+        LabourIntensityVC *vc = [[LabourIntensityVC alloc] init];
+        vc.title = @"劳动强度";
+//        vc.text = self.person.weight;
+        [self.navigationController pushViewController:vc animated:YES];
+        vc.block = ^(NSString *str) {
+            self.person.labourIntensity = str;
+            
+            cell.detailTextLabel.text = str;
+
+        };
         
     }
 }

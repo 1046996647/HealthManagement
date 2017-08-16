@@ -81,7 +81,7 @@
     [self getCustomerLikeOrNot];
 }
 
-// 请求菜谱详情页
+// 喜好请求
 - (void)getCustomerLikeOrNot
 {
     [SVProgressHUD show];
@@ -89,7 +89,7 @@
     
     NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
     [paramDic  setObject:self.model.FoodId forKey:@"OtherId"];
-    [paramDic  setObject:@"2" forKey:@"UserId"];
+//    [paramDic  setObject:@"2" forKey:@"UserId"];
     [paramDic  setObject:self.Type_Like forKey:@"Type_Like"];
     [paramDic  setObject:self.Opertion forKey:@"Opertion"];
     //    [paramDic  setObject:self.latitude forKey:@"CoordY"];
@@ -116,52 +116,87 @@
 {
     _model = model;
     
-    // self.width不起作用
-    _lab1.frame = CGRectMake(10, (30-14)/2.0, kScreen_Width-20-60, 14);
-    _lab1.text = model.text;
-
-    _img1.frame = CGRectMake(30, 0, 1, _lab1.height);
-    
-    _unLikeBtn.frame = CGRectMake(kScreen_Width-20-12-15, _lab1.center.y-7.5, 15, 15);
-
-    _likeBtn.frame = CGRectMake(_unLikeBtn.left-10-15, _lab1.center.y-7.5, 15, 15);
-    
-    NSString *subText = [model.text substringToIndex:1];
-    
-    if (![subText isEqualToString:@" "]) {
-        NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:model.text];
-        NSRange range2 = {0,2};
-        [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range2];
-        [attStr addAttribute:NSFontAttributeName
-         
-                       value:[UIFont boldSystemFontOfSize:13]
-         
-                       range:range2];
+    if (model.type == 1) {
+        _lab1.frame = CGRectMake(8, (35-16)/2.0, kScreen_Width-20-60, 16);
+        _lab1.font = [UIFont boldSystemFontOfSize:15];
+        _lab1.text = model.text;
         
-        _lab1.attributedText = attStr;
+        _img1.frame = CGRectMake(36, 0, 1, _lab1.height);
         
-        _img1.hidden = NO;
+        _unLikeBtn.hidden = YES;
+        _likeBtn.hidden = YES;
+        
+        NSString *subText = [model.text substringToIndex:1];
+        
+        if (![subText isEqualToString:@" "]) {
+            NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:model.text];
+            NSRange range2 = {0,2};
+            [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range2];
+            [attStr addAttribute:NSFontAttributeName
+             
+                           value:[UIFont boldSystemFontOfSize:15]
+             
+                           range:range2];
+            
+            _lab1.attributedText = attStr;
+            
+            _img1.hidden = NO;
+        }
+        else {
+            _img1.hidden = YES;
+            
+        }
     }
     else {
-        _img1.hidden = YES;
+        // self.width不起作用
+        _lab1.frame = CGRectMake(10, (30-14)/2.0, kScreen_Width-20-60, 14);
+        _lab1.text = model.text;
+        
+        _img1.frame = CGRectMake(30, 0, 1, _lab1.height);
+        
+        _unLikeBtn.frame = CGRectMake(kScreen_Width-20-12-15, _lab1.center.y-7.5, 15, 15);
+        
+        _likeBtn.frame = CGRectMake(_unLikeBtn.left-10-15, _lab1.center.y-7.5, 15, 15);
+        
+        NSString *subText = [model.text substringToIndex:1];
+        
+        if (![subText isEqualToString:@" "]) {
+            NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:model.text];
+            NSRange range2 = {0,2};
+            [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:range2];
+            [attStr addAttribute:NSFontAttributeName
+             
+                           value:[UIFont boldSystemFontOfSize:13]
+             
+                           range:range2];
+            
+            _lab1.attributedText = attStr;
+            
+            _img1.hidden = NO;
+        }
+        else {
+            _img1.hidden = YES;
+            
+        }
+        
+        if (model.WhetherLike.integerValue == 0) {
+            _unLikeBtn.selected = NO;
+            _likeBtn.selected = NO;
+        }
+        else if (model.WhetherLike.integerValue == 1) {
+            
+            _unLikeBtn.selected = YES;
+            _likeBtn.selected = NO;
+            
+        } else {
+            
+            _unLikeBtn.selected = NO;
+            _likeBtn.selected = YES;
+            
+        }
 
     }
     
-    if (model.WhetherLike.integerValue == 0) {
-        _unLikeBtn.selected = NO;
-        _likeBtn.selected = NO;
-    }
-    else if (model.WhetherLike.integerValue == 1) {
-        
-        _unLikeBtn.selected = YES;
-        _likeBtn.selected = NO;
-        
-    } else {
-        
-        _unLikeBtn.selected = NO;
-        _likeBtn.selected = YES;
-        
-    }
     
 
 

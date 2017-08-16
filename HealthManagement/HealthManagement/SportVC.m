@@ -13,8 +13,19 @@
 #import "LZQTimerLabel.h"
 #import "NSStringExt.h"
 #import "CAAnimation+HCAnimation.h"
+#import "SportModel.h"
 
+// 运动状态
+#define SportState @"SportState"
 
+// 运动步数
+#define SportStep @"SportStep"
+
+// 运动时间
+#define SportTime @"SportTime"
+
+// 运动距离
+#define SportDistance @"SportDistance"
 
 @interface SportVC ()<PXLineChartViewDelegate,LZQTimerLabelDelegate>
 
@@ -33,6 +44,20 @@
 @property(nonatomic,strong) UILabel *disLab1;
 @property(nonatomic,strong) UILabel *disLab2;
 
+// 缓存数据
+@property(nonatomic,copy) NSString *steps;
+@property(nonatomic,copy) NSString *time;
+@property(nonatomic,copy) NSString *distance;
+
+// 每30分钟的数据
+@property(nonatomic,assign) NSInteger intervalSteps;
+@property(nonatomic,assign) float intervalDistance;
+
+// 连续运动时间
+@property(nonatomic,copy) NSString *date;
+
+
+
 // -----------其他-----------------
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) UIView *view2;
@@ -48,6 +73,12 @@
 @property (nonatomic, strong) NSArray *yElements;//y轴数据
 
 @property(nonatomic,strong)CMPedometer *pedometer;
+@property(nonatomic,copy)NSString *DateType;
+
+
+// 测试
+@property(nonatomic,strong)UILabel *lab1;
+@property(nonatomic,strong)UILabel *lab2;
 
 
 @end
@@ -58,6 +89,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 //    self.view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
+    
+    
+    // 测试
+    UILabel *lab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:lab1];
+    self.lab1 = lab1;
+    
+    UILabel *lab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:lab2];
+    self.lab2 = lab2;
+
     
     // 滑动视图
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-49-64-25)];
@@ -84,8 +126,6 @@
     [CAAnimation showScaleAnimationInView:sportBtn Repeat:1 Autoreverses:NO FromValue:0.0 ToValue:1.0 Duration:1.0];
 
 
-
-    
     UIView *sportView = [[UIView alloc] initWithFrame:CGRectMake((sportBtn.width-80)/2.0, (sportBtn.height-80)/2.0, 80, 80)];
 //    sportView.center = sportBtn.center;
     sportView.userInteractionEnabled = NO;
@@ -101,14 +141,14 @@
     
     _sportLab = [[UILabel alloc] initWithFrame:CGRectMake(sportImg.right+5, sportImg.center.y-7.5, 100, 15)];
     _sportLab.font = [UIFont boldSystemFontOfSize:14];
-    _sportLab.text = @"尚未运动";
+//    _sportLab.text = @"尚未运动";
     _sportLab.textAlignment = NSTextAlignmentLeft;
     //        _lab5.textColor = [UIColor grayColor];
     [sportView addSubview:_sportLab];
     
     _startLab = [[UILabel alloc] initWithFrame:CGRectMake((sportView.width-sportBtn.width)/2.0, sportImg.bottom+16, sportBtn.width, 32)];
     _startLab.font = [UIFont boldSystemFontOfSize:30];
-    _startLab.text = @"点击开始";
+//    _startLab.text = @"点击开始";
 //    _startLab.userInteractionEnabled = YES;
     _startLab.textAlignment = NSTextAlignmentCenter;
     _startLab.textColor = [UIColor colorWithHexString:@"#4F5152"];
@@ -150,8 +190,7 @@
     _timeLab1.textColor = [UIColor grayColor];
     [timeView addSubview:_timeLab1];
     
-    NSMutableAttributedString *attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ min",@"0"] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
-    _timeLab1.attributedText = attr;
+
     
     _timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _timeLab1.bottom+11, timeView.width, 15)];
     _timeLab2.font = [UIFont boldSystemFontOfSize:14];
@@ -187,8 +226,7 @@
     _disLab1.textColor = [UIColor grayColor];
     [disView addSubview:_disLab1];
     
-    attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ km",@"0"] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
-    _disLab1.attributedText = attr;
+
 
     
     _disLab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, _disLab1.bottom+11, disView.width, 15)];
@@ -206,9 +244,73 @@
     
     // 计时器
     _oneLabel = [[LZQTimerLabel alloc] initWithLabel:nil andTimerType:LZQTimerLabelTypeWithNormal withDelegate:self];
+
     
     // 统计图
     [self initRecordView];
+    
+    // 检查是否不是今天
+    NSDate *today = [InfoCache getValueForKey:@"today"];
+    if (today) {
+        if (![[NSString getUTCFormateDate:today] isEqualToString:@"今天"]) {
+            
+            // 清楚之前保存的日期
+            [InfoCache saveValue:@(NO) forKey:@"isSave"];
+            // 运动状态
+            [InfoCache saveValue:@"0" forKey:SportState];
+        }
+        
+    }
+    
+    // 0:停止 1:运动 2:暂停
+    NSNumber *state = [InfoCache getValueForKey:SportState];
+    if (state.integerValue == 0) {
+        _sportLab.text = @"尚未运动";
+        _startLab.text = @"点击开始";
+        
+        [InfoCache saveValue:@"0" forKey:SportStep];
+        
+        [InfoCache saveValue:@"0.0" forKey:SportDistance];
+        [InfoCache saveValue:@"0" forKey:SportTime];
+        
+//        return;
+        
+    }
+    else {
+        
+        if (state.integerValue == 1) {
+            _sportLab.text = @"正在运动";
+
+        }
+        if (state.integerValue == 2) {
+            _sportLab.text = @"今日运动";
+        }
+        
+        self.steps = [InfoCache getValueForKey:SportStep];
+        
+        _startLab.text = self.steps;
+        _startLab.textColor = [UIColor colorWithHexString:@"#58B6DA"];
+
+
+    }
+    
+    self.time = [InfoCache getValueForKey:SportTime];
+    self.distance = [InfoCache getValueForKey:SportDistance];
+
+    NSMutableAttributedString *attr = [NSString text:self.time fullText:[NSString stringWithFormat:@"%@ min",self.time] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
+    _timeLab1.attributedText = attr;
+    
+    attr = [NSString text:self.distance fullText:[NSString stringWithFormat:@"%@ km",self.distance] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
+    _disLab1.attributedText = attr;
+    
+    if (state.integerValue == 1) {
+        // 开始计时
+        [_oneLabel start];
+        
+        [self  gotoOpenStepCountFunction];
+
+    }
+    
 }
 
 // 统计图
@@ -231,18 +333,22 @@
     sc.selectedSegmentIndex = 0;
     [self.scrollView addSubview:sc];
     [sc addTarget:self action:@selector(didClicksegmentedControlAction:)forControlEvents:UIControlEventValueChanged];
+    self.DateType = @"day";
     
-    _pXLineChartView = [[PXLineChartView alloc] initWithFrame:CGRectMake(-25, sc.bottom, kScreen_Width, 250)];
+    _pXLineChartView = [[PXLineChartView alloc] initWithFrame:CGRectMake(-25, sc.bottom, kScreen_Width, 200*scaleWidth+25)];
     _pXLineChartView.delegate = self;
 //    _pXLineChartView.backgroundColor = [UIColor redColor];
     [self.scrollView addSubview:_pXLineChartView];
     
     self.scrollView.contentSize = CGSizeMake(kScreen_Width, _pXLineChartView.bottom+12);
     
-    _xElements = @[@"6.27",@"6.28",@"6.29",@"6.30",@"7.1",@"7.2",@"7.3"];
+//    _xElements = @[@"6.27",@"6.28",@"6.29",@"6.30",@"7.1",@"7.2",@"7.3",@"7.4",@"7.5",@"7.6"];
     _yElements = @[@"1000",@"2000",@"3000",@"4000",@"5000"];
+//    _yElements = @[@"100",@"200",@"300",@"400",@"500"];
     
-    self.lines = [self lines:NO];
+    
+    [self getSportList:1];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -258,13 +364,19 @@
     switch (Index)
     {
         case 0:
+            self.DateType = @"day";
+            [self getSportList:1];
             
             break;
         case 1:
-            
+            self.DateType = @"month";
+            [self getSportList:1];
+
             break;
         case 2:
-            
+            self.DateType = @"year";
+            [self getSportList:1];
+
             break;
 
         default:
@@ -274,39 +386,10 @@
     
 }
 
-- (NSArray *)lines:(BOOL)fill {
-    //    NSArray *pointsArr1 = @[@{@"xValue" : @"16-2", @"yValue" : @"1000"},
-    //                           @{@"xValue" : @"16-4", @"yValue" : @"2000"},
-    //                           @{@"xValue" : @"16-6", @"yValue" : @"1700"},
-    //                           @{@"xValue" : @"16-8", @"yValue" : @"3100"},
-    //                           @{@"xValue" : @"16-9", @"yValue" : @"3500"},
-    //                           @{@"xValue" : @"16-12", @"yValue" : @"3400"},
-    //                           @{@"xValue" : @"17-02", @"yValue" : @"1100"},
-    //                           @{@"xValue" : @"17-04", @"yValue" : @"1500"}];
+- (NSArray *)lines:(NSMutableArray *)arrM {
+
     
-    NSArray *pointsArr1 = @[@{@"xValue" : @"6.27", @"yValue" : @"500"},
-                            @{@"xValue" : @"6.28", @"yValue" : @"2200"},
-                            @{@"xValue" : @"6.29", @"yValue" : @"3000"},
-                            @{@"xValue" : @"6.30", @"yValue" : @"3750"},
-                            @{@"xValue" : @"7.1", @"yValue" : @"3800"},
-                            @{@"xValue" : @"7.2", @"yValue" : @"5000"},
-                            @{@"xValue" : @"7.3", @"yValue" : @"2000"}];
-    
-    //    NSMutableArray *points = @[].mutableCopy;
-    //    for (int i = 0; i < pointsArr.count; i++) {
-    //        PointItem *item = [[PointItem alloc] init];
-    //        NSDictionary *itemDic = pointsArr[i];
-    //        item.price = itemDic[@"yValue"];
-    //        item.time = itemDic[@"xValue"];
-    //        item.chartLineColor = [UIColor redColor];
-    //        item.chartPointColor = [UIColor redColor];
-    //        item.pointValueColor = [UIColor redColor];
-    ////        if (fill) {
-    ////            item.chartFillColor = [UIColor colorWithRed:0 green:0.5 blue:0.2 alpha:0.5];
-    ////            item.chartFill = YES;
-    ////        }
-    //        [points addObject:item];
-    //    }
+    NSArray *pointsArr1 = arrM;
     
     NSMutableArray *pointss = @[].mutableCopy;
     for (int i = 0; i < pointsArr1.count; i++) {
@@ -323,14 +406,13 @@
         //        }
         [pointss addObject:item];
     }
-    //两条line
     return @[pointss];
 }
 
 #pragma mark PXLineChartViewDelegate
 //通用设置
 - (NSDictionary<NSString*, NSString*> *)lineChartViewAxisAttributes {
-    return @{yElementInterval : @"40",
+    return @{yElementInterval : @"20",
              xElementInterval : @"40",
              yMargin : @"50",
              xMargin : @"25",
@@ -372,55 +454,150 @@
 - (NSArray<id<PointItemProtocol>> *)plotsOflineIndex:(NSUInteger)lineIndex {
     return self.lines[lineIndex];
 }
-////点击point回调响应
-//- (void)elementDidClickedWithPointSuperIndex:(NSUInteger)superidnex pointSubIndex:(NSUInteger)subindex {
-//    PointItem *item = self.lines[superidnex][subindex];
-//    NSString *xTitle = item.time;
-//    NSString *yTitle = item.price;
-//    UIAlertController *alertView = [UIAlertController alertControllerWithTitle:yTitle
-//                                                                       message:[NSString stringWithFormat:@"x：%@ \ny：%@",xTitle,yTitle] preferredStyle:UIAlertControllerStyleAlert];
-//    [alertView addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        
-//    }]];
-//    [self presentViewController:alertView animated:YES completion:nil];
-//}
 
 // 开始运动
 - (void)sportAction:(UIButton *)btn
 {
-    btn.selected = !btn.selected;
-    if (btn.selected) {
-        
+    [CAAnimation showRotateAnimationInView:btn Degree:2*M_PI Direction:AxisY Repeat:1 Autoreverses:NO Duration:1.0];
+    
+    // 0:停止 1:运动 2:暂停
+    NSNumber *state = [InfoCache getValueForKey:SportState];
+    if (state.integerValue == 0) {
+
         // 开始计时
         [_oneLabel start];
-
         
         _sportLab.text = @"正在运动";
-        
         _startLab.text = @"0";
         _startLab.textColor = [UIColor colorWithHexString:@"#58B6DA"];
-        
-        NSMutableAttributedString *attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ min",@"0"] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
-        _timeLab1.attributedText = attr;
-        
-        attr = [NSString text:@"0" fullText:[NSString stringWithFormat:@"%@ km",@"0"] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
-        _disLab1.attributedText = attr;
-
+        [InfoCache saveValue:@"1" forKey:SportState];
 
         [self  gotoOpenStepCountFunction];
         
-    }else{
+        // 保存今天的运动日期
+        NSNumber *isSave = [InfoCache getValueForKey:@"isSave"];
+        if (!isSave.boolValue) {
+            [InfoCache saveValue:@(YES) forKey:@"isSave"];
+            [InfoCache saveValue:[NSDate date] forKey:@"today"];
+        }
         
-        // 运动结束
+    }
+    if (state.integerValue == 1) {
+        
+        // 运动暂停
         [_oneLabel pause];
-
+        [InfoCache saveValue:@"2" forKey:SportState];
+        
         _sportLab.text = @"今日运动";
         [self gotoCloseStepCountFucntion];
         
+        //        _startLab.text = @"20";
+        if (_startLab.text.integerValue > 10) {
+            [self upLoadSportInfo];
+            
+        }
+        
+#pragma mark - 测试用的
+        [self addScoreRecord];
+
     }
+    
+    if (state.integerValue == 2) {
+        
+        [InfoCache saveValue:@"1" forKey:SportState];
+        _sportLab.text = @"正在运动";
+        [self  gotoOpenStepCountFunction];
+        
+        // 开始计时
+        [_oneLabel start];
+        
+
+
+    }
+
 }
 
+// 上传运动信息
+- (void)upLoadSportInfo
+{
+    [SVProgressHUD show];
+    
+    NSMutableDictionary *paramDic=[[NSMutableDictionary  alloc]initWithCapacity:0];
+    [paramDic setValue:_startLab.text forKey:@"steps"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:UpLoadSportInfo dic:paramDic Succed:^(id responseObject) {
+        
+        
+        NSLog(@"%@",responseObject);
+        NSNumber *code = responseObject[@"HttpCode"];
 
+        if (code.integerValue == 200) {
+            
+            [self getSportList:0];
+        }
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+        
+    }];
+    
+}
+
+// 获取运动信息
+- (void)getSportList:(NSInteger)tag
+{
+    if (tag) {
+        [SVProgressHUD show];
+
+    }
+    NSMutableDictionary *paramDic=[[NSMutableDictionary  alloc]initWithCapacity:0];
+    [paramDic  setValue:self.DateType forKey:@"DateType"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:GetSportList dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        NSLog(@"%@",responseObject);
+        NSNumber *code = responseObject[@"HttpCode"];
+        
+        if (code.integerValue == 200) {
+            
+            NSMutableArray *arrX = [NSMutableArray array];
+            NSMutableArray *arrDic = [NSMutableArray array];
+            
+            NSArray *arr = [responseObject objectForKey:@"ListData"];
+            
+            for (NSDictionary *dic in arr) {
+                
+                SportModel *model = [SportModel yy_modelWithJSON:dic];
+                
+                [arrX addObject:model.date];
+                
+                NSDictionary *dic1 = @{@"xValue" : model.date, @"yValue" : model.steps};
+                [arrDic addObject:dic1];
+
+            }
+            self.xElements = arrX;
+            self.lines = [self lines:arrDic];
+            
+            [_pXLineChartView reloadData];
+
+
+        }
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+        
+    }];
+    
+}
+
+// 运动开始
 -(void)gotoOpenStepCountFunction{
     
     _pedometer = [[AppDelegate share ] sharedPedometer];
@@ -438,11 +615,65 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
+                    //---------每30分钟的数据--------
+                    NSInteger step1 = pedometerData.numberOfSteps.integerValue;
                     
-                    _startLab.text = [NSString stringWithFormat:@"%@",pedometerData.numberOfSteps];
+                    float distance1 = pedometerData.distance.floatValue;
+
+                    if (self.date.integerValue % 2 == 0) {
+                        
+
+                        // 步数
+                        NSInteger step2 = step1-self.intervalSteps;
+                        
+                        // 距离
+                        float distance2 = distance1-self.intervalDistance;
+                        
+                        // 测试
+                        self.lab1.text = [NSString stringWithFormat:@"%ld",step2];
+                        self.lab2.text = [NSString stringWithFormat:@"%.1f",distance2];
+                        
+                        PersonModel *person = [InfoCache unarchiveObjectWithFile:Person];
+
+//                        if (person.sex.integerValue == 0) {// 女
+//
+//                            if (step2 > 20 && distance2 > 50.0) {
+//                                [self addScoreRecord];
+//                            }
+//                            
+//                        }
+//                        else {
+//                            if (step2 > 20 && distance2 > 50.0) {
+//                                [self addScoreRecord];
+//                            }
+//                        }
+                        
+                        self.intervalSteps = pedometerData.numberOfSteps.integerValue;
+
+                        self.intervalDistance = pedometerData.distance.floatValue;
+                        
+                    }
                     
-                    NSMutableAttributedString *attr = [NSString text:[NSString stringWithFormat:@"%.1f",pedometerData.distance.floatValue/1000] fullText:[NSString stringWithFormat:@"%.1f km",pedometerData.distance.floatValue/1000] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
+//                    self.intervalSteps = [NSString stringWithFormat:@"%@",pedometerData.numberOfSteps];
+//                    self.intervalDistance = @"0.0";
+                    
+                    //---------缓存数据--------
+                    // 步数
+                    NSInteger step = self.steps.integerValue+pedometerData.numberOfSteps.integerValue;
+                    NSString *stepStr = [NSString stringWithFormat:@"%ld",step];
+                    _startLab.text = stepStr;
+                    
+                    [InfoCache saveValue:stepStr forKey:SportStep];
+                    
+                    // 距离
+                    float distance = self.distance.floatValue+(pedometerData.distance.floatValue/1000);
+                    NSString *distanceStr = [NSString stringWithFormat:@"%.1f",distance];
+                    
+                    NSMutableAttributedString *attr = [NSString text:distanceStr fullText:[NSString stringWithFormat:@"%@ km",distanceStr] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
                     _disLab1.attributedText = attr;
+                    
+                    [InfoCache saveValue:distanceStr forKey:SportDistance];
+
                     
                 });
 
@@ -451,7 +682,7 @@
             
         }];
         
-    }else{
+    } else {
         
         NSLog(@"计步器不可用");
         
@@ -460,9 +691,43 @@
     
 }
 
+// 增加积分
+- (void)addScoreRecord
+{
+    //    [SVProgressHUD show];
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:@"Sport" forKey:@"ScoreType"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:AddScoreRecord dic:paramDic Succed:^(id responseObject) {
+        
+        //        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",responseObject);
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        
+        if (200 == [code integerValue]) {
+            
+            
+            
+        }
+        
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        //        [SVProgressHUD dismiss];
+        
+    }];
+}
+
 -(void)gotoCloseStepCountFucntion{
     
     if ([CMPedometer isStepCountingAvailable]) {
+
+    self.steps = [InfoCache getValueForKey:SportStep];
+    self.time = [InfoCache getValueForKey:SportTime];
+    self.distance = [InfoCache getValueForKey:SportDistance];
         
         _pedometer = [[AppDelegate share] sharedPedometer];
 //        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"startStepCount"];
@@ -477,9 +742,65 @@
 //定时器更新的时间
 - (void)updateTimer:(NSString *)date
 {
-    NSLog(@"-----%@",date);// 停止后会变为0
+    self.date = date;
+    if (date.integerValue == 0) {
+//        NSLog(@"-----%@",date);// 停止后会变为0
+        self.intervalSteps = 0;
+        self.intervalDistance = 0.0;
+
+    }
+    
+    NSInteger time = self.time.integerValue+date.integerValue;
+    date = [NSString stringWithFormat:@"%ld",time];
     NSMutableAttributedString *attr = [NSString text:date fullText:[NSString stringWithFormat:@"%@ min",date] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
     _timeLab1.attributedText = attr;
+    
+    [InfoCache saveValue:date forKey:SportTime];
+    
+    // 检查是否不是今天(一直在后台运行处理)
+    NSDate *today = [InfoCache getValueForKey:@"today"];
+    if (today) {
+        if (![[NSString getUTCFormateDate:today] isEqualToString:@"今天"]) {
+        
+//        if (date.integerValue == 1) {// 测试
+        
+            // 清楚之前保存的日期
+            [InfoCache saveValue:@(NO) forKey:@"isSave"];
+
+            // 运动暂停
+            [_oneLabel pause];
+            
+            [self gotoCloseStepCountFucntion];
+            //        _startLab.text = @"20";
+            if (_startLab.text.integerValue > 10) {
+                [self upLoadSportInfo];
+                
+            }
+            
+            // 运动状态
+            [InfoCache saveValue:@"0" forKey:SportState];
+
+            
+            _sportLab.text = @"尚未运动";
+            _startLab.text = @"点击开始";
+            _startLab.textColor = [UIColor colorWithHexString:@"#4F5152"];
+            
+            [InfoCache saveValue:@"0" forKey:SportStep];
+            [InfoCache saveValue:@"0.0" forKey:SportDistance];
+            [InfoCache saveValue:@"0" forKey:SportTime];
+            
+            self.steps = [InfoCache getValueForKey:SportStep];
+            self.time = [InfoCache getValueForKey:SportTime];
+            self.distance = [InfoCache getValueForKey:SportDistance];
+            
+            NSMutableAttributedString *attr = [NSString text:self.time fullText:[NSString stringWithFormat:@"%@ min",self.time] location:0 color:[UIColor colorWithHexString:@"#F89532"] font:[UIFont boldSystemFontOfSize:28]];
+            _timeLab1.attributedText = attr;
+            
+            attr = [NSString text:self.distance fullText:[NSString stringWithFormat:@"%@ km",self.distance] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
+            _disLab1.attributedText = attr;
+        }
+
+    }
 }
 
 

@@ -13,6 +13,9 @@
 
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) NSMutableArray *dataArray;
+@property(nonatomic,assign) NSInteger pageNO;// 页数
+//@property(nonatomic,strong) NSMutableArray *modelArr;
+
 
 @end
 
@@ -38,63 +41,94 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    NSMutableArray *arrM = [NSMutableArray array];
-    NSMutableArray *arrM1 = [NSMutableArray array];
-    
-    // 去掉一样日期（如：2013-12）
-    
-    for (int i=0; i<2; i++) {
-        IntergrationRecordModel *model = [[IntergrationRecordModel alloc] init];
-        
-        if (i==0) {
-            model.fullPayTime = @"2017-07-22 12:12";
-
-        }
-        else {
-            model.fullPayTime = @"2017-06-22 12:12";
-
-        }
-        model.fullPayTime = [model.fullPayTime substringToIndex:10];
-        model.payTime = [model.fullPayTime substringToIndex:7];
-
-        if (![arrM containsObject:model.payTime]) {
-            
-            [arrM addObject:model.payTime];
-            
-            TimeModel *timeModel = [[TimeModel alloc] init];
-            timeModel.timeStr = model.payTime;
-            [arrM1 addObject:timeModel];
-        }
-    }
-
-    _dataArray = arrM1;
-    
-    // 归类
-    for (TimeModel *timeModel in arrM1) {
-        
-        for (int i=0; i<2; i++) {
-            IntergrationRecordModel *model = [[IntergrationRecordModel alloc] init];
-            
-            if (i==0) {
-                model.fullPayTime = @"2017-07-27 12:12";
-                
-            }
-            else {
-                model.fullPayTime = @"2017-06-22 12:12";
-                
-            }
-            model.fullPayTime = [model.fullPayTime substringToIndex:10];
-            model.payTime = [model.fullPayTime substringToIndex:7];
-            
-            if ([timeModel.timeStr isEqualToString:model.payTime]) {
-                [timeModel.headCellArray addObject:model];
-            }
-        }
-    
-        
-    }
-    
     [self.view addSubview:self.tableView];
+    
+    self.dataArray = [NSMutableArray array];
+    
+    self.pageNO = 1;
+    [self getScoreList];
+    
+    // 上拉刷新
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        
+        // 获得积分记录
+        [self getScoreList];
+        
+    }];
+}
+
+// 获得积分记录
+- (void)getScoreList
+{
+    
+    if (self.pageNO == 1) {
+        [SVProgressHUD show];
+        
+    }
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setValue:@(self.pageNO) forKey:@"PageNo"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:GetScoreList dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        [self.tableView.mj_footer endRefreshing];
+
+        NSLog(@"%@",responseObject);
+        
+        NSArray *arr = responseObject[@"ListData"];
+        if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            NSMutableArray *arrM1 = [NSMutableArray array];
+            
+            // 去掉一样日期（如：2013-12）
+            for (NSDictionary *dic in arr) {
+                IntergrationRecordModel *model = [IntergrationRecordModel yy_modelWithJSON:dic];
+                if (![arrM containsObject:model.Time]) {
+                    
+                    [arrM addObject:model.Time];
+                    
+                    TimeModel *timeModel = [[TimeModel alloc] init];
+                    timeModel.timeStr = model.Time;
+                    [arrM1 addObject:timeModel];
+                }
+            }
+            
+            // 归类
+            for (TimeModel *timeModel in arrM1) {
+                
+                for (NSDictionary *dic in arr) {
+                    
+                    IntergrationRecordModel *model = [IntergrationRecordModel yy_modelWithJSON:dic];
+                    
+                    if ([timeModel.timeStr isEqualToString:model.Time]) {
+                        [timeModel.headCellArray addObject:model];
+                    }
+                }
+                
+            }
+            [self.dataArray addObjectsFromArray:arrM1]; ;
+            [self.tableView reloadData];
+            
+            self.pageNO++;
+            
+        }
+        
+        else {
+            // 拿到当前的上拉刷新控件，变为没有更多数据的状态
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [self.tableView.mj_footer endRefreshing];
+
+        NSLog(@"%@",error);
+        
+    }];
+
+    
 }
 
 - (void)didReceiveMemoryWarning {

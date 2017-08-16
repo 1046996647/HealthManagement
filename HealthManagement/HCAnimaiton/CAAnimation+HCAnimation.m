@@ -53,7 +53,7 @@
     [view.layer addAnimation:moveAnimation forKey:@"moveAnimation"];
 }
 
-+ (void)showRotateAnimationInView:(UIView *)view Degree:(CGFloat)degree Direction:(Axis)direction Repeat:(CGFloat)repeat Duration:(CGFloat)duration {
++ (void)showRotateAnimationInView:(UIView *)view  Degree:(CGFloat)degree Direction:(Axis)direction Repeat:(CGFloat)repeat Autoreverses:(BOOL)autoreverses Duration:(CGFloat)duration {
     if (repeat == 0) {
         repeat = MAXFLOAT;
     }
@@ -61,9 +61,9 @@
     CABasicAnimation *rotateAnimation = [CABasicAnimation animationWithKeyPath:axisArray[direction]];
     rotateAnimation.fromValue = [NSNumber numberWithFloat:0.0];
     rotateAnimation.toValue = [NSNumber numberWithFloat:degree];
-    rotateAnimation.autoreverses = YES;
-    rotateAnimation.fillMode = kCAFillModeForwards;
-    rotateAnimation.removedOnCompletion = NO;
+    rotateAnimation.autoreverses = autoreverses;
+//    rotateAnimation.fillMode = kCAFillModeForwards;
+    rotateAnimation.removedOnCompletion = YES;
     rotateAnimation.repeatCount = repeat;
     rotateAnimation.duration = duration;
     [view.layer addAnimation:rotateAnimation forKey:@"rotateAnimation"];

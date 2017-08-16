@@ -18,14 +18,15 @@
     if (self) {
         
         self.contentView.backgroundColor = [UIColor whiteColor];
-        
+        self.contentView.clipsToBounds = YES;
         
         _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 14, 188/2, 194/2)];
 //        _imgView.image = [UIImage imageNamed:@"food"];
 //        _imgView.backgroundColor = [UIColor redColor];
         _imgView.layer.cornerRadius = 6;
         _imgView.layer.masksToBounds = YES;
-//        _imgView.contentMode = UIViewContentModeScaleAspectFit;
+        _imgView.clipsToBounds = YES;
+        _imgView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:_imgView];
         
         
@@ -67,6 +68,8 @@
         _btn.frame = CGRectMake(kScreen_Width-17-8, _lab4.bottom+10, 17, 17);
         [_btn setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
         [self.contentView addSubview:_btn];
+        [_btn addTarget:self action:@selector(callAction) forControlEvents:UIControlEventTouchUpInside];
+
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(kScreen_Width-40-12, _btn.top, 1, 15)];
         line.backgroundColor = [UIColor colorWithHexString:@"#E1E1E1"];
@@ -93,10 +96,18 @@
     return self;
 }
 
+- (void)callAction
+{
+    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",_model.phone];
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [[UIApplication sharedApplication].keyWindow addSubview:callWebview];
+    
+}
+
 - (void)setModel:(ResDetailModel *)model
 {
     _model = model;
-    
     
     [_imgView sd_setImageWithURL:[NSURL URLWithString:model.titleImage]];
     _lab1.text = [NSString meterToKilometer:model.distance];

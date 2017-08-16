@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface TabBarController : UITabBarController
+
+@property(nonatomic,strong) UIButton *btn;
+
 - (void)selectController:(NSInteger)index;
+
 @end

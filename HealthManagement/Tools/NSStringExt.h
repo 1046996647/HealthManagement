@@ -32,4 +32,7 @@
 // 富文本
 + (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color font:(UIFont *)font;
 
+//计算  距离现在的时间
++ (NSString *)getUTCFormateDate:(NSDate *)newsDate;
+
 @end

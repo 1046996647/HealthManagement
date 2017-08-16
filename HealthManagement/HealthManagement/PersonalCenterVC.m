@@ -15,6 +15,7 @@
 #import "NavgationBarView.h"
 #import "IntergrationRecordVC.h"
 #import "CAAnimation+HCAnimation.h"
+#import "IntergrationModel.h"
 
 
 @interface PersonalCenterVC ()<UITableViewDelegate,UITableViewDataSource,NavHeadTitleViewDelegate>
@@ -43,6 +44,16 @@
 @property (nonatomic,strong) UIButton *sleepBtn;
 @property (nonatomic,strong) UIButton *dietBtn;
 @property (nonatomic,strong) UIButton *sportBtn;
+
+@property (nonatomic,strong) IntergrationModel *dietModel;
+@property (nonatomic,strong) IntergrationModel *sleepModel;
+@property (nonatomic,strong) IntergrationModel *sportModel;
+
+@property(nonatomic,strong) NSMutableArray *dataArray;
+
+
+//@property (nonatomic,copy) NSString *scoreIds;
+
 
 
 
@@ -239,6 +250,9 @@
     _sleepBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _sleepBtn.frame = CGRectMake(kScreen_Width/2-95, 248/2, 100, 25);
 //    [_sleepBtn setTitle:@" +1 饮食" forState:UIControlStateNormal];
+    _sleepBtn.tag = 0;
+    _sleepBtn.hidden = YES;
+
     [_sleepBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     _sleepBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _sleepBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12];
@@ -263,6 +277,8 @@
     _dietBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _dietBtn.frame = CGRectMake(kScreen_Width/2-60, 64/2, 100, 25);
     //    [_sleepBtn setTitle:@" +1 饮食" forState:UIControlStateNormal];
+    _dietBtn.tag = 1;
+    _dietBtn.hidden = YES;
     [_dietBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     _dietBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _dietBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12];
@@ -288,6 +304,9 @@
                    range:range1];
     _sportBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _sportBtn.frame = CGRectMake(kScreen_Width/2+20, 176/2, 100, 25);
+    _sportBtn.tag = 2;
+    _sportBtn.hidden = YES;
+
     //    [_sleepBtn setTitle:@" +1 饮食" forState:UIControlStateNormal];
     [_sportBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     _sportBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -304,20 +323,35 @@
     
     [self initSubViews];
     
+
     
 }
+
 
 - (void)addAction:(UIButton *)btn
 {
     
-    btn.userInteractionEnabled = NO;
-    
-    [CAAnimation clearAnimationInView:btn];
+    if (btn.tag == 0) {
+        
+        [self clickScore:self.sleepModel.ListId button:btn];
+        
+    }
+    if (btn.tag == 1) {
+        [self clickScore:self.dietModel.ListId button:btn];
 
-    [CAAnimation showScaleAnimationInView:btn Repeat:1 Autoreverses:NO FromValue:(float)1.0 ToValue:(float)0.5 Duration:1.0];
-    [CAAnimation showOpacityAnimationInView:btn Alpha:0 Repeat:1 Autoreverses:NO Duration:1.0];
-    [CAAnimation showMoveAnimationInView:btn Position:CGPointMake(self.treeImg.width/2, self.treeImg.height/2) Repeat:1 Autoreverses:NO Duration:1.0];
-//    [CAAnimation showRotateAnimationInView:btn Degree:2*M_PI Direction:AxisZ Repeat:0 Duration:1.0];
+    }
+    if (btn.tag == 2) {
+        [self clickScore:self.sportModel.ListId button:btn];
+
+    }
+
+}
+
+- (void)refreshAction:(UIButton *)btn enabled:(BOOL)enabled
+{
+    btn.userInteractionEnabled = enabled;
+    [CAAnimation clearAnimationInView:btn];
+    [CAAnimation showMoveAnimationInView:btn Position:CGPointMake(btn.layer.position.x, btn.layer.position.y+5) Repeat:0 Autoreverses:YES Duration:1.0];
 }
 
 - (void)initSubViews
@@ -374,8 +408,182 @@
     self.headView.height = view.bottom;
     
     self.tableView.tableHeaderView = self.headView;
-
+    
+    [self getClickScore];
+    
+    // 下拉刷新
+    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [self headerRefresh];
+    }];
+    
 }
+
+- (void)headerRefresh
+{
+    [self getClickScore];
+}
+
+// 获得未获取分数列表
+- (void)getClickScore
+{
+    [SVProgressHUD show];
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [AFNetworking_RequestData requestMethodPOSTUrl:GetClickScore dic:paramDic Succed:^(id responseObject) {
+        
+//        [SVProgressHUD dismiss];
+        
+        [self.tableView.mj_header endRefreshing];
+        
+        NSLog(@"%@",responseObject);
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        
+        if (200 == [code integerValue]) {
+            
+            IntergrationModel *dietModel = [IntergrationModel yy_modelWithJSON:[responseObject objectForKey:@"Model1"]];
+            self.dietModel = dietModel;
+            
+            IntergrationModel *sleepModel = [IntergrationModel yy_modelWithJSON:[responseObject objectForKey:@"Model2"]];
+            self.sleepModel = sleepModel;
+
+            IntergrationModel *sportModel = [IntergrationModel yy_modelWithJSON:[responseObject objectForKey:@"Model3"]];
+            self.sportModel = sportModel;
+
+            if (dietModel) {
+                
+                _dietBtn.hidden = NO;
+                [self refreshAction:_dietBtn enabled:YES];
+
+            }
+            else {
+                _dietBtn.hidden = YES;
+
+            }
+            
+            if (sleepModel) {
+                
+                _sleepBtn.hidden = NO;
+                [self refreshAction:_sleepBtn enabled:YES];
+
+            }
+            else {
+                _sleepBtn.hidden = YES;
+                
+            }
+            
+            if (sportModel) {
+                
+                _sportBtn.hidden = NO;
+
+                [self refreshAction:_sportBtn enabled:YES];
+            }
+            else {
+                _sportBtn.hidden = YES;
+                
+            }
+            
+            [self getScoreList];
+
+        }
+        
+        
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+    }];
+}
+
+// 积分点击
+- (void)clickScore:(NSString *)scoreIds button:(UIButton *)btn
+{
+//        [SVProgressHUD show];
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:scoreIds forKey:@"ScoreIds"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:ClickScore dic:paramDic Succed:^(id responseObject) {
+        
+        //        [SVProgressHUD dismiss];
+        
+        [self.tableView.mj_header endRefreshing];
+        
+        NSLog(@"%@",responseObject);
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        if (200 == [code integerValue]) {
+            
+            
+            btn.userInteractionEnabled = NO;
+            
+            [CAAnimation clearAnimationInView:btn];
+            
+            [CAAnimation showScaleAnimationInView:btn Repeat:1 Autoreverses:NO FromValue:(float)1.0 ToValue:(float)0.5 Duration:1.0];
+            [CAAnimation showOpacityAnimationInView:btn Alpha:0 Repeat:1 Autoreverses:NO Duration:1.0];
+            [CAAnimation showMoveAnimationInView:btn Position:CGPointMake(self.treeImg.width/2, self.treeImg.height/2) Repeat:1 Autoreverses:NO Duration:1.0];
+            
+            [self getScoreList];
+        }
+        
+        
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        
+        NSLog(@"%@",error);
+        //        [SVProgressHUD dismiss];
+        
+    }];
+}
+
+
+// 获得积分记录
+- (void)getScoreList
+{
+    //    [SVProgressHUD show];
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:@1 forKey:@"PageNo"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:GetScoreList dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        [self.tableView.mj_header endRefreshing];
+        
+        NSLog(@"%@",responseObject);
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        
+        if (200 == [code integerValue]) {
+            
+            NSArray *arr = responseObject[@"ListData"];
+            
+            NSMutableArray *arrM = [NSMutableArray array];
+            if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+                
+                for (NSDictionary *dic in arr) {
+                    
+                    IntergrationModel *model = [IntergrationModel yy_modelWithJSON:dic];
+                    [arrM addObject:model];
+                }
+                
+                self.dataArray = arrM;
+                [self.tableView reloadData];
+            }
+            
+        }
+        
+        
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+    }];
+}
+
 
 -(void)createNav{
     self.navView=[[NavgationBarView alloc]initWithFrame:CGRectMake(0, 0, kScreen_Width, 64)];
@@ -499,8 +707,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    return self.dataArray.count;
-    return 3;
+    if (self.dataArray.count > 3) {
+        return 3;
+
+    }
+    else {
+        return self.dataArray.count;
+
+    }
 }
 
 
@@ -510,8 +724,10 @@
     if (cell == nil) {
         
         cell = [[IntegrationCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        
     }
 
+    cell.model = self.dataArray[indexPath.row];
     return cell;
 }
 

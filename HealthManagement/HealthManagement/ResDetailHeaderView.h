@@ -24,4 +24,7 @@
 @property(nonatomic,strong) UIButton *btn;
 @property(nonatomic,strong) ResDetailModel *model;
 
+@property(nonatomic,copy) NSString *Opertion;
+
+
 @end

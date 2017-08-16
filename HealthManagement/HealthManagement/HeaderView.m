@@ -8,6 +8,8 @@
 
 #import "HeaderView.h"
 #import "SearchResultVC.h"
+#import "DietArticleDetailVC.h"
+#import "AppDelegate.h"
 
 
 @implementation HeaderView
@@ -28,16 +30,10 @@
 {
     
     //-----------轮播-----------
-
-    // 情景二：采用网络图片实现
-    NSArray *imagesURLStrings = @[
-                                  @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
-                                  @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-                                  @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
-                                  ];
     // 网络加载 --- 创建带标题的图片轮播器
     SDCycleScrollView *cycleScrollView2 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kScreen_Width, 150*scaleX) delegate:self placeholderImage:nil];
-    cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
+//    cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
+    cycleScrollView2.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     cycleScrollView2.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
 //    cycleScrollView2.titlesGroup = titles;
     cycleScrollView2.pageControlDotSize = CGSizeMake(9, 9);
@@ -84,8 +80,12 @@
     // 闹铃
     _imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-15-10, _lab1.top, 15, 15)];
     _imgView1.image = [UIImage imageNamed:@"home_5"];
+    _imgView1.userInteractionEnabled = YES;
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_imgView1];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clockAction)];
+    [_imgView1 addGestureRecognizer:tap];
     
     // 白竖线
     UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(_imgView1.left-10-1, _btn.top, 1, 20)];
@@ -161,6 +161,25 @@
 
 }
 
+- (void)clockAction
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    delegate.tabVC.btn.selected = NO;
+    [delegate.tabVC selectController:3];
+}
+
+- (void)setArticleModel:(NSMutableArray *)articleModel
+{
+    _articleModel = articleModel;
+    
+    NSMutableArray *arrM = [NSMutableArray array];
+    for (ArticleModel *model in articleModel) {
+        [arrM addObject:model.TitleImage];
+    }
+    self.cycleScrollView2.imageURLStringsGroup = arrM;
+    
+}
+
 
 #pragma mark - SDCycleScrollViewDelegate
 
@@ -168,7 +187,16 @@
 {
     NSLog(@"---点击了第%ld张图片", (long)index);
     
-//    [self.navigationController pushViewController:[NSClassFromString(@"DemoVCWithXib") new] animated:YES];
+    __block ArticleModel *articleModel = self.articleModel[index];
+    
+    DietArticleDetailVC *vc = [[DietArticleDetailVC alloc] init];
+    vc.title = @"推荐饮食";
+    vc.model = articleModel;
+    [self.viewController.navigationController pushViewController:vc animated:YES];
+//    vc.block = ^(ArticleModel *model) {
+//        articleModel = model;
+//        [self.tableView reloadData];
+//    };
 }
 
 #pragma mark - UITextFieldDelegate
@@ -179,6 +207,9 @@
 
         return YES;
     }
+    
+    [self.tf resignFirstResponder];
+
     SearchResultVC *vc = [[SearchResultVC alloc] init];
     vc.title = @"搜索结果";
     vc.longitude = self.longitude;

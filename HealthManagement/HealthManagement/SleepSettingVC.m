@@ -130,6 +130,7 @@
         
     }
     
+    /*
     // 灰色条
     UIView *view6 = [[UIView alloc] initWithFrame:CGRectMake(0, self.remindLab.bottom, kScreen_Width, view5.height)];
     view6.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
@@ -164,9 +165,11 @@
         musicLab.text = _model.musicName;
         
     }
+     
+     */
     
     // 灰色条
-    UIView *view7 = [[UIView alloc] initWithFrame:CGRectMake(0, btn3.bottom, kScreen_Width, view5.height)];
+    UIView *view7 = [[UIView alloc] initWithFrame:CGRectMake(0, self.remindLab.bottom, kScreen_Width, view5.height)];
     view7.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
     [baseView addSubview:view7];
     
@@ -279,6 +282,7 @@
 }
 
 
+/*
 // 选择铃声
 - (void)musicAction:(UIButton *)btn
 {
@@ -293,7 +297,7 @@
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
-
+*/
 
 // 日期动作
 - (void)weekAction:(UIButton *)btn

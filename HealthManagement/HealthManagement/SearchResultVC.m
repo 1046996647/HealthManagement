@@ -11,6 +11,9 @@
 #import "DietArticleCell.h"
 #import "RecommendDietCell.h"
 #import "UITableView+EmptyData.h"
+#import "ResDetailVC.h"
+#import "DietArticleDetailVC.h"
+#import "CookbookDetailVC.h"
 
 
 @interface SearchResultVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -26,6 +29,8 @@
 @property(nonatomic,strong) NSMutableArray *resArr;
 @property(nonatomic,strong) NSMutableArray *dietArr;
 @property(nonatomic,strong) NSMutableArray *articleArr;
+@property (nonatomic,assign) BOOL isRequest;
+
 
 
 @end
@@ -96,6 +101,8 @@
     
     [self searchVagueRestaurant];
     
+//    UIWebView *web =nil;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -129,6 +136,8 @@
             NSNumber *code = responseObject[@"HttpCode"];
             
             if (code.integerValue == 200) {
+                
+                self.isRequest = YES;
                 
                 NSArray *arr = responseObject[@"ListData"];
                 if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
@@ -236,10 +245,21 @@
         
         if (self.tag == 100) {
             
+            // 最后一个隐藏灰条
+            if (indexPath.row == self.resArr.count-1) {
+                return 131-6;
+
+            }
             return 131;
+
 
         }
         else {
+            
+            if (indexPath.row == self.dietArr.count-1) {
+                return 144-6;
+                
+            }
             return 144;
 
         }
@@ -252,10 +272,18 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.resArr.count==0 && self.dietArr.count==0 && self.articleArr.count==0) {
-        [tableView tableViewDisplayWitMsg:@"搜索无结果~" ifNecessaryForRowCount:0];
+        
+        if (self.isRequest) {
+            [tableView tableViewDisplayWitMsg:@"搜索无结果~" ifNecessaryForRowCount:0];
+
+        }
     }
     else {
-        [tableView tableViewDisplayWitMsg:@"搜索无结果~" ifNecessaryForRowCount:1];
+        
+        if (self.isRequest) {
+            [tableView tableViewDisplayWitMsg:@"搜索无结果~" ifNecessaryForRowCount:1];
+
+        }
 
     }
     
@@ -283,7 +311,8 @@
     else {
         
         if (self.articleArr.count > 0) {
-            return 25;
+            
+            return 25+6;
 
         }
         else {
@@ -296,19 +325,20 @@
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if (section == 1) {
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 25)];
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 31)];
         headerView.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
         
-        UILabel *hotLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 2,198/2, 15)];
-        hotLab.font = [UIFont boldSystemFontOfSize:13];
-        hotLab.text = @"   推荐饮食文章";
+        UILabel *articleLab = [[UILabel alloc] initWithFrame:CGRectMake(0, 8,198/2, 15)];
+        articleLab.font = [UIFont boldSystemFontOfSize:13];
+        articleLab.text = @"   推荐饮食文章";
 //        hotLab.textAlignment = NSTextAlignmentLeft;
-        hotLab.textColor = [UIColor colorWithHexString:@"#595959"];
-        [headerView addSubview:hotLab];
+        articleLab.textColor = [UIColor colorWithHexString:@"#595959"];
+        [headerView addSubview:articleLab];
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(hotLab.right, hotLab.center.y-.25, kScreen_Width-hotLab.right-10, .5)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(articleLab.right, articleLab.center.y-.25, kScreen_Width-articleLab.right-10, .5)];
         view.backgroundColor = [UIColor grayColor];
         [headerView addSubview:view];
+
         return headerView;
 
     }
@@ -320,8 +350,43 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-//    ResDetailVC *vc = [[ResDetailVC alloc] init];
-//    [self.viewController.navigationController pushViewController:vc animated:YES];
+
+    if (indexPath.section == 0) {
+        
+        if (self.tag == 100) {
+            ResDetailModel *model = self.resArr[indexPath.row];
+            
+            ResDetailVC *vc = [[ResDetailVC alloc] init];
+            vc.resID = model.ID;
+//            vc.model = self.resArr[indexPath.row];
+            vc.latitude = self.latitude;
+            vc.longitude = self.longitude;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        
+        else {
+            
+            CookbookDetailVC *vc = [[CookbookDetailVC alloc] init];
+            vc.model = self.dietArr[indexPath.row];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        
+    }
+    else {
+        __block ArticleModel *articleModel = self.articleArr[indexPath.row];
+        
+        DietArticleDetailVC *vc = [[DietArticleDetailVC alloc] init];
+        vc.title = @"推荐饮食";
+        vc.model = articleModel;
+        [self.navigationController pushViewController:vc animated:YES];
+        vc.block = ^(ArticleModel *model) {
+            articleModel = model;
+            [self.tableView reloadData];
+        };
+    }
+    
+        
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -340,6 +405,16 @@
             
             ResDetailModel *model = self.resArr[indexPath.row];
             cell.model = model;
+            
+            // 最后一个隐藏灰条
+            if (indexPath.row == self.resArr.count-1) {
+                cell.view.hidden = YES;
+                
+            }
+            else {
+                cell.view.hidden = NO;
+
+            }
 
             return cell;
         }
@@ -353,6 +428,16 @@
             }
             RecipeModel *model = self.dietArr[indexPath.row];
             cell.model = model;
+            
+            // 最后一个隐藏灰条
+            if (indexPath.row == self.dietArr.count-1) {
+                cell.view.hidden = YES;
+                
+            }
+            else {
+                cell.view.hidden = NO;
+                
+            }
 
             return cell;
             
@@ -362,6 +447,7 @@
 
     }
     else {
+        
         DietArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"secondCell"];
         if (cell == nil) {
             

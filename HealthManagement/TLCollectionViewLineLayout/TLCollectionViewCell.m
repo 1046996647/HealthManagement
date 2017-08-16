@@ -17,6 +17,8 @@
         _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, self.width-4, self.height-4)];
         _imageView.layer.cornerRadius = 6;
         _imageView.layer.masksToBounds = YES;
+        _imageView.clipsToBounds = YES;
+        _imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _imageView;
 }

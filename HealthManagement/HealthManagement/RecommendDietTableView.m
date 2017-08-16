@@ -16,7 +16,7 @@
 {
     if (!_tableView) {
         //列表
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 37+5, kScreen_Width, self.height-(37+5))];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 36, kScreen_Width, self.height-36)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -74,6 +74,14 @@
             }
         }
         
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, baseView.bottom-.5, kScreen_Width, .5)];
+        view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
+        [self addSubview:view];
+        
+        // 表视图
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 6)];
+        headerView.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
+        self.tableView.tableHeaderView = headerView;
         
         // 表视图
         [self addSubview:self.tableView];
@@ -91,10 +99,8 @@
         // 上拉刷新
         self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             
-            if (self.modelArr.count > 0) {
-                // 请求饮食列表
-                [self getRecipeListByGPS];
-            }
+            // 请求饮食列表
+            [self getRecipeListByGPS];
             
         }];
 
@@ -167,6 +173,10 @@
             
         }];
     }
+    else {
+        [SVProgressHUD dismiss];
+        
+    }
     
 }
 
@@ -232,6 +242,9 @@
     
     CookbookDetailVC *vc = [[CookbookDetailVC alloc] init];
     vc.model = self.modelArr[indexPath.row];
+    vc.mark = 1;
+    vc.latitude = self.latitude;
+    vc.longitude = self.longitude;
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 

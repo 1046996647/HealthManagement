@@ -18,6 +18,7 @@
 @property(nonatomic,copy) NSString *ConstitutionPercentage;
 @property(nonatomic,copy) NSString *Restaurant_Address;
 @property(nonatomic,copy) NSString *Restaurant_Name;
+@property(nonatomic,copy) NSString *RestaurantId;
 @property(nonatomic,strong) NSArray *images;
 @property(nonatomic,strong) NSArray *Constitution;
 @property(nonatomic,strong) NSArray *foodRecipe;
@@ -58,6 +59,7 @@
 
 // 0:没发生 1：不喜欢 2：喜欢
 @property(nonatomic,copy) NSString *WhetherLike;
+@property(nonatomic,assign) NSInteger type;
 
 
 

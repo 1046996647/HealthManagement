@@ -11,6 +11,7 @@
 #import "NearbyResView.h"
 #import "RecommendDietView.h"
 #import "DietRecordView.h"
+#import "ArticleModel.h"
 
 
 @interface HeaderView : UIView<SDCycleScrollViewDelegate,UITextFieldDelegate>
@@ -28,6 +29,7 @@
 
 //-----------轮播-----------
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView2;
+@property(nonatomic,strong) NSMutableArray *articleModel;
 
 //----------------------
 @property(nonatomic,strong) UIButton *btn;

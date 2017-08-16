@@ -11,7 +11,9 @@
 
 @interface ResDetailVC : BaseViewController
 
-@property(nonatomic,strong) ResDetailModel *model;
+//@property(nonatomic,strong) ResDetailModel *model;
+@property(nonatomic,copy) NSString *resID;
+
 @property(nonatomic,strong) NSNumber *latitude;// 纬度
 @property(nonatomic,strong) NSNumber *longitude;// 经度
 

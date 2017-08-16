@@ -86,14 +86,14 @@
     self.isRefresh = YES;
 }
 
-// 请求餐厅列表
+// 请求首页列表
 - (void)getTitlePage
 {
-//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     
     PersonModel *model = [InfoCache unarchiveObjectWithFile:Person];
 
     if (!self.isRefresh) {
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
         [SVProgressHUD show];
 
     }
@@ -143,6 +143,19 @@
             
         }
         
+        NSArray *arr3 = responseObject[@"ListData3"];
+        if ([arr3 isKindOfClass:[NSArray class]] && arr3.count > 0) {
+            
+            NSMutableArray *arrM3 = [NSMutableArray array];
+            for (NSDictionary *dic in arr3) {
+                ArticleModel *model = [ArticleModel yy_modelWithJSON:dic];
+                [arrM3 addObject:model];
+            }
+            
+            self.headView.articleModel = arrM3;
+
+        }
+        
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         
@@ -188,6 +201,7 @@
     
     _locService.delegate = nil;
     _geocodesearch.delegate = nil;
+    [self.headView.tf resignFirstResponder];
     
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
@@ -219,6 +233,9 @@
     self.latitude = @(userLocation.location.coordinate.latitude);
     self.longitude = @(userLocation.location.coordinate.longitude);
     
+    [InfoCache saveValue:self.latitude forKey:@"latitude"];
+    [InfoCache saveValue:self.longitude forKey:@"longitude"];
+    
     //地理反编码
     BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
     
@@ -245,10 +262,11 @@
 -(void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
 
 {
-    
+    NSLog(@"%@----%i",result,error);
+
     if (result) {
         
-        NSLog(@"address:%@----%@",result.addressDetail,result.address);
+//        NSLog(@"address:%@----%@",result.addressDetail,result.address);
 
         // 定位
         BMKPoiInfo *poiInfo = [result.poiList firstObject];
@@ -307,6 +325,7 @@
     if (cell == nil) {
         
         cell = [[DietRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 //    cell.textLabel.text = self.dataArray[indexPath.row];
 //    cell.textLabel.font = [UIFont systemFontOfSize:14];

@@ -23,14 +23,14 @@
         view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
         [self addSubview:view];
         
-        _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(12, view.bottom+12,kScreen_Width-90-12-12, 16)];
-        _lab1.font = [UIFont boldSystemFontOfSize:14];
+        _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(12, view.bottom+12,kScreen_Width-90-12-12, 17)];
+        _lab1.font = [UIFont boldSystemFontOfSize:16];
 //        _lab1.text = @"必胜（城北店万达店）";
         //        _lab1.textColor = [UIColor grayColor];
         [self addSubview:_lab1];
         
-        _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(_lab1.left, _lab1.bottom+12, kScreen_Width-12-12, 12)];
-        _lab2.font = [UIFont systemFontOfSize:12];
+        _lab2 = [[UILabel alloc] initWithFrame:CGRectMake(_lab1.left, _lab1.bottom+12, kScreen_Width-12-12, 14)];
+        _lab2.font = [UIFont systemFontOfSize:13];
 //        _lab2.text = @"中餐 1.1km";
         _lab2.textColor = [UIColor colorWithHexString:@"#606060"];
         [self addSubview:_lab2];
@@ -39,7 +39,7 @@
         _lab3 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+12, _lab2.width, 14)];
 //        _lab3.text = @"本月销售5861份    人均 ￥56";
         _lab3.textColor = [UIColor colorWithHexString:@"#606060"];
-        _lab3.font = [UIFont systemFontOfSize:12];
+        _lab3.font = [UIFont systemFontOfSize:13];
         [self addSubview:_lab3];
         
         
@@ -61,8 +61,8 @@
         self.collectionView = collectionView;
         
         _lab5 = [[UILabel alloc] initWithFrame:CGRectMake(40, collectionView.bottom+12, kScreen_Width-40-80, 30)];
-        _lab5.font = [UIFont systemFontOfSize:12];
-        _lab5.text = @"拱墅区祥园路28号";
+        _lab5.font = [UIFont systemFontOfSize:13];
+//        _lab5.text = @"拱墅区祥园路28号";
         //        _lab2.textAlignment = NSTextAlignmentRight;
 //        _lab5.textColor = [UIColor grayColor];
         [self addSubview:_lab5];
@@ -74,20 +74,27 @@
         
 
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(kScreen_Width-20-12, _lab1.top, 20, 20);
-        [btn setImage:[UIImage imageNamed:@"Restaurant_7"] forState:UIControlStateNormal];
+        btn.frame = CGRectMake(kScreen_Width-20-18, _lab1.top, 20, 20);
+        [btn setImage:[UIImage imageNamed:@"Restaurant_8"] forState:UIControlStateNormal];
         [self addSubview:btn];
+        [btn addTarget:self action:@selector(collectionAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.btn = btn;
         
-        UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn1.frame = CGRectMake(btn.left-btn.width-10, _lab1.top, btn.width, btn.height);
-        // Restaurant_9
-        [btn1 setImage:[UIImage imageNamed:@"Restaurant_8"] forState:UIControlStateNormal];
-        [self addSubview:btn1];
+
+        
+//        UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
+//        btn1.frame = CGRectMake(btn.left-btn.width-10, _lab1.top, btn.width, btn.height);
+//        // Restaurant_9
+//        [btn1 setImage:[UIImage imageNamed:@"Restaurant_8"] forState:UIControlStateNormal];
+//        [self addSubview:btn1];
         
         UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
         btn2.frame = CGRectMake(kScreen_Width-17-12, collectionView.bottom+22, 17, 17);
         [btn2 setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
         [self addSubview:btn2];
+        [btn2 addTarget:self action:@selector(callAction) forControlEvents:UIControlEventTouchUpInside];
+
+        
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(kScreen_Width-35-12, btn2.center.y-15, .5, 25)];
         line.backgroundColor = [UIColor colorWithHexString:@"#D1D1D1"];
         [self addSubview:line];
@@ -118,6 +125,80 @@
     
 }
 
+- (void)collectionAction:(UIButton *)btn
+{
+//    btn.selected = !btn.selected;
+    if (self.model.cusLikeOrNot.integerValue == 0) {
+        self.Opertion = @"Insert";
+        
+    }
+    else {
+        self.Opertion = @"Delete";
+        
+    }
+    [self getCustomerLikeOrNot];
+}
+
+// 喜好请求
+- (void)getCustomerLikeOrNot
+{
+    [SVProgressHUD show];
+    
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    [paramDic  setObject:self.model.ID forKey:@"OtherId"];
+    [paramDic  setObject:@"restlike" forKey:@"Type_Like"];
+    [paramDic  setObject:self.Opertion forKey:@"Opertion"];
+    //    [paramDic  setObject:self.latitude forKey:@"CoordY"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:CustomerLikeOrNot dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+        
+        NSLog(@"%@",responseObject);
+        
+        NSNumber *code = responseObject[@"HttpCode"];
+        
+        if (code.integerValue == 200) {
+//            NSString *msg = responseObject[@"Message"];
+
+            if ([self.Opertion isEqualToString:@"Insert"]) {
+                
+                self.model.cusLikeOrNot = @1;
+                [self.viewController.view makeToast:@"收藏成功"];
+
+                [self.btn setImage:[UIImage imageNamed:@"Restaurant_9"] forState:UIControlStateNormal];
+
+            }
+            else {
+                self.model.cusLikeOrNot = @0;
+
+                [self.viewController.view makeToast:@"取消成功"];
+
+                [self.btn setImage:[UIImage imageNamed:@"Restaurant_8"] forState:UIControlStateNormal];
+
+            }
+
+        }
+        
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+    }];
+}
+
+- (void)callAction
+{
+    NSMutableString *str = [[NSMutableString alloc] initWithFormat:@"tel:%@",_model.phone];
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [[UIApplication sharedApplication].keyWindow addSubview:callWebview];
+
+}
+
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -142,6 +223,16 @@
     _lab2.text = [NSString stringWithFormat:@"%@ %@",model.category,[NSString meterToKilometer:model.distance]];
     _lab3.text = [NSString stringWithFormat:@"本月销售%@份    人均 ￥%@",model.sales,model.consumption];
     _lab5.text = model.address;
+    
+    if (model.cusLikeOrNot.integerValue == 1) {
+        [self.btn setImage:[UIImage imageNamed:@"Restaurant_9"] forState:UIControlStateNormal];
+        
+    }
+    else {
+        
+        [self.btn setImage:[UIImage imageNamed:@"Restaurant_8"] forState:UIControlStateNormal];
+        
+    }
 
     [self.collectionView reloadData];
     

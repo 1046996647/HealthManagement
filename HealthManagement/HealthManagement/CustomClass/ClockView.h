@@ -14,7 +14,11 @@ typedef void(^ClockBlock)(void);
 @interface ClockView : UIView
 
 @property (nonatomic,strong) UILabel *sleepLab2;
-@property (nonatomic,copy) NSString *timeStr;
+@property (nonatomic,strong) UIImageView *clockImg;
+@property (nonatomic,strong) UIButton *enterBtn;
+
+
+@property (nonatomic,copy) NSDictionary *info;
 
 @property (nonatomic,copy) ClockBlock block;
 

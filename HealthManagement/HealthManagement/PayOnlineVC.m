@@ -41,7 +41,7 @@
     // Do any additional setup after loading the view.
     
     self.leftDataList = @[@"支付金额",@"商家",@"到店时间"];
-    self.rightDataList = @[@"￥ 56",@"肯德基",@"2017年12月12日16:12"];
+    self.rightDataList = @[self.money,self.resName,self.time];
     self.sectionDataList = @[@"  订单信息",@"  选择支付方式"];
     self.imgArr = @[@"online_2",@"online_1"];
     

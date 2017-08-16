@@ -10,13 +10,14 @@
 #import "NearbyRestaurantTableView.h"
 #import "RecommendDietTableView.h"
 #import "SearchVC.h"
+#import "ScrollView.h"
 
 @interface NearbyRestaurantVC ()
 
 @property(nonatomic,strong) UIButton *nearbyBtn;
 @property(nonatomic,strong) UIButton *recommendBtn;
 @property(nonatomic,strong) UIView *bottomLine;
-@property(nonatomic,strong) UIScrollView *scrollView;
+@property(nonatomic,strong) ScrollView *scrollView;
 
 
 @property(nonatomic,strong) NearbyRestaurantTableView *nearbyRestaurantTableView;
@@ -76,7 +77,7 @@
     [self.view addSubview:_bottomLine];
     
     // 滑动视图
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, _bottomLine.bottom, kScreen_Width, kScreen_Height-64-_bottomLine.bottom)];
+    ScrollView *scrollView = [[ScrollView alloc] initWithFrame:CGRectMake(0, _bottomLine.bottom, kScreen_Width, kScreen_Height-64-_bottomLine.bottom)];
     scrollView.pagingEnabled = YES;
     scrollView.delegate = self;
     scrollView.bounces = NO;
@@ -91,6 +92,7 @@
     _nearbyRestaurantTableView.longitude = self.longitude;
     _nearbyRestaurantTableView.groupBy = @"Distance";
 //    baseView.backgroundColor = [UIColor whiteColor];
+    [_nearbyRestaurantTableView.besideBtn addTarget:self action:@selector(switchAction) forControlEvents:UIControlEventTouchUpInside];
     
     // 推荐饮食视图
     _recommendDietTableView = [[RecommendDietTableView alloc] initWithFrame:CGRectMake(kScreen_Width, 0, kScreen_Width, kScreen_Height-64-_bottomLine.bottom)];
@@ -114,6 +116,20 @@
     
 }
 
+- (void)switchAction
+{
+    _nearbyBtn.selected = NO;
+    _recommendBtn.selected = YES;
+    self.title = @"推荐饮食";
+    
+    [UIView animateWithDuration:.35 animations:^{
+        _bottomLine.left = kScreen_Width/2;
+        
+        self.scrollView.contentOffset = CGPointMake(kScreen_Width, 0);
+        
+    }];
+}
+
 // 搜索按钮
 - (void)initRightItem
 {
@@ -132,6 +148,8 @@
 {
     SearchVC *vc = [[SearchVC alloc] init];
 //    vc.title = @"";
+    vc.longitude = self.longitude;
+    vc.latitude = self.latitude;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

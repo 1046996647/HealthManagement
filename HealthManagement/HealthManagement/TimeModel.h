@@ -18,7 +18,10 @@
 @interface IntergrationRecordModel : NSObject
 
 @property(nonatomic,copy) NSString *fullPayTime;
-@property(nonatomic,copy) NSString *payTime;
+@property(nonatomic,copy) NSString *Content;
+@property(nonatomic,copy) NSString *ScoreId;
+@property(nonatomic,copy) NSString *Time;
+
 
 
 @end

@@ -20,10 +20,10 @@ typedef void(^DataBlock)(NSString *str,NSString *str1);
     UILabel *dateLabel2;
 }
 
--(NSString *)Set_Time_Way;
 @property (nonatomic,strong) NSString *dateStr;
 @property (nonatomic, copy)DataBlock dataBlock;
-@property (nonatomic,assign) NSInteger type;
+//@property (nonatomic,assign) NSInteger type;
 
+-(instancetype)initWithFrame:(CGRect)frame datePickerMode:(UIDatePickerMode)datePickerMode;
 
 @end

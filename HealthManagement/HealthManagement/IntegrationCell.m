@@ -15,7 +15,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        self.textLabel.text = @"运动3000步";
+        self.textLabel.text = @"运动3000+步";
         self.textLabel.textColor = [UIColor colorWithHexString:@"#414141"];
         self.textLabel.font = [UIFont boldSystemFontOfSize:14];
         
@@ -39,6 +39,14 @@
         hositoryLab.attributedText = attStr;
     }
     return self;
+}
+
+- (void)setModel:(IntergrationModel *)model
+{
+    _model = model;
+    self.textLabel.text = model.Content;
+    self.detailTextLabel.text = model.Time;
+
 }
 
 @end

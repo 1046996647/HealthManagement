@@ -12,6 +12,10 @@
 @interface CookbookDetailVC : BaseViewController
 
 @property(nonatomic,strong) RecipeModel *model;
+@property(nonatomic,strong) NSNumber *latitude;// 纬度
+@property(nonatomic,strong) NSNumber *longitude;// 经度
+
+@property(nonatomic,assign) NSInteger mark;
 
 
 @end

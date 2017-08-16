@@ -17,8 +17,6 @@
 
 @interface TabBarController ()<UITabBarControllerDelegate,UINavigationControllerDelegate>
 
-@property(nonatomic,strong) UIButton *btn;
-
 
 @end
 
@@ -48,11 +46,13 @@
     self.tabBar.barStyle = UIBarStyleBlack;
     self.delegate = self;
     
-    [self setChildViewController:[[PersonalCenterVC alloc]init] Title:@"我的" Image:@"logo_9" SelectedImage:@"icon_geren"];
     [self setChildViewController:[[DietArticleVC alloc]init] Title:@"饮食文章" Image:@"logo_5" SelectedImage:@"logo_6"];
-    [self setChildViewController:[[HomeVC alloc]init] Title:@"首页" Image:@"" SelectedImage:@""];
     [self setChildViewController:[[SportVC alloc]init] Title:@"运动" Image:@"logo_7" SelectedImage:@"logo_8"];
+
+    [self setChildViewController:[[HomeVC alloc]init] Title:@"首页" Image:@"" SelectedImage:@""];
     [self setChildViewController:[[SleepVC alloc]init] Title:@"睡眠" Image:@"logo_3" SelectedImage:@"logo_4"];
+    
+    [self setChildViewController:[[PersonalCenterVC alloc]init] Title:@"我的" Image:@"logo_9" SelectedImage:@"icon_geren"];
  
     // 首页选项
     CGFloat width = 35;
