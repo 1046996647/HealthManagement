@@ -158,9 +158,12 @@
         if ([arr2 isKindOfClass:[NSArray class]] && arr.count > 0) {
             
             SuggestModel *model = [SuggestModel yy_modelWithJSON:[arr2 firstObject]];
-            _bodyLab.text = [NSString stringWithFormat:@"您的体质是%@",model.constitution];
-            _fitLab.text = [NSString stringWithFormat:@"适合吃%@",model.SuitEat];
-            _possibleLab.text = [NSString stringWithFormat:@"尽量少吃%@",model.NotSuitEat];
+//            _bodyLab.text = [NSString stringWithFormat:@"您的体质是%@",model.constitution];
+            _bodyLab.text = model.constitution;
+//            _fitLab.text = [NSString stringWithFormat:@"适合吃%@",model.SuitEat];
+            _fitLab.text = model.SuitEat;
+//            _possibleLab.text = [NSString stringWithFormat:@"尽量少吃%@",model.NotSuitEat];
+            _possibleLab.text = model.NotSuitEat;
 
             
         }

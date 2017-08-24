@@ -32,7 +32,10 @@
 // 富文本
 + (NSMutableAttributedString *)text:(NSString *)text  fullText:(NSString *)fullText location:(NSInteger)location color:(UIColor *)color font:(UIFont *)font;
 
-//计算  距离现在的时间
+//在开发中我们经常需要判断一个时期是今天还是昨天，或者是之前的日子。代码如下：
 + (NSString *)getUTCFormateDate:(NSDate *)newsDate;
+
+// nsdate 转 nsstring(如:@"yyyy-MM-dd HH:mm:ss"];)
++ (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format;
 
 @end

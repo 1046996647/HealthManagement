@@ -11,6 +11,7 @@
 #import "SleepModel.h"
 #import "NSStringExt.h"
 #import "SleepSettingVC.h"
+#import "AppDelegate.h"
 
 
 #define ClockPath @"ClockPath"
@@ -443,6 +444,10 @@
             
             NSString *chNum = [NSString translationArabicNum:weekDay.integerValue];
             
+            if ([chNum isEqualToString:@"七"]) {
+                chNum = @"日";
+            }
+            
             [mStr appendFormat:@"周%@ ",chNum];
         }
         self.weekLab.text = mStr;
@@ -485,8 +490,8 @@
 
     }
     else {
-        [SleepVC shutdownClock:@"SleepID"];
-        [SleepVC shutdownClock:@"WakeupID"];
+        [AppDelegate shutdownClock:@"SleepID"];
+        [AppDelegate shutdownClock:@"WakeupID"];
 
     }
 
@@ -531,6 +536,7 @@
     [self changeAction];
     
     NSString *str1 = [NSString stringWithFormat:@"%ld",(time / 12)];
+//    NSString *str2 = [NSString stringWithFormat:@"%ld",((time % 12) * 5)+5];
     NSString *str2 = [NSString stringWithFormat:@"%ld",((time % 12) * 5)];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@小时%@分钟",str1, str2]];
     NSRange range1 = {0,[str1 length]};
@@ -617,16 +623,17 @@
             startDate = [dateFormatter stringFromDate:updateDate];
             NSLog(@"！！！！！！！！！%@",startDate);
         }
+        
         endDate = [dateFormatter stringFromDate:_model.endDate];
 
         
         // 就寝闹钟
-        [SleepVC shutdownClock:@"SleepID"];
-        [SleepVC postLocalNotification:@"SleepID" clockTime:startDate weekArr:_model.weekDay alertBody:@"该睡觉啦~" clockMusic:_model.musicName];
+        [AppDelegate shutdownClock:@"SleepID"];
+        [AppDelegate postLocalNotification:@"SleepID" clockTime:startDate weekArr:_model.weekDay alertBody:@"该睡觉啦~" clockMusic:_model.musicName];
 
         // 起床闹钟
-        [SleepVC shutdownClock:@"WakeupID"];
-        [SleepVC postLocalNotification:@"WakeupID" clockTime:endDate weekArr:_model.weekDay alertBody:@"该起床啦~" clockMusic:_model.musicName];
+        [AppDelegate shutdownClock:@"WakeupID"];
+        [AppDelegate postLocalNotification:@"WakeupID" clockTime:endDate weekArr:_model.weekDay alertBody:@"该起床啦~" clockMusic:_model.musicName];
         
         [InfoCache archiveObject:_model toFile:ClockPath];
 
@@ -634,93 +641,7 @@
     
 }
 
-+ (void)postLocalNotification:(NSString *)clockID clockTime:(NSString *)clockTime weekArr:(NSArray *)array alertBody:(NSString *)alertBody clockMusic:(NSString *)clockMusic
-{
-    
-    //-----组建本地通知的fireDate-----------------------------------------------
-    NSArray *clockTimeArray = [clockTime componentsSeparatedByString:@":"];
-    NSDate *dateNow = [NSDate date];
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *comps = [[NSDateComponents alloc] init];
-    //    [calendar setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
-    //    [comps setTimeZone:[NSTimeZone timeZoneWithName:@"CMT"]];
-    NSInteger unitFlags = NSCalendarUnitEra |
-    NSCalendarUnitYear |
-    NSCalendarUnitMonth |
-    NSCalendarUnitDay |
-    NSCalendarUnitHour |
-    NSCalendarUnitMinute |
-    NSCalendarUnitSecond |
-    NSCalendarUnitWeekOfYear |
-    NSCalendarUnitWeekday |
-    NSCalendarUnitWeekdayOrdinal |
-    NSCalendarUnitQuarter;
-    
-    comps = [calendar components:unitFlags fromDate:dateNow];
-    [comps setHour:[[clockTimeArray objectAtIndex:0] intValue]];
-    [comps setMinute:[[clockTimeArray objectAtIndex:1] intValue]];
-    [comps setSecond:0];
-    
-    //------------------------------------------------------------------------
-    Byte weekday = [comps weekday];
-    //    NSArray *array = [[clockMode substringFromIndex:1] componentsSeparatedByString:@"、"];
-    Byte i = 0;
-    Byte j = 0;
-    int days = 0;
-    int	temp = 0;
-    Byte count = [array count];
-    Byte clockDays[7];
-    
-//    NSArray *tempWeekdays = [NSArray arrayWithObjects:@"一",@"二",@"三",@"四",@"五",@"六",@"七", nil];
-    NSArray *tempWeekdays = [NSArray arrayWithObjects:@"7",@"1",@"2",@"3",@"4",@"5",@"6", nil];
-    //查找设定的周期模式
-    for (i = 0; i < count; i++) {
-        for (j = 0; j < 7; j++) {
-            if ([[array objectAtIndex:i] isEqualToString:[tempWeekdays objectAtIndex:j]]) {
-                clockDays[i] = j + 1;
-                break;
-            }
-        }
-    }
-    
-    for (i = 0; i < count; i++) {
-        temp = clockDays[i] - weekday;
-        days = (temp >= 0 ? temp : temp + 7);
-        NSDate *newFireDate = [[calendar dateFromComponents:comps] dateByAddingTimeInterval:3600 * 24 * days];
-        
-        UILocalNotification *newNotification = [[UILocalNotification alloc] init];
-        if (newNotification) {
-            newNotification.fireDate = newFireDate;
-            newNotification.alertBody = alertBody;
-            
-//            NSString *path = [NSString stringWithFormat:@"/System/Library/Audio/UISounds/%@.%@",@"alarm",@"caf"];
 
-//            newNotification.soundName = path;
-            newNotification.soundName = [NSString stringWithFormat:@"%@.caf", @"梦幻"];
-
-            //            newNotification.alertAction = @"查看闹钟";
-            newNotification.repeatInterval = NSCalendarUnitWeekOfYear;
-//            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:clockID forKey:@"ActivityClock"];
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:clockID,@"ActivityClock",newNotification.soundName,@"clockMusic",clockTime,@"clockTime", nil];
-            newNotification.userInfo = userInfo;
-            [[UIApplication sharedApplication] scheduleLocalNotification:newNotification];
-        }
-        NSLog(@"Post new localNotification:%@", [newNotification fireDate]);
-        
-    }
-}
-
-+ (void)shutdownClock:(NSString *)clockID
-{
-    NSArray *localNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    for(UILocalNotification *notification in localNotifications)
-    {
-        if ([[[notification userInfo] objectForKey:@"ActivityClock"] isEqualToString:clockID]) {
-            NSLog(@"Shutdown localNotification:%@", [notification fireDate]);
-            [[UIApplication sharedApplication] cancelLocalNotification:notification];
-        }
-    }
-}
 
 
 #pragma mark - UIGestureRecognizerDelegate

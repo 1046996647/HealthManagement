@@ -24,6 +24,27 @@
 @property(nonatomic,strong) NSArray *foodRecipe;
 @property(nonatomic,strong) NSArray *Tags;
 
+//
+@property(nonatomic,copy) NSString *recordItem;
+
+
+@property(nonatomic,copy) NSString *RecipeImage;
+
+
+@property(nonatomic,copy) NSString *RecipeId;
+@property(nonatomic,copy) NSString *RecipeName;
+@property(nonatomic,copy) NSString *OrderPrice;
+@property(nonatomic,copy) NSString *OrderTime;
+@property(nonatomic,copy) NSString *OrderId;
+@property(nonatomic,copy) NSString *RestaurantName;
+@property(nonatomic,copy) NSString *RestaurantImage;
+@property(nonatomic,copy) NSString *RestaurantType;
+@property(nonatomic,copy) NSString *RestaurantDistance;
+@property(nonatomic,copy) NSString *RestaurantAddress;
+@property(nonatomic,copy) NSString *RestaurantPhone;
+@property(nonatomic,strong) NSArray *FoodRecipe;
+
+
 @property(nonatomic,assign) NSInteger cellHeight;
 @property(nonatomic,assign) BOOL isExpend;
 

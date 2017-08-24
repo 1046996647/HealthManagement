@@ -125,7 +125,7 @@
     
     NSCalendar* calendar = [NSCalendar currentCalendar];
     
-    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
     NSDateComponents* comp1 = [calendar components:unitFlags fromDate:date];
     NSDateComponents* comp2 = [calendar components:unitFlags fromDate:[NSDate date]];
 //    BOOL isTure = [comp1 month] == [comp2 month] &&
@@ -194,7 +194,6 @@
 
 //在开发中我们经常需要判断一个时期是今天还是昨天，或者是之前的日子。代码如下：
 
-//计算  距离现在的时间
 + (NSString *)getUTCFormateDate:(NSDate *)newsDate
 
 {
@@ -261,5 +260,17 @@
     
 }
 
+
+
+// nsdate 转 nsstring(如:@"yyyy-MM-dd HH:mm:ss"];)
++ (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format {
+    
+    NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:format];
+    
+    NSString *dateStr = [dateFormatter stringFromDate:date];
+
+    return dateStr;
+}
 
 @end

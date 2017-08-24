@@ -25,10 +25,13 @@
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) UIButton *btn4;
 @property(nonatomic,strong) UILabel *fitLab;
+@property(nonatomic,strong) UILabel *moneyLab;
+
 @property(nonatomic,strong) UILabel *countLab;
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic,strong) UILabel *timeLab;
 
+@property (nonatomic,strong) UIScrollView *bodyScrollView;
 
 
 
@@ -62,17 +65,28 @@
     //        _lab1.backgroundColor = [UIColor redColor];
     [self.scrollView addSubview:_lab1];
     
+    // 滑动视图
+    UIScrollView *bodyScrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    //    scrollView.pagingEnabled = YES;
+    //    scrollView.delegate = self;
+    bodyScrollView.backgroundColor = [UIColor whiteColor];
+    bodyScrollView.showsHorizontalScrollIndicator = NO;
+    //    scrollView.contentSize = CGSizeMake(kScreen_Width*3, kWidth+10+20);
+    [self.scrollView addSubview:bodyScrollView];
+    self.bodyScrollView = bodyScrollView;
+    
     
     // 费用
     UILabel *moneyLab = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width-100-12, _lab1.center.y-10, 100, 20)];
     moneyLab.font = [UIFont boldSystemFontOfSize:16];
 //    moneyLab.text = @"￥ 89";
-    moneyLab.text = [NSString stringWithFormat:@"￥ %@",self.model.price];
+//    moneyLab.text = [NSString stringWithFormat:@"￥ %@",self.model.price];
     moneyLab.textColor = [UIColor colorWithHexString:@"#F97A23"];
     moneyLab.textAlignment = NSTextAlignmentRight;
     //    moneyLab.backgroundColor = [UIColor whiteColor];
 //    moneyLab.backgroundColor = [UIColor colorWithHexString:@"#F97A23"];
     [self.scrollView addSubview:moneyLab];
+    self.moneyLab = moneyLab;
     
     UILabel *countLab = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width-100-12, moneyLab.bottom+15, 100, 20)];
     countLab.font = [UIFont boldSystemFontOfSize:12];
@@ -127,7 +141,15 @@
     
     
     NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
-    [paramDic  setObject:self.model.ID forKey:@"RecipeId"];
+    
+    if (self.model.ID) {
+        [paramDic  setObject:self.model.ID forKey:@"RecipeId"];
+
+    }
+    if (self.model.RecipeId) {
+        [paramDic  setObject:self.model.RecipeId forKey:@"RecipeId"];
+        
+    }
     
     [AFNetworking_RequestData requestMethodPOSTUrl:RecipeItemInfoForPay dic:paramDic Succed:^(id responseObject) {
         
@@ -146,18 +168,29 @@
             self.model = [arrM firstObject];
             
             _lab1.text = self.model.name;
+            
+            self.moneyLab.text = [NSString stringWithFormat:@"￥ %@",self.model.price];
+
+            CGSize textSize = [[NSString stringWithFormat:@"本月销售%@份",self.model.sales] sizeWithAttributes:@{NSFontAttributeName:self.countLab.font}];
+            self.countLab.frame = CGRectMake(kScreen_Width-textSize.width-12, self.lab1.bottom+15, textSize.width, 20);
+            self.countLab.text = [NSString stringWithFormat:@"本月销售%@份",self.model.sales];
+            
+            self.bodyScrollView.frame = CGRectMake(12, self.countLab.top, self.countLab.left-12-5, 20);
+            self.bodyScrollView.contentSize = CGSizeMake(self.model.Constitution.count*(30+5), 0);
+            
             // 体质
             for (int i=0; i<self.model.Constitution.count; i++) {
                 
-                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(12+i*(30+5), _lab1.bottom+15, 30, 12)];
+                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(i*(30+5), 4, 30, 12)];
                 //        imgView.backgroundColor = [UIColor redColor];
                 imgView.tag = 100;
                 imgView.image = [UIImage imageNamed:self.model.Constitution[i]];
-                [self.scrollView  addSubview:imgView];
+                [self.bodyScrollView  addSubview:imgView];
                 
             }
-            self.countLab.text = [NSString stringWithFormat:@"本月销售%@份",self.model.sales];
+            
             [_tagsView setTagAry:self.model.Tags delegate:nil];
+            
             self.model.images = self.model.images;
             [self.collectionView reloadData];
 
@@ -383,17 +416,20 @@
 
 - (void)btnAction:(UIButton *)btn
 {
+    if (!self.timeLab.text) {
+        
+        [self.view makeToast:@"请选择到店时间"];
+        return;
+        
+    }
+    
     if (btn.tag == 0) {
         
+        
+        [self payAtShopOrder];
     }
     else {
         
-        if (!self.timeLab.text) {
-            
-            [self.view makeToast:@"请选择到店时间"];
-            return;
-            
-        }
         PayOnlineVC *vc = [[PayOnlineVC alloc] init];
         vc.title = @"在线支付";
         vc.money = [NSString stringWithFormat:@"￥ %@",self.model.price];;
@@ -402,6 +438,52 @@
         [self.navigationController pushViewController:vc animated:YES];
         
     }
+}
+
+- (void)payAtShopOrder
+{
+    [SVProgressHUD show];
+    
+    NSMutableDictionary *paramDic=[[NSMutableDictionary  alloc]initWithCapacity:0];
+    [paramDic  setValue:self.timeLab.text forKey:@"AtShopTime"];
+    [paramDic  setValue:self.model.ID
+                 forKey:@"RecipeId"];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:PayAtShopOrder dic:paramDic Succed:^(id responseObject) {
+        
+        [SVProgressHUD dismiss];
+
+        NSLog(@"%@",responseObject);
+        
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        
+        if (200 == [code integerValue]) {
+            
+            [self.view makeToast:@"下单成功"];
+            
+            // 下订单成功通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"kAddOrderNotification" object:nil];
+
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+            
+        }
+        else {
+            [self.view makeToast:[responseObject objectForKey:@"Message"]];
+
+        }
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        
+        
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "TimeModel.h"
+#import "RecipeModel.h"
 
 
 @interface DietRecordCell : UITableViewCell
@@ -19,6 +19,10 @@
 @property(nonatomic,strong) UILabel *lab2;
 @property(nonatomic,strong) UILabel *lab3;
 @property(nonatomic,strong) UIButton *btn;
-//@property(nonatomic,strong) PayRecordModel *model;
+
+@property(nonatomic,strong) UIScrollView *scrollView;
+
+
+@property(nonatomic,strong) RecipeModel *model;
 
 @end

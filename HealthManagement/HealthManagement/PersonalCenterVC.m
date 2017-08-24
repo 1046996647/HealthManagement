@@ -45,9 +45,16 @@
 @property (nonatomic,strong) UIButton *dietBtn;
 @property (nonatomic,strong) UIButton *sportBtn;
 
+
+@property (nonatomic,strong) PersonModel *personModel;
 @property (nonatomic,strong) IntergrationModel *dietModel;
 @property (nonatomic,strong) IntergrationModel *sleepModel;
 @property (nonatomic,strong) IntergrationModel *sportModel;
+
+@property (nonatomic,strong) UILabel *stateLab;
+@property (nonatomic,strong) UILabel *jifenLab;
+
+
 
 @property(nonatomic,strong) NSMutableArray *dataArray;
 
@@ -83,8 +90,6 @@
     
     [self.view addSubview:self.tableView];
     
-    // 创建导航栏视图
-    [self createNav];
     
     UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, 0)];
     headView.backgroundColor = [UIColor whiteColor];
@@ -95,12 +100,6 @@
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.headView addSubview:baseImg];
     
-    // 右上角按钮
-    UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn2.frame = CGRectMake(kScreen_Width-18-12, 70/2.0, 18, 18);
-    [btn2 setImage:[UIImage imageNamed:@"setting1"] forState:UIControlStateNormal];
-    [btn2 addTarget:self action:@selector(setAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.headView addSubview:btn2];
     
 //    // 体质
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-10-33, 220/2, 33, 14)];
@@ -125,14 +124,6 @@
     [self.headView addSubview:userNameLab];
     self.userNameLab = userNameLab;
     
-//    UIImageView *bodyImg = [[UIImageView alloc] initWithFrame:CGRectMake(userNameLab.right, userNameLab.center.y-6, 33, 12)];
-////    bodyImg.image = [UIImage imageNamed:@"temperament_3"];
-//    //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
-//    [self.headView addSubview:bodyImg];
-//    self.bodyImg = bodyImg;
-    
-    
-//    NSArray *imgArr = @[@"male",@"age_male",@"height_male",@"weight_male"];
     
     UIImageView *sexImg = [[UIImageView alloc] initWithFrame:CGRectMake(userNameLab.left, userNameLab.bottom+20, 16*scaleWidth, 16*scaleWidth)];
 //    sexImg.image = [UIImage imageNamed:imgArr[0]];
@@ -230,8 +221,9 @@
     [self.headView addSubview:view];
     
     UIImageView *treeImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, view.bottom, kScreen_Width, 660/2*scaleWidth)];
-    treeImg.image = [UIImage imageNamed:@"tree_1"];
+//    treeImg.image = [UIImage imageNamed:@"tree_1"];
     treeImg.userInteractionEnabled = YES;
+//    treeImg.hidden = YES;
 //    treeImg.backgroundColor = [UIColor redColor];
     [self.headView addSubview:treeImg];
     self.treeImg = treeImg;
@@ -248,7 +240,7 @@
      
                    range:range1];
     _sleepBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _sleepBtn.frame = CGRectMake(kScreen_Width/2-95, 248/2, 100, 25);
+//    _sleepBtn.frame = CGRectMake(kScreen_Width/2-95, 248/2, 100, 25);
 //    [_sleepBtn setTitle:@" +1 饮食" forState:UIControlStateNormal];
     _sleepBtn.tag = 0;
     _sleepBtn.hidden = YES;
@@ -275,7 +267,7 @@
      
                    range:range1];
     _dietBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _dietBtn.frame = CGRectMake(kScreen_Width/2-60, 64/2, 100, 25);
+//    _dietBtn.frame = CGRectMake(kScreen_Width/2-60, 64/2, 100, 25);
     //    [_sleepBtn setTitle:@" +1 饮食" forState:UIControlStateNormal];
     _dietBtn.tag = 1;
     _dietBtn.hidden = YES;
@@ -303,7 +295,7 @@
      
                    range:range1];
     _sportBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _sportBtn.frame = CGRectMake(kScreen_Width/2+20, 176/2, 100, 25);
+//    _sportBtn.frame = CGRectMake(kScreen_Width/2+20, 176/2, 100, 25);
     _sportBtn.tag = 2;
     _sportBtn.hidden = YES;
 
@@ -319,7 +311,8 @@
     
     [CAAnimation showMoveAnimationInView:_sportBtn Position:CGPointMake(_sportBtn.layer.position.x, _sportBtn.layer.position.y+5) Repeat:0 Autoreverses:YES Duration:1.0];
 
-    
+    // 创建导航栏视图
+    [self createNav];
     
     [self initSubViews];
     
@@ -362,35 +355,27 @@
      [self.headView addSubview:stateImg];
     
      
-     UILabel *stateLab = [[UILabel alloc] initWithFrame:CGRectMake(stateImg.right+10, stateImg.center.y-15, 90, 30)];
+     UILabel *stateLab = [[UILabel alloc] initWithFrame:CGRectMake(stateImg.right+10, stateImg.center.y-15, 120, 30)];
      stateLab.font = [UIFont boldSystemFontOfSize:18];
      //    _lab1.backgroundColor = [UIColor cyanColor];
-     stateLab.text = @"生龙活虎";
+//     stateLab.text = @"生龙活虎活虎";
      stateLab.textColor = [UIColor colorWithHexString:@"#555555"];
      stateLab.textAlignment = NSTextAlignmentLeft;
      [self.headView addSubview:stateLab];
+    self.stateLab = stateLab;
      
-     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(stateLab.right, stateLab.top+8, 1, stateLab.height-16)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(stateLab.right+10*scaleWidth, stateLab.top+8, 1, stateLab.height-16)];
      view.backgroundColor = [UIColor colorWithHexString:@"#EEEFEF"];
      [self.headView addSubview:view];
-     
-    NSString *str1 = @"234";
-    NSString *str2 = @"4";
-     //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-     //    self.money = str1;
-     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"积分%@  升级还需%@积分",str1,str2]];
-    NSRange range1 = {2,[str1 length]};
-    NSRange range2 = {attStr.length-3,[str2 length]};
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#5BA439"] range:range1];
-    [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#C5021A"] range:range2];
     
-     UILabel *jifenLab = [[UILabel alloc] initWithFrame:CGRectMake(view.right+12, stateImg.center.y-15, kScreen_Width-view.right-12-30, 31)];
+    
+    UILabel *jifenLab = [[UILabel alloc] initWithFrame:CGRectMake(view.right+12*scaleWidth, stateImg.center.y-15, kScreen_Width-view.right-12-30, 31)];
      jifenLab.font = [UIFont boldSystemFontOfSize:14];
      jifenLab.textAlignment = NSTextAlignmentLeft;
      //    _lab1.backgroundColor = [UIColor cyanColor];
      jifenLab.textColor = [UIColor colorWithHexString:@"#555555"];
-     jifenLab.attributedText = attStr;
      [self.headView addSubview:jifenLab];
+    self.jifenLab = jifenLab;
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(kScreen_Width-50-10, stateImg.center.y-25, 50, 50);
@@ -409,7 +394,7 @@
     
     self.tableView.tableHeaderView = self.headView;
     
-    [self getClickScore];
+    [self getUserScoreInfo];
     
     // 下拉刷新
     self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -421,13 +406,149 @@
 
 - (void)headerRefresh
 {
-    [self getClickScore];
+    [self getUserScoreInfo];
+
+}
+
+// 用户积分信息
+- (void)getUserScoreInfo
+{
+//    [SVProgressHUD show];
+    
+    NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
+    
+    [AFNetworking_RequestData requestMethodPOSTUrl:UserScoreInfo dic:paramDic Succed:^(id responseObject) {
+        
+        
+        NSLog(@"%@",responseObject);
+        NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+        
+        if (200 == [code integerValue]) {
+            
+            NSDictionary *dic = responseObject[@"Model1"];
+            
+            if (dic) {
+                PersonModel *personModel = [PersonModel yy_modelWithJSON:dic];
+                self.personModel = personModel;
+                
+                if (personModel.Current_Lv.integerValue == 1) {
+                    
+                    self.treeImg.image = [UIImage imageNamed:@"tree_1"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-60, 64/2, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-95, 248/2, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+20, 176/2, 100, 25);
+                    
+                    
+                }
+                
+                if (personModel.Current_Lv.integerValue == 2) {
+                    
+                    self.treeImg.image = [UIImage imageNamed:@"tree_2"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-272/2*scaleWidth, 226/2*scaleWidth, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-88/2*scaleWidth, 94/2*scaleWidth, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+130/2*scaleWidth, 482/2*scaleWidth, 100, 25);
+                    
+                    
+                }
+                if (personModel.Current_Lv.integerValue == 3) {
+                    
+                    self.treeImg.image = [UIImage imageNamed:@"tree_3"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-272/2*scaleWidth, 226/2*scaleWidth, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-88/2*scaleWidth, 94/2*scaleWidth, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+130/2*scaleWidth, 482/2*scaleWidth, 100, 25);
+                    
+                    
+                    
+                }
+                if (personModel.Current_Lv.integerValue == 4) {
+                    
+                    self.treeImg.image = [UIImage imageNamed:@"tree_4"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-320/2*scaleWidth, 60/2*scaleWidth, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-240/2*scaleWidth, 444/2*scaleWidth, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+156/2*scaleWidth, 514/2*scaleWidth, 100, 25);
+                    
+                    
+                    
+                }
+                if (personModel.Current_Lv.integerValue == 5) {
+                    
+                    self.treeImg.image = [UIImage imageNamed:@"tree_5"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-316/2*scaleWidth, 430/2*scaleWidth, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-230/2*scaleWidth, 526/2*scaleWidth, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+156/2*scaleWidth, 514/2*scaleWidth, 100, 25);
+                    
+                }
+                if (personModel.Current_Lv.integerValue == 6) {
+                    self.treeImg.image = [UIImage imageNamed:@"tree_6"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-316/2*scaleWidth, 430/2*scaleWidth, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-230/2*scaleWidth, 526/2*scaleWidth, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+156/2*scaleWidth, 514/2*scaleWidth, 100, 25);
+                    
+                }
+                if (personModel.Current_Lv.integerValue == 7) {
+                    
+                    self.treeImg.image = [UIImage imageNamed:@"tree_7"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-316/2*scaleWidth, 430/2*scaleWidth, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-230/2*scaleWidth, 526/2*scaleWidth, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+156/2*scaleWidth, 514/2*scaleWidth, 100, 25);
+                    
+                }
+                if (personModel.Current_Lv.integerValue == 8) {
+                    
+                    self.treeImg.image = [UIImage imageNamed:@"tree_8"];
+                    
+                    _dietBtn.frame = CGRectMake(kScreen_Width/2-316/2*scaleWidth, 430/2*scaleWidth, 100, 25);
+                    
+                    _sleepBtn.frame = CGRectMake(kScreen_Width/2-230/2*scaleWidth, 526/2*scaleWidth, 100, 25);
+                    _sportBtn.frame = CGRectMake(kScreen_Width/2+156/2*scaleWidth, 514/2*scaleWidth, 100, 25);
+                    
+                }
+                
+                self.stateLab.text = personModel.Current_Name;
+                
+                NSString *str1 = personModel.Current_Score;
+                NSString *str2 = personModel.Next_Score;
+                NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"积分%@  升级还需%@积分",str1,str2]];
+                NSRange range1 = {2,[str1 length]};
+                NSRange range2 = {attStr.length-[str2 length]-2,[str2 length]};
+                [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#5BA439"] range:range1];
+                [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#C5021A"] range:range2];
+                self.jifenLab.attributedText = attStr;
+
+            }
+
+            [self getClickScore];
+
+        }
+        
+        
+    } failure:^(NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+
+    }];
 }
 
 // 获得未获取分数列表
 - (void)getClickScore
 {
-    [SVProgressHUD show];
+//    [SVProgressHUD show];
     
     NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
     [AFNetworking_RequestData requestMethodPOSTUrl:GetClickScore dic:paramDic Succed:^(id responseObject) {
@@ -524,7 +645,9 @@
             [CAAnimation showOpacityAnimationInView:btn Alpha:0 Repeat:1 Autoreverses:NO Duration:1.0];
             [CAAnimation showMoveAnimationInView:btn Position:CGPointMake(self.treeImg.width/2, self.treeImg.height/2) Repeat:1 Autoreverses:NO Duration:1.0];
             
-            [self getScoreList];
+//            [self getScoreList];
+            [self getUserScoreInfo];
+
         }
         
         
@@ -589,7 +712,7 @@
     self.navView=[[NavgationBarView alloc]initWithFrame:CGRectMake(0, 0, kScreen_Width, 64)];
 //    self.navView.title=self.;
 //    self.navView.backTitleImage=@"error_head";
-    self.navView.rightImageView=@"setting";
+    self.navView.rightImageView=@"setting1";
     self.navView.delegate=self;
     [self.view addSubview:self.navView];
 }
@@ -599,7 +722,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
     PersonModel *person = [InfoCache unarchiveObjectWithFile:Person];
-    [self.headImg sd_setImageWithURL:[NSURL URLWithString:person.HeadImage] placeholderImage:[UIImage imageNamed:@"error_head"]];
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:person.HeadImage] placeholderImage:[UIImage imageNamed:@""]];
     self.userNameLab.text = person.name;
     self.imgView.image = [UIImage imageNamed:person.constitution];
     self.navView.title = person.name;
@@ -724,7 +847,7 @@
     if (cell == nil) {
         
         cell = [[IntegrationCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
     cell.model = self.dataArray[indexPath.row];
@@ -737,11 +860,13 @@
 //    NSLog(@"%ld",contentOffsety);
     
     if (contentOffsety<=170) {
-        self.navView.alpha=scrollView.contentOffset.y/170;
+        self.navView.headBgView.alpha = scrollView.contentOffset.y/170;
+        self.navView.rightImageView=@"setting1";
 
         
     }else{
-        self.navView.alpha=1;
+        self.navView.headBgView.alpha=1;
+        self.navView.rightImageView=@"setting";
 
         
     }}

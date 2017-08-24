@@ -26,7 +26,7 @@
         [self.contentView addSubview:_lab2];
         
         _imgView = [[UIImageView alloc] initWithFrame:CGRectMake(_lab2.right+10, (142/2-72/2)/2, 72/2, 72/2)];
-        _imgView.image = [UIImage imageNamed:@"integral_5"];
+//        _imgView.image = [UIImage imageNamed:@"integral_5"];
         _imgView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_imgView];
         
@@ -55,19 +55,41 @@
     _lab1.text = [NSString dateToWeek:model.fullPayTime];
     _lab2.text = [model.fullPayTime substringFromIndex:5];
     
-    NSString *str1 = @"+1";
-    //    str1 = [NSString stringWithFormat:@"%.2f",str1.floatValue];
-    //    self.money = str1;
+    NSString *str1 = nil;
+    if (model.ScoreNum.integerValue < 0) {
+        str1 = model.ScoreNum;
+    }
+    else {
+        
+        str1 = [NSString stringWithFormat:@"+%@",model.ScoreNum];
+        
+    }
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ 积分",str1]];
     NSRange range1 = {0,[str1 length]};
     [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#C5021A"] range:range1];
     _lab3.attributedText = attStr;
 
-    _lab4.text = @"运动3000步";
+    _lab4.text = model.Content;
     
     
-//    _lab3.text = model.payableAmount;
-//    _lab4.text = [NSString stringWithFormat:@"交易流水号 : %@",model.payId];
+    if ([model.ScoreType isEqualToString:@"sport"]) {
+        _imgView.image = [UIImage imageNamed:@"integral_5"];
+
+    }
+    if ([model.ScoreType isEqualToString:@"sleep"]) {
+        _imgView.image = [UIImage imageNamed:@"integral_1"];
+
+    }
+    if ([model.ScoreType isEqualToString:@"eat"]) {
+        _imgView.image = [UIImage imageNamed:@"integral_2"];
+
+    }
+    
+    if ([model.ScoreType isEqualToString:@"System"]) {
+        _imgView.image = [UIImage imageNamed:@"integral_4"];
+        
+    }
+    
 }
 
 @end

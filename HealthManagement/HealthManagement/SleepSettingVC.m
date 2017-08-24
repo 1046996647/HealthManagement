@@ -42,13 +42,13 @@
     weekLab1.textColor = [UIColor blackColor];
     [baseView addSubview:weekLab1];
     
-    NSArray *weekArr = @[@"一",@"二",@"三",@"四",@"五",@"六",@"七"];
+    NSArray *weekArr = @[@"一",@"二",@"三",@"四",@"五",@"六",@"日"];
     for (int i=0; i<weekArr.count; i++) {
         UIButton *btn = [[UIButton alloc] init];
-        btn.frame = CGRectMake(60+i*(25+20), (weekLab1.height-25)/2, 25, 25);
+        btn.frame = CGRectMake(60*scaleWidth+i*(25+20)*scaleWidth, (weekLab1.height-25*scaleWidth)/2, 25*scaleWidth, 25*scaleWidth);
         btn.layer.cornerRadius = btn.width/2;
         btn.layer.masksToBounds = YES;
-        btn.titleLabel.font = [UIFont systemFontOfSize:16];
+        btn.titleLabel.font = [UIFont systemFontOfSize:16*scaleWidth];
         btn.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
         [btn setTitle:weekArr[i] forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -59,7 +59,13 @@
         if (_model.weekDay.count) {
             for (NSString *weekDay in _model.weekDay) {
                 
+                
                 NSString *chNum = [NSString translationArabicNum:weekDay.integerValue];
+                
+                if ([chNum isEqualToString:@"七"]) {
+                    chNum = @"日";
+                }
+                
                 if ([chNum isEqualToString:weekArr[i]]) {
                     btn.backgroundColor = [UIColor colorWithHexString:@"#59A43A"];
                     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -168,6 +174,7 @@
      
      */
     
+    /*
     // 灰色条
     UIView *view7 = [[UIView alloc] initWithFrame:CGRectMake(0, self.remindLab.bottom, kScreen_Width, view5.height)];
     view7.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
@@ -198,9 +205,9 @@
         self.slider.value = self.model.volume;
         
     }
+    */
     
-    
-    baseView.height = volumeLab.bottom;
+    baseView.height = self.remindLab.bottom;
     
     // 右上角按钮
     UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];

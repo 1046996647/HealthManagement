@@ -46,7 +46,7 @@
     
     //图片转成Base64Str
     //    NSData *data = UIImagePNGRepresentation(image);
-    NSData *data = UIImageJPEGRepresentation(normalizedImage, .5);
+    NSData *data = UIImageJPEGRepresentation(normalizedImage, .3);
     
     return data;
     

@@ -36,7 +36,7 @@ open class TenClock : UIControl{
     @IBInspectable var insetAmount: CGFloat = 40
     var internalShift: CGFloat = 5;
     var pathWidth:CGFloat = 33
-    var fiveMinIncrements:Int = 0
+//    var fiveMinIncrements:Int = 0
 
     var timeStepSize: CGFloat = 5
     let gradientLayer = CAGradientLayer()
@@ -388,8 +388,7 @@ open class TenClock : UIControl{
 //        titleTextLayer.font = cgFont
         //var computedTailAngle = tailAngle //+ (headAngle > tailAngle ? twoPi : 0)
         //computedTailAngle +=  (headAngle > computedTailAngle ? twoPi : 0)
-//        var fiveMinIncrements = Int( ((tailAngle - headAngle) / twoPi) * 12 /*hrs*/ * 12 /*5min increments*/)
-        fiveMinIncrements = Int( ((tailAngle - headAngle) / twoPi) * 12 /*hrs*/ * 12 /*5min increments*/)
+        var fiveMinIncrements = Int( ((tailAngle - headAngle) / twoPi) * 12 /*hrs*/ * 12 /*5min increments*/)
         if fiveMinIncrements < 0 {
             print("tenClock:Err: is negative")
             fiveMinIncrements += (24 * (60/5))
@@ -589,7 +588,7 @@ open class TenClock : UIControl{
         
     	delegate?.timesUpdated?(self, startDate: self.startDate, endDate: endDate)
         
-        delegate?.timesTotal!(self, time: fiveMinIncrements);
+//        delegate?.timesTotal!(self, time: fiveMinIncrements);
         
 
     }

@@ -10,4 +10,7 @@
 
 @interface DietRecordView : UIView
 
+@property(nonatomic,strong) NSNumber *latitude;// 纬度
+@property(nonatomic,strong) NSNumber *longitude;// 经度
+
 @end

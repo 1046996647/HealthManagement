@@ -340,14 +340,23 @@
         [SVProgressHUD dismiss];
         
         NSLog(@"%@",responseObject);
-        
+        [SVProgressHUD showSuccessWithStatus:@"头像上传成功!"];
         self.person.HeadImage = responseObject[@"Model1"];
+
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+
+            [SVProgressHUD dismiss];
+
+        });
         [self saveAction];
-        
-        
+
+
     } failure:^(NSError *error) {
         
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+
         
     }];
 }
@@ -387,7 +396,7 @@
     
     [AFNetworking_RequestData requestMethodPOSTUrl:SetUserBodyInfo dic:paramDic Succed:^(id responseObject) {
         
-        [SVProgressHUD dismiss];
+//        [SVProgressHUD dismiss];
 
         NSLog(@"%@",responseObject);
         
@@ -418,7 +427,7 @@
     
     [AFNetworking_RequestData requestMethodPOSTUrl:GetUserBodyInfo dic:paramDic Succed:^(id responseObject) {
         
-        [SVProgressHUD dismiss];
+//        [SVProgressHUD dismiss];
         
         NSLog(@"%@",responseObject);
         

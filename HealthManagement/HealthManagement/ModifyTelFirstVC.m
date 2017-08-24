@@ -134,13 +134,16 @@
         NSNumber *code = [responseObject objectForKey:@"HttpCode"];
         
         if (200 == [code integerValue]) {
-//            NSString *msg = [responseObject objectForKey:@"Message"];
-            
-//            [self.view makeToast:msg];
+
             ModifyTelSecondVC *vc = [[ModifyTelSecondVC alloc] init];
             vc.title = @"修改手机号码";
             [self.navigationController pushViewController:vc animated:YES];
             
+        }
+        else {
+                NSString *msg = [responseObject objectForKey:@"Message"];
+
+                [self.view makeToast:msg];
         }
         
     } failure:^(NSError *error) {

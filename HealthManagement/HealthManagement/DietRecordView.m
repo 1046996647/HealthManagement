@@ -60,6 +60,8 @@
 {
     DietRecordVC *vc = [[DietRecordVC alloc] init];
     vc.title = @"饮食记录";
+    vc.latitude = self.latitude;
+    vc.longitude = self.longitude;
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 

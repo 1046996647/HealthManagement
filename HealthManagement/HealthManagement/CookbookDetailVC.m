@@ -27,6 +27,9 @@
 
 // 内容视图
 @property (nonatomic,strong) UILabel *lab4;
+@property (nonatomic,strong) UIScrollView *bodyScrollView;
+
+
 @property (nonatomic,strong) UILabel *lab1;
 @property(nonatomic,strong) UILabel *lab2;
 @property(nonatomic,strong) UILabel *lab3;
@@ -128,7 +131,7 @@
     [SVProgressHUD show];
     
     // 移除体质图片
-    for (UIView *view in self.scrollView.subviews) {
+    for (UIView *view in self.bodyScrollView.subviews) {
         if (view.tag == 100) {
             [view removeFromSuperview];
         }
@@ -160,14 +163,15 @@
             
             _lab4.text = self.model.name;
 
+            self.bodyScrollView.contentSize = CGSizeMake(self.model.Constitution.count*(30+5), 0);
             // 体质
             for (int i=0; i<self.model.Constitution.count; i++) {
                 
-                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-12-30-i*(30+5), _lab4.center.y-6, 30, 12)];
+                UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(self.bodyScrollView.width-30-i*(30+5), 4, 30, 12)];
                 //        imgView.backgroundColor = [UIColor redColor];
                 imgView.tag = 100;
                 imgView.image = [UIImage imageNamed:self.model.Constitution[self.model.Constitution.count-1-i]];
-                [self.scrollView  addSubview:imgView];
+                [self.bodyScrollView  addSubview:imgView];
                 
             }
             [_tagsView setTagAry:self.model.Tags delegate:nil];
@@ -327,7 +331,7 @@
     view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEE"];
     [self.scrollView addSubview:view];
     
-    _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(12, view.bottom+10, 100, 20)];
+    _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(12, view.bottom+10, 150, 20)];
     _lab4.font = [UIFont systemFontOfSize:14];
 //    _lab1.text = @"鸡蛋蔬菜沙拉";
     _lab4.textColor = [UIColor blackColor];
@@ -335,6 +339,15 @@
     //        _lab1.backgroundColor = [UIColor redColor];
     [self.scrollView addSubview:_lab4];
     
+    // 滑动视图
+    UIScrollView *bodyScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(_lab4.right+5, _lab4.top, kScreen_Width-(_lab4.right+5)-12, _lab4.height)];
+    //    scrollView.pagingEnabled = YES;
+    //    scrollView.delegate = self;
+    bodyScrollView.backgroundColor = [UIColor whiteColor];
+    bodyScrollView.showsHorizontalScrollIndicator = NO;
+    //    scrollView.contentSize = CGSizeMake(kScreen_Width*3, kWidth+10+20);
+    [self.scrollView addSubview:bodyScrollView];
+    self.bodyScrollView = bodyScrollView;
     
     UIImageView *lineImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _lab4.bottom+10, kScreen_Width, 1)];
     //        imgView.backgroundColor = [UIColor redColor];

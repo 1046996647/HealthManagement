@@ -10,10 +10,10 @@
 #define RequestUrl_h
 
 // 线上
-//#define BaseUrl  @"http://106.14.218.31:8020/API/"
+#define BaseUrl  @"http://106.14.218.31:8020/API/"
 
 // 线下
-#define BaseUrl  @"http://192.168.10.100:8051/API/"
+//#define BaseUrl  @"http://192.168.10.100:8051/API/"
 
 // 1.5	首页信息
 #define TitlePage  [NSString stringWithFormat:@"%@Restaurant/TitlePage",BaseUrl]
@@ -39,8 +39,24 @@
 // 菜谱详情页
 #define RecipeItemInfo  [NSString stringWithFormat:@"%@Recipe/RecipeItemInfo",BaseUrl]
 
+// 获得订单信息列表
+#define OrderList  [NSString stringWithFormat:@"%@Orders/OrderList",BaseUrl]
+
+// 获得订单信息详情
+#define OrderInfo  [NSString stringWithFormat:@"%@Orders/OrderInfo",BaseUrl]
+
+
+
 // 支付详情页
 #define RecipeItemInfoForPay  [NSString stringWithFormat:@"%@Recipe/RecipeItemInfoForPay",BaseUrl]
+
+// 到店支付
+#define PayAtShopOrder  [NSString stringWithFormat:@"%@Orders/PayAtShopOrder",BaseUrl]
+
+// 删除订单
+#define DeleteOrder  [NSString stringWithFormat:@"%@Orders/DeleteOrder",BaseUrl]
+
+
 
 // 用户喜不喜欢
 #define CustomerLikeOrNot  [NSString stringWithFormat:@"%@Restaurant/CustomerLikeOrNot",BaseUrl]
@@ -111,6 +127,10 @@
 #define UploadUserHeadImage  [NSString stringWithFormat:@"%@User/UploadUserHeadImage",BaseUrl]
 
 #define UploadImage  [NSString stringWithFormat:@"%@User/UploadImage",BaseUrl]
+
+// 5.5	用户积分信息
+#define UserScoreInfo  [NSString stringWithFormat:@"%@User/UserScoreInfo",BaseUrl]
+
 
 // 5.5	增加积分
 #define AddScoreRecord  [NSString stringWithFormat:@"%@Score/AddScoreRecord",BaseUrl]

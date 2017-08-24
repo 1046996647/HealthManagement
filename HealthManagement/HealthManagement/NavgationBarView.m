@@ -19,14 +19,16 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     if (self=[super initWithFrame:frame]) {
         
-//        self.headBgView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-//        self.headBgView.backgroundColor=[UIColor whiteColor];
+        self.headBgView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        self.headBgView.backgroundColor=[UIColor whiteColor];
 //        self.headBgView.image = [UIImage imageNamed:@"nav－-bar"];
-//        //隐藏黑线
-//        self.headBgView.alpha=0;
+        //隐藏黑线
+        self.headBgView.alpha=0;
+        [self addSubview:self.headBgView];
+
         
-        self.backgroundColor=[UIColor whiteColor];
-        self.alpha=0;
+//        self.backgroundColor=[UIColor whiteColor];
+//        self.alpha=0;
 
         
         self.back=[[UIImageView alloc] init];
@@ -35,12 +37,12 @@
         self.back.layer.cornerRadius = self.back.height/2.0;
         self.back.layer.masksToBounds = YES;
 //        [self.back addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.back];
+        [self.headBgView addSubview:self.back];
         
         self.label=[[UILabel alloc]initWithFrame:CGRectMake(44, 20, frame.size.width-44-44, 44)];
         self.label.textAlignment=NSTextAlignmentCenter;
         self.label.font = [UIFont boldSystemFontOfSize:17];
-        [self addSubview:self.label];
+        [self.headBgView addSubview:self.label];
         
         self.rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.rightBtn.frame = CGRectMake(kScreen_Width-18-12, 70/2.0, 18, 18);
@@ -49,7 +51,7 @@
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 64-.5, kScreen_Width, .5)];
         view.backgroundColor = [UIColor colorWithHexString:@"#EEEFEF"];
-        [self addSubview:view];
+        [self.headBgView addSubview:view];
         
     }
     
@@ -67,7 +69,7 @@
 {
     _backTitleImage=backTitleImage;
 //    [self.back setImage:[UIImage imageNamed:_backTitleImage] forState:UIControlStateNormal];
-    [self.back sd_setImageWithURL:[NSURL URLWithString:backTitleImage] placeholderImage:[UIImage imageNamed:@"error_head"]];
+    [self.back sd_setImageWithURL:[NSURL URLWithString:backTitleImage] placeholderImage:[UIImage imageNamed:@""]];
 //    [self.back sd_setImageWithURL:[NSURL URLWithString:backTitleImage] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"head"]];
     
 }

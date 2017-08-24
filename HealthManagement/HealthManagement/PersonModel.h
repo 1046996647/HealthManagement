@@ -24,5 +24,12 @@
 @property(nonatomic,copy) NSString *score;
 @property(nonatomic,copy) NSString *Token;
 
+// 积分信息
+@property(nonatomic,copy) NSString *Current_Lv;
+@property(nonatomic,copy) NSString *Current_Name;
+@property(nonatomic,copy) NSString *Current_Score;
+@property(nonatomic,copy) NSString *Next_Score;
+
+
 
 @end

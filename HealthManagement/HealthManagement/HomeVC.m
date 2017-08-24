@@ -14,6 +14,8 @@
 #import "ResDetailModel.h"
 
 #import "HeaderView.h"
+#import "DietRecordDetailVC.h"
+
 
 @interface HomeVC ()<BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,UITableViewDelegate,UITableViewDataSource>
 
@@ -72,10 +74,14 @@
     self.pageNO = 1;
     
     // 下拉刷新
-    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
         [self headerRefresh];
     }];
+    
+    // 下订单成功通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRefresh) name:@"kAddOrderNotification" object:nil];
+
     
 }
 
@@ -85,6 +91,8 @@
     [self getTitlePage];
     self.isRefresh = YES;
 }
+
+
 
 // 请求首页列表
 - (void)getTitlePage
@@ -106,6 +114,7 @@
     [AFNetworking_RequestData requestMethodPOSTUrl:TitlePage dic:paramDic Succed:^(id responseObject) {
         [SVProgressHUD dismiss];
         [self.tableView.mj_header endRefreshing];
+
 
         NSLog(@"%@",responseObject);
         
@@ -156,6 +165,33 @@
 
         }
         
+        NSArray *arr4 = responseObject[@"ListData4"];
+        if ([arr4 isKindOfClass:[NSArray class]] && arr4.count > 0) {
+            
+            NSMutableArray *arrM4 = [NSMutableArray array];
+            for (NSDictionary *dic in arr4) {
+                
+                RecipeModel *model = [RecipeModel yy_modelWithJSON:dic];
+                [arrM4 addObject:model];
+                
+                NSMutableString *strM  = [NSMutableString string];
+                for (NSDictionary *dic in model.foodRecipe) {
+                    RecipeItemModel *model = [RecipeItemModel yy_modelWithJSON:dic];
+                    [strM appendString:model.ListFood];
+                }
+                model.recordItem = strM;
+            }
+            
+            self.dataArr = arrM4;
+            [self.tableView reloadData];
+            
+            // 饮食记录
+            self.headView.dietRecordView.latitude = self.latitude;
+            self.headView.dietRecordView.longitude = self.longitude;
+            
+        }
+
+        
     } failure:^(NSError *error) {
         [self.tableView.mj_header endRefreshing];
         
@@ -194,6 +230,9 @@
     
     //带动画结果在切换tabBar的时候viewController会有闪动的效果不建议这样写
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    // 今天是否运动过通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kIsSportedNotification" object:nil];
 
 }
 
@@ -314,9 +353,30 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    return self.dataArray.count;
-    return 3;
+    if (self.dataArr.count > 3) {
+        return 3;
+
+    }
+    else {
+        return self.dataArr.count;
+
+    }
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    RecipeModel *model = self.dataArr[indexPath.row];
+    
+    DietRecordDetailVC *vc = [[DietRecordDetailVC alloc] init];
+    vc.title = @"订单详情";
+    vc.OrderId = model.OrderId;
+    vc.latitude = self.latitude;
+    vc.longitude = self.longitude;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -325,10 +385,17 @@
     if (cell == nil) {
         
         cell = [[DietRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-//    cell.textLabel.text = self.dataArray[indexPath.row];
-//    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    
+    //删除scrollView的所有子视图
+    while ([cell.scrollView.subviews lastObject] != nil)
+    {
+        [(UIView*)[cell.scrollView.subviews lastObject] removeFromSuperview];
+    }
+    
+    cell.model = self.dataArr[indexPath.row];
+    
     return cell;
 }
 

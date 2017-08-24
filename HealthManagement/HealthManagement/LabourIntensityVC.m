@@ -36,7 +36,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.leftDataList = @[@"1级",@"2级",@"3级",@"4级"];
+    self.leftDataList = @[@"Ⅰ级",@"Ⅱ级",@"Ⅲ级",@"Ⅳ级"];
     [self.view addSubview:self.tableView];
 }
 

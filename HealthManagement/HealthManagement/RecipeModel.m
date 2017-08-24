@@ -16,6 +16,12 @@
     return @{@"ID" : @"id"};
 }
 
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+    NSString *timeStr = dic[@"OrderTime"];
+    _OrderTime = [timeStr stringByReplacingOccurrencesOfString:@"T" withString:@" "];
+    return YES;
+}
+
 
 @end
 

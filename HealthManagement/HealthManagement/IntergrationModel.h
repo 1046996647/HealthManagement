@@ -19,5 +19,7 @@
 @property(nonatomic,copy) NSString *Content;
 @property(nonatomic,copy) NSString *ScoreId;
 @property(nonatomic,copy) NSString *Time;
+@property(nonatomic,copy) NSString *ScoreNum;
+//@property(nonatomic,copy) NSString *ScoreType;
 
 @end

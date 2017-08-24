@@ -52,6 +52,7 @@
 // 每30分钟的数据
 @property(nonatomic,assign) NSInteger intervalSteps;
 @property(nonatomic,assign) float intervalDistance;
+@property(nonatomic,assign) BOOL isFirst;
 
 // 连续运动时间
 @property(nonatomic,copy) NSString *date;
@@ -91,14 +92,14 @@
 //    self.view.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     
     
-    // 测试
-    UILabel *lab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:lab1];
-    self.lab1 = lab1;
-    
-    UILabel *lab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:lab2];
-    self.lab2 = lab2;
+//    // 测试
+//    UILabel *lab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:lab1];
+//    self.lab1 = lab1;
+//    
+//    UILabel *lab2 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 20)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:lab2];
+//    self.lab2 = lab2;
 
     
     // 滑动视图
@@ -313,6 +314,13 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self checkIsNotToday];
+}
+
 // 统计图
 - (void)initRecordView
 {
@@ -413,7 +421,7 @@
 //通用设置
 - (NSDictionary<NSString*, NSString*> *)lineChartViewAxisAttributes {
     return @{yElementInterval : @"20",
-             xElementInterval : @"40",
+             xElementInterval : @"50",
              yMargin : @"50",
              xMargin : @"25",
              yAxisColor : [UIColor colorWithRed:200.0/255 green:200.0/255 blue:200.0/255 alpha:1],
@@ -479,6 +487,10 @@
         if (!isSave.boolValue) {
             [InfoCache saveValue:@(YES) forKey:@"isSave"];
             [InfoCache saveValue:[NSDate date] forKey:@"today"];
+            
+            // 今天是否运动过通知
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"kIsSportedNotification" object:nil];
+
         }
         
     }
@@ -510,8 +522,6 @@
         
         // 开始计时
         [_oneLabel start];
-        
-
 
     }
 
@@ -629,29 +639,37 @@
                         // 距离
                         float distance2 = distance1-self.intervalDistance;
                         
-                        // 测试
-                        self.lab1.text = [NSString stringWithFormat:@"%ld",step2];
-                        self.lab2.text = [NSString stringWithFormat:@"%.1f",distance2];
+//                        // 测试
+//                        self.lab1.text = [NSString stringWithFormat:@"%ld",step2];
+//                        self.lab2.text = [NSString stringWithFormat:@"%.1f",distance2];
                         
                         PersonModel *person = [InfoCache unarchiveObjectWithFile:Person];
 
-//                        if (person.sex.integerValue == 0) {// 女
-//
-//                            if (step2 > 20 && distance2 > 50.0) {
-//                                [self addScoreRecord];
-//                            }
-//                            
-//                        }
-//                        else {
-//                            if (step2 > 20 && distance2 > 50.0) {
-//                                [self addScoreRecord];
-//                            }
-//                        }
-                        
-                        self.intervalSteps = pedometerData.numberOfSteps.integerValue;
+                        if (person.sex.integerValue == 0) {// 女
 
-                        self.intervalDistance = pedometerData.distance.floatValue;
+                            if (step2 > 3000 && distance2 > 2700) {
+                                [self addScoreRecord];
+                            }
+                            
+                        }
+                        else {
+                            if (step2 > 3000 && distance2 > 3300) {
+                                [self addScoreRecord];
+                            }
+                        }
                         
+                        if (!self.isFirst) {// 为了解决一分钟之内的连续调用问题
+                            self.intervalSteps = pedometerData.numberOfSteps.integerValue;
+                            
+                            self.intervalDistance = pedometerData.distance.floatValue;
+                        }
+                        
+                        self.isFirst = YES;
+                        
+                    }
+                    else {
+                        self.isFirst = NO;
+
                     }
                     
 //                    self.intervalSteps = [NSString stringWithFormat:@"%@",pedometerData.numberOfSteps];
@@ -757,16 +775,21 @@
     
     [InfoCache saveValue:date forKey:SportTime];
     
-    // 检查是否不是今天(一直在后台运行处理)
+    [self checkIsNotToday];
+}
+
+- (void)checkIsNotToday
+{
+    // 检查是否不是今天
     NSDate *today = [InfoCache getValueForKey:@"today"];
     if (today) {
         if (![[NSString getUTCFormateDate:today] isEqualToString:@"今天"]) {
-        
-//        if (date.integerValue == 1) {// 测试
-        
+            
+            //        if (date.integerValue == 1) {// 测试
+            
             // 清楚之前保存的日期
             [InfoCache saveValue:@(NO) forKey:@"isSave"];
-
+            
             // 运动暂停
             [_oneLabel pause];
             
@@ -779,7 +802,7 @@
             
             // 运动状态
             [InfoCache saveValue:@"0" forKey:SportState];
-
+            
             
             _sportLab.text = @"尚未运动";
             _startLab.text = @"点击开始";
@@ -799,10 +822,9 @@
             attr = [NSString text:self.distance fullText:[NSString stringWithFormat:@"%@ km",self.distance] location:0 color:[UIColor colorWithHexString:@"#E966BD"] font:[UIFont boldSystemFontOfSize:25]];
             _disLab1.attributedText = attr;
         }
-
+        
     }
+
 }
-
-
 
 @end

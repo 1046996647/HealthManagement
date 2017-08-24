@@ -166,9 +166,9 @@
     }
     
     //删除alphaView的所有子视图
-    while ([cell.alphaView.subviews lastObject] != nil)
+    while ([cell.scrollView.subviews lastObject] != nil)
     {
-        [(UIView*)[cell.alphaView.subviews lastObject] removeFromSuperview];
+        [(UIView*)[cell.scrollView.subviews lastObject] removeFromSuperview];
     }
     
     //删除view1的所有子视图

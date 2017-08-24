@@ -84,6 +84,7 @@
         headerView.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
         self.tableView.tableHeaderView = headerView;
         [self addSubview:self.tableView];
+        
         self.modelArr = [NSMutableArray array];
         
         
@@ -168,7 +169,7 @@
                 }
                 [self.tableView.mj_footer endRefreshing];
                 
-                [self.modelArr addObjectsFromArray:arrM]; ;
+                [self.modelArr addObjectsFromArray:arrM];
                 [self.tableView reloadData];
                 
                 self.pageNO++;
@@ -183,13 +184,15 @@
         } failure:^(NSError *error) {
             
             [SVProgressHUD dismiss];
-            
+            [self.tableView.mj_footer endRefreshing];
+
             NSLog(@"%@",error);
             
         }];
     }
     else {
         [SVProgressHUD dismiss];
+        [self.tableView.mj_footer endRefreshing];
 
     }
     

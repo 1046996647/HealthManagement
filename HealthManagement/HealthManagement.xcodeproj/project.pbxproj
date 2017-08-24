@@ -100,7 +100,6 @@
 		F758463F1F25CF3A00AA2EA5 /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F758462C1F25CF3A00AA2EA5 /* UIView+MJExtension.m */; };
 		F75963231F3D3D2B00C2DC34 /* ModifyTelFirstVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75963221F3D3D2B00C2DC34 /* ModifyTelFirstVC.m */; };
 		F75963261F3D3D6100C2DC34 /* ModifyTelSecondVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75963251F3D3D6100C2DC34 /* ModifyTelSecondVC.m */; };
-		F75963291F3D4A4A00C2DC34 /* CallTelephoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75963281F3D4A4A00C2DC34 /* CallTelephoneVC.m */; };
 		F75A372A1F32DEAD00B23C64 /* PopViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F75A37291F32DEAD00B23C64 /* PopViewVC.m */; };
 		F75A372D1F32DF4600B23C64 /* TurnToCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F75A372C1F32DF4600B23C64 /* TurnToCell.m */; };
 		F75A37341F33238B00B23C64 /* UITableView+EmptyData.m in Sources */ = {isa = PBXBuildFile; fileRef = F75A37331F33238B00B23C64 /* UITableView+EmptyData.m */; };
@@ -350,8 +349,6 @@
 		F75963221F3D3D2B00C2DC34 /* ModifyTelFirstVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyTelFirstVC.m; sourceTree = "<group>"; };
 		F75963241F3D3D6100C2DC34 /* ModifyTelSecondVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyTelSecondVC.h; sourceTree = "<group>"; };
 		F75963251F3D3D6100C2DC34 /* ModifyTelSecondVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyTelSecondVC.m; sourceTree = "<group>"; };
-		F75963271F3D4A4A00C2DC34 /* CallTelephoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallTelephoneVC.h; sourceTree = "<group>"; };
-		F75963281F3D4A4A00C2DC34 /* CallTelephoneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallTelephoneVC.m; sourceTree = "<group>"; };
 		F75A37281F32DEAD00B23C64 /* PopViewVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopViewVC.h; sourceTree = "<group>"; };
 		F75A37291F32DEAD00B23C64 /* PopViewVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopViewVC.m; sourceTree = "<group>"; };
 		F75A372B1F32DF4600B23C64 /* TurnToCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurnToCell.h; sourceTree = "<group>"; };
@@ -591,8 +588,6 @@
 				F74D3AE91F29CDF500DB3C70 /* CountDownServer.m */,
 				F75ABB061F2AD65400555D3C /* BodyModel.h */,
 				F75ABB071F2AD65400555D3C /* BodyModel.m */,
-				F75ABB091F2B133600555D3C /* PersonModel.h */,
-				F75ABB0A1F2B133600555D3C /* PersonModel.m */,
 			);
 			name = "注册登录";
 			sourceTree = "<group>";
@@ -678,8 +673,6 @@
 			children = (
 				F75A37281F32DEAD00B23C64 /* PopViewVC.h */,
 				F75A37291F32DEAD00B23C64 /* PopViewVC.m */,
-				F75963271F3D4A4A00C2DC34 /* CallTelephoneVC.h */,
-				F75963281F3D4A4A00C2DC34 /* CallTelephoneVC.m */,
 				F75A372B1F32DF4600B23C64 /* TurnToCell.h */,
 				F75A372C1F32DF4600B23C64 /* TurnToCell.m */,
 				F74D337E1F20987D0096BC0B /* DeleteViewController.h */,
@@ -767,6 +760,8 @@
 		F75192871F287C0A00269471 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F75ABB091F2B133600555D3C /* PersonModel.h */,
+				F75ABB0A1F2B133600555D3C /* PersonModel.m */,
 				F75192961F28930400269471 /* TimeModel.h */,
 				F75192971F28930400269471 /* TimeModel.m */,
 				F75BC1EF1F42E4810014B29A /* IntergrationModel.h */,
@@ -795,7 +790,6 @@
 		F75192891F287C1B00269471 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				F7583A601F21A39E00FD5164 /* RequestUrl.h */,
 				F737E2581F01FB30000B5738 /* PersonalCenterVC.h */,
 				F737E2591F01FB30000B5738 /* PersonalCenterVC.m */,
 				F71B31EB1F1F5D380018B70A /* SettingVC.h */,
@@ -1064,6 +1058,7 @@
 				F74D33731F205C770096BC0B /* SearchVC.m */,
 				F74D337B1F2082440096BC0B /* SearchResultVC.h */,
 				F74D337C1F2082440096BC0B /* SearchResultVC.m */,
+				F7583A601F21A39E00FD5164 /* RequestUrl.h */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1411,7 +1406,6 @@
 				F75846301F25CF3A00AA2EA5 /* MJRefreshFooter.m in Sources */,
 				F737E25A1F01FB30000B5738 /* PersonalCenterVC.m in Sources */,
 				F75EB78C1F175A0700DA36FF /* NSObject+YYModel.m in Sources */,
-				F75963291F3D4A4A00C2DC34 /* CallTelephoneVC.m in Sources */,
 				F743716A1F14BD3500332D21 /* NearbyRestaurantVC.m in Sources */,
 				F75846311F25CF3A00AA2EA5 /* MJRefreshHeader.m in Sources */,
 				F75ABB0B1F2B133600555D3C /* PersonModel.m in Sources */,
@@ -1661,7 +1655,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.HongHu.Health;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3cee7158-b560-45d4-88a7-0cb640a2cdb8";
+				PROVISIONING_PROFILE = "af511b27-e362-4c2a-a59d-af351bbcd717";
 				PROVISIONING_PROFILE_SPECIFIER = ad_hoc_8_11;
 				SWIFT_OBJC_BRIDGING_HEADER = "HealthManagement/HealthManagement-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

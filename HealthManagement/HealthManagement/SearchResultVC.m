@@ -132,12 +132,11 @@
 
             
             NSLog(@"%@",responseObject);
-            
+
             NSNumber *code = responseObject[@"HttpCode"];
             
             if (code.integerValue == 200) {
                 
-                self.isRequest = YES;
                 
                 NSArray *arr = responseObject[@"ListData"];
                 if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
@@ -184,10 +183,11 @@
                     
                 }
                 
-                [self.tableView reloadData];
 
             }
             
+            self.isRequest = YES;
+            [self.tableView reloadData];
 
             
         } failure:^(NSError *error) {
@@ -367,6 +367,9 @@
         else {
             
             CookbookDetailVC *vc = [[CookbookDetailVC alloc] init];
+            vc.mark = 1;
+            vc.latitude = self.latitude;
+            vc.longitude = self.longitude;
             vc.model = self.dietArr[indexPath.row];
             [self.navigationController pushViewController:vc animated:YES];
         }

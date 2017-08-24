@@ -18,6 +18,7 @@ typedef void(^ReloadBlock)(void);
 @property(nonatomic,strong) UIView *view1;
 @property(nonatomic,strong) UIImageView *imgView;
 @property(nonatomic,strong) UIView *alphaView;
+@property(nonatomic,strong) UIScrollView *scrollView;
 
 @property(nonatomic,strong) UIImageView *imgView1;
 @property(nonatomic,strong) UIImageView *imgView2;

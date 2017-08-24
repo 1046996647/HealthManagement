@@ -21,6 +21,12 @@
 
 - (CMPedometer *)sharedPedometer;
 
+// 添加闹钟
++ (void)postLocalNotification:(NSString *)clockID clockTime:(NSString *)clockTime weekArr:(NSArray *)array alertBody:(NSString *)alertBody clockMusic:(NSString *)clockMusic;
+
+// 删除闹钟
++ (void)shutdownClock:(NSString *)clockID;
+
 
 @end
 

@@ -18,6 +18,7 @@
 @property (nonatomic,strong) NSString *Type_Like;
 @property (nonatomic,strong) NSString *idStr;
 @property (nonatomic,strong) NSMutableArray *dataList;
+@property(nonatomic,assign) NSInteger pageNO;// 页数
 
 
 @end
@@ -87,18 +88,22 @@
     
     [self getSelectUserPreference];
     
+    self.dataList = [NSMutableArray array];
+    self.pageNO = 1;
+
+    
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if (self.lastBtn.tag == 2) {
-        
-        [self getUserPreferenceRest];
-        
-    }
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    
+//    if (self.lastBtn.tag == 2) {
+//        
+//        [self getUserPreferenceRest];
+//        
+//    }
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -109,22 +114,37 @@
 - (void)getUserPreferenceRest
 {
     
-    [SVProgressHUD show];
+    if (self.pageNO == 1) {
+        [SVProgressHUD show];
+        
+    }
     
     NSMutableDictionary *paramDic=[NSMutableDictionary dictionary];
     [paramDic  setObject:[InfoCache getValueForKey:@"longitude"] forKey:@"CoordX"];
     [paramDic  setObject:[InfoCache getValueForKey:@"latitude"] forKey:@"CoordY"];
+    [paramDic  setValue:@(self.pageNO) forKey:@"PageNo"];
+
     
     [AFNetworking_RequestData requestMethodPOSTUrl:UserPreferenceRest dic:paramDic Succed:^(id responseObject) {
         
         [SVProgressHUD dismiss];
+        [self.tableView.mj_footer endRefreshing];
+
         
         NSLog(@"%@",responseObject);
+        
+        if (self.pageNO == 1) {
+            [self.dataList removeAllObjects];
+            
+            [self.tableView setContentOffset:CGPointMake(0,0) animated:NO];
+            
+        }
         
         NSMutableArray *arrM = [NSMutableArray array];
 
         NSArray *arr = responseObject[@"ListData"];
         if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+            
             
             for (NSDictionary *dic in arr) {
 
@@ -133,15 +153,24 @@
                 NSArray *modelArr = [NSArray arrayWithObject:model];
                 [arrM addObject:modelArr];
             }
+            
+            self.pageNO++;
+
 
         }
-        self.dataList = arrM;
+        else {
+            // 拿到当前的上拉刷新控件，变为没有更多数据的状态
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        
+        [self.dataList addObjectsFromArray:arrM];
         
         [self.tableView reloadData];
         
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
-        
+        [self.tableView.mj_footer endRefreshing];
+
         NSLog(@"%@",error);
         
     }];
@@ -163,6 +192,13 @@
         [SVProgressHUD dismiss];
         
         NSLog(@"%@",responseObject);
+        
+        if (self.pageNO == 1) {
+            [self.dataList removeAllObjects];
+            
+            [self.tableView setContentOffset:CGPointMake(0,0) animated:NO];
+            
+        }
         
         NSArray *arr = responseObject[@"ListData"];
         if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
@@ -194,28 +230,50 @@
     
     self.lastBtn.selected = NO;
     btn.selected = YES;
-    self.lastBtn = btn;
     
-    if (btn.tag == 0) {
+    if (self.lastBtn.tag != btn.tag) {
+        
+        self.pageNO = 1;
 
-        self.Type_Like = @"foodlike";
-        [self getSelectUserPreference];
+        if (btn.tag == 0) {
+            
+            // 上拉刷新
+            self.tableView.mj_footer = nil;
+
+            
+            self.Type_Like = @"foodlike";
+            [self getSelectUserPreference];
+        }
+        if (btn.tag == 1) {
+            
+            // 上拉刷新
+            self.tableView.mj_footer = nil;
+            
+            self.Type_Like = @"foodunlike";
+            [self getSelectUserPreference];
+        }
+        if (btn.tag == 2) {
+            
+            // 上拉刷新
+            self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+                
+                // 请求餐厅列表
+                [self getUserPreferenceRest];
+                
+            }];
+            
+            self.Type_Like = @"restlike";
+            [self getUserPreferenceRest];
+        }
     }
-    if (btn.tag == 1) {
-        
-        self.Type_Like = @"foodunlike";
-        [self getSelectUserPreference];
-    }
-    if (btn.tag == 2) {
-        
-        self.Type_Like = @"restlike";
-        [self getUserPreferenceRest];
-    }
+
+    self.lastBtn = btn;
+
 
 }
 
 // 喜好请求
-- (void)getCustomerLikeOrNot
+- (void)getCustomerLikeOrNot:(NSIndexPath *)indexPath
 {
 //    [SVProgressHUD show];
     
@@ -233,18 +291,9 @@
         
         if (200 == [code integerValue]) {
             
-            if (self.lastBtn.tag == 2) {
-                
-                [self getUserPreferenceRest];
-
-            }
-            else {
-                [self getSelectUserPreference];
-
-                
-            }
             
         }
+
         
         
     } failure:^(NSError *error) {
@@ -311,8 +360,13 @@
         self.idStr = model.FoodId;
 
     }
-    [self getCustomerLikeOrNot];
-
+    [self getCustomerLikeOrNot:indexPath];
+    
+    if (self.dataList.count > 0) {
+        [self.dataList removeObjectAtIndex:indexPath.section];
+        [self.tableView reloadData];
+        
+    }
 
 }
 

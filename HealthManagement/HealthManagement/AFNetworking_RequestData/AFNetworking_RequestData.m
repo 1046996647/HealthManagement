@@ -71,6 +71,18 @@ static const NSUInteger kDefaultTimeoutInterval = 20;
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
+//            NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+//            
+//            if (200 != [code integerValue] && 300 != [code integerValue]) {
+//                
+//                NSString *message = [responseObject objectForKey:@"Message"];
+//                
+//                if (message) {
+//                    [[UIApplication sharedApplication].keyWindow.rootViewController.view makeToast:message];
+//
+//                }
+//            }
+            
             Succed(responseObject);
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

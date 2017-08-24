@@ -42,6 +42,7 @@
         [view addSubview:alphaView];
         self.alphaView = alphaView;
         
+        
         _lab4 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView.left, _imgView.bottom-20, 100, 20)];
         _lab4.font = [UIFont systemFontOfSize:14];
 //        _lab1.text = @" 鸡蛋蔬菜沙拉";
@@ -50,7 +51,15 @@
         //        _lab1.backgroundColor = [UIColor redColor];
         [view addSubview:_lab4];
         
-        
+        // 滑动视图
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+        //        scrollView.backgroundColor = [UIColor whiteColor];
+        scrollView.tag = 100;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        //    scrollView.userInteractionEnabled = YES;
+        //    scrollView.contentSize = CGSizeMake(kScreen_Width*3, kWidth+10+20);
+        [view addSubview:scrollView];
+        self.scrollView = scrollView;
         
         UIImageView *moneyImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, _imgView.bottom+12, 16, 16)];
         //        imgView.backgroundColor = [UIColor redColor];
@@ -117,13 +126,17 @@
     _lab4.width = textSize.width;
     _lab4.text = [NSString stringWithFormat:@" %@",model.name];
     
+    self.scrollView.frame = CGRectMake(_lab4.right+5, _lab4.top, self.view.width-(_lab4.right+5), self.alphaView.height);
+    self.scrollView.contentSize = CGSizeMake(model.Constitution.count*(30+5), 0);
+
+    
     // 体质
     for (int i=0; i<model.Constitution.count; i++) {
         
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(_lab4.right+5+i*(30+5), (self.alphaView.height-12)/2.0, 30, 12)];
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(i*(30+5), (self.alphaView.height-12)/2.0, 30, 12)];
         //        imgView.backgroundColor = [UIColor redColor];
         imgView.image = [UIImage imageNamed:model.Constitution[i]];
-        [self.alphaView addSubview:imgView];
+        [self.scrollView addSubview:imgView];
         
     }
     
