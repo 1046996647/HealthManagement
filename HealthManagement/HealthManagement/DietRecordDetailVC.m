@@ -123,6 +123,11 @@
                 
             }
             
+            else {
+                
+                [self.view makeToast:@"商品已下架"];
+            }
+            
         } failure:^(NSError *error) {
             
             NSLog(@"%@",error);

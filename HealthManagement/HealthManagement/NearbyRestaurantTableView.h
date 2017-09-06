@@ -14,6 +14,9 @@
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,strong) UIButton *lastBtn;
 @property(nonatomic,strong) UIButton *besideBtn;
+@property(nonatomic,strong) UIView *baseView;
+
+
 
 @property(nonatomic,strong) NSMutableArray *modelArr;
 @property(nonatomic,assign) NSInteger pageNO;// 页数

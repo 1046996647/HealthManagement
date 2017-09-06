@@ -9,11 +9,11 @@
 #ifndef RequestUrl_h
 #define RequestUrl_h
 
-// 线上
-#define BaseUrl  @"http://106.14.218.31:8020/API/"
+// 服务器
+//#define BaseUrl  @"http://106.14.218.31:8020/API/"
 
-// 线下
-//#define BaseUrl  @"http://192.168.10.100:8051/API/"
+// 调试
+#define BaseUrl  @"http://192.168.2.13:8051/API/"
 
 // 1.5	首页信息
 #define TitlePage  [NSString stringWithFormat:@"%@Restaurant/TitlePage",BaseUrl]

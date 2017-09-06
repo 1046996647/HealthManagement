@@ -220,6 +220,13 @@
             
             
         }
+        else {
+            
+            // 饮食记录进来的判断
+            [self.view makeToast:@"商品已下架"];
+            
+            return ;
+        }
         
         NSArray *arr2 = responseObject[@"ListData2"];
         if ([arr2 isKindOfClass:[NSArray class]] && arr2.count > 0) {
@@ -418,7 +425,13 @@
 {
     if (!self.timeLab.text) {
         
+        [self.view hideToasts];
         [self.view makeToast:@"请选择到店时间"];
+        
+//        if (!self.view.isShowing) {
+//            [self.view makeToast:@"请选择到店时间"];
+//
+//        }
         return;
         
     }

@@ -34,7 +34,6 @@
    BOOL success = [NSKeyedArchiver archiveRootObject:obj toFile:path];
     if (success) {
         NSLog(@"归档成功");
-
     }
     
 }

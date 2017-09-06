@@ -258,7 +258,7 @@
     
     // 每周一清楚上周数据
     if (index == 0) {
-        [self.model.weekValue removeAllObjects];
+        [_model.weekValue removeAllObjects];
         for (int i=0; i<7; i++) {
             UIView *view = [self.scrollView viewWithTag:200+i];
             view.height = 0;
@@ -282,9 +282,9 @@
     float per = _sleepTime/24;
     
     NSLog(@"----%f",per);
-    self.model.weekValue[_index] = @(per);
     
     if (_model.isOpen) {
+        _model.weekValue[_index] = @(per);
         [InfoCache archiveObject:_model toFile:ClockPath];
 
     }
@@ -373,7 +373,7 @@
 
     for (int i=0; i<7; i++) {
         
-        float per = [self.model.weekValue[i] floatValue];
+        float per = [_model.weekValue[i] floatValue];
 //        float per = .600132;
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(line2.left+i*(line2.width/7.0)+(line2.width/7.0)/2.0, fenxiView.top+(61.5-per*height-5.5), 3, per*height)];

@@ -65,7 +65,7 @@
     _btn = [UIButton buttonWithType:UIButtonTypeCustom];
     _btn.frame = CGRectMake(_lab4.right+15, _lab4.center.y-5.5, 60, 13);
     [_btn setImage:[UIImage imageNamed:@"browse"] forState:UIControlStateNormal];
-    //        _btn.backgroundColor = [UIColor redColor];
+//    _btn.backgroundColor = [UIColor redColor];
     _btn.imageEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
     _btn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -5);
     _btn.titleLabel.font = [UIFont boldSystemFontOfSize:12];
@@ -74,8 +74,11 @@
     [_btn setTitle:self.model.cilckCount forState:UIControlStateNormal];
     [self.headerView addSubview:_btn];
     
+//    CGSize size = [NSString textLength:self.model.cilckCount font:_btn.titleLabel.font];
+//    _btn.width = 20+size.width;
+    
     _btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    _btn1.frame = CGRectMake(_btn.right, _btn.top, 60, 13);
+    _btn1.frame = CGRectMake(_btn.right+10, _btn.top, 60, 13);
     [_btn1 setImage:[UIImage imageNamed:@"thumbs_normal"] forState:UIControlStateNormal];
     [_btn1 setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateSelected];
     //    _nearbyBtn.backgroundColor = [UIColor redColor];

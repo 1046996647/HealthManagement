@@ -307,7 +307,6 @@
 
 #pragma mark - UITableViewDataSource
 
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.dataList.count;
@@ -338,7 +337,7 @@
 }
 
 //修改左滑的按钮的字
--(NSString*)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath*)indexpath {
+-(NSString*)tableView:(UITableView*)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexpath {
     
     return @"删除";
 
@@ -363,7 +362,9 @@
     [self getCustomerLikeOrNot:indexPath];
     
     if (self.dataList.count > 0) {
+        
         [self.dataList removeObjectAtIndex:indexPath.section];
+        
         [self.tableView reloadData];
         
     }

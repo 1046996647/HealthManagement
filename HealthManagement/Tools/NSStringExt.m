@@ -193,7 +193,6 @@
 }
 
 //在开发中我们经常需要判断一个时期是今天还是昨天，或者是之前的日子。代码如下：
-
 + (NSString *)getUTCFormateDate:(NSDate *)newsDate
 
 {
@@ -214,8 +213,7 @@
     
     NSCalendar* calendar = [NSCalendar currentCalendar];
     
-    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-    
+     unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;    
     NSDateComponents* comp1 = [calendar components:unitFlags fromDate:newsDate];
     
     NSDateComponents* comp2 = [calendar components:unitFlags fromDate:yearsterDay];

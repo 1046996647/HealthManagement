@@ -37,6 +37,8 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         //        _tableView.scrollEnabled = NO;
+        _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;// 滑动时收起键盘
+
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.tableFooterView = [[UIView alloc] init];
     }
@@ -81,6 +83,7 @@
     self.navigationItem.titleView = tf;
 //    [self.navigationItem.titleView addSubview:tf];
     self.tf = tf;
+//    [tf becomeFirstResponder];
     
     [self.view addSubview:self.tableView];
     

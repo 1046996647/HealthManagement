@@ -248,6 +248,18 @@ CGRect CGRectMoveToCenter(CGRect rect, CGPoint center)
     return tf;
 }
 
+// UITableView
++ (UITableView *)tableViewWithframe:(CGRect)frame 
+{
+    UITableView *tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    //        _tableView.scrollEnabled = NO;
+    tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;// 滑动时收起键盘
+    tableView.tableFooterView = [[UIView alloc] init];
+    
+    return tableView;
+}
+
+
 
 // 在view中获取viewController
 - (UIViewController *)viewController

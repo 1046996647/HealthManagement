@@ -13,30 +13,31 @@
 @end
 
 @implementation NavigationController
-/**
- *  初始化
- */
 
-+ (void)initialize{
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
-    
-    /**
-     *  设置 UINavigationBar
-     */
-    UINavigationBar *bar = [UINavigationBar appearance];
-    bar.translucent = NO;
-    bar.barTintColor = [UIColor whiteColor];
+    // Do any additional setup after loading the view.
+
+    self.navigationBar.translucent = NO;
+    self.navigationBar.barTintColor = [UIColor whiteColor];
+
     //消除底部横线
-//    [bar setShadowImage:[[UIImage alloc] init]];
-//    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbarBW"] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setShadowImage:[[UIImage alloc] init]];
+    [self.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
     // 设置字体
 //    [bar setTitleTextAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:17],NSForegroundColorAttributeName : [UIColor colorWithHexString:@"#59A43A"]}];
     
-}
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    //1.设置阴影颜色
+    self.navigationBar.layer.shadowColor = [UIColor grayColor].CGColor;
+    
+    //2.设置阴影偏移范围
+    self.navigationBar.layer.shadowOffset = CGSizeMake(0, .5);
+    
+    //3.设置阴影颜色的透明度
+    self.navigationBar.layer.shadowOpacity = 0.2;
+
     
     self.interactivePopGestureRecognizer.delegate = self;
 }

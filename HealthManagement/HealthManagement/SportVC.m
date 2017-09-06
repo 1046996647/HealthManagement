@@ -509,8 +509,8 @@
             
         }
         
-#pragma mark - 测试用的
-        [self addScoreRecord];
+//#pragma mark - 测试用的
+//        [self addScoreRecord];
 
     }
     

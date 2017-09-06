@@ -16,9 +16,10 @@
 
 #import "UIColor+Expend.h"
 #import "UIViewExt.h"                   //视图位置工具
-#import "Toast+UIView.h"
+#import "NSStringExt.h"                   //视图位置工具
+#import "UIView+Toast.h"
 #import "InfoCache.h"
-#import "HelpMac.h"
+#import "DefineFile.h"
 #import "YYModel.h"
 #import "UIImageView+WebCache.h"
 #import "UIButton+WebCache.h"

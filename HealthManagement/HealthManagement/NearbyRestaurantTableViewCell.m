@@ -80,9 +80,9 @@
         //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_imgView2];
         
-        _lab5 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView2.right+10, _imgView2.center.y-6.5, kScreen_Width-(_imgView2.right+12)-17-12-12, 13)];
+        _lab5 = [[UILabel alloc] initWithFrame:CGRectMake(_imgView2.right+10, _imgView2.center.y-6.5, kScreen_Width-(_imgView2.right+12)-17-12-12-10, 13)];
         _lab5.font = [UIFont boldSystemFontOfSize:12];
-        _lab5.text = @"拱墅区祥园路28号";
+//        _lab5.text = @"拱墅区祥园路28号";
         //        _lab2.textAlignment = NSTextAlignmentRight;
         _lab5.textColor = [UIColor grayColor];
         [self.contentView addSubview:_lab5];

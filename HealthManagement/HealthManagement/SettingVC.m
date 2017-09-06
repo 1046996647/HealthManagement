@@ -329,6 +329,12 @@
     
     NSString *encodedImageStr = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     
+//    NSMutableString *strM = [NSMutableString string];
+//    for (int i=0; i<7; i++) {
+//        [strM appendString:[NSString stringWithFormat:@"%@,",encodedImageStr]];
+//    }
+//    NSString *str = [strM substringToIndex:strM.length-1];
+    
 //    NSLog(@"!!!!!!%@",encodedImageStr);
 
     

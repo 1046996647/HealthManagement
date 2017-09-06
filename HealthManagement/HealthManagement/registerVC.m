@@ -371,11 +371,17 @@
                 NSArray *arr = [responseObject objectForKey:@"ListData"];
                 
                 PersonModel *model = [PersonModel yy_modelWithJSON:[arr firstObject]];
-                [InfoCache archiveObject:model toFile:@"Person"];
                 
-                RegisterSuccessVC *vc = [[RegisterSuccessVC alloc] init];
-                vc.title = @"注册成功";
-                [self.navigationController pushViewController:vc animated:YES];
+                if (model) {
+                    
+                    [InfoCache archiveObject:model toFile:@"Person"];
+                    
+                    RegisterSuccessVC *vc = [[RegisterSuccessVC alloc] init];
+                    vc.title = @"注册成功";
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                
+
             } else if ([self.title isEqualToString:@"忘记密码"])
             {
                 [self.view makeToast:@"密码重置成功"];

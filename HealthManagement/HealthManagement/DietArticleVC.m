@@ -19,6 +19,7 @@
 @property(nonatomic,strong) UITableView *tableView;
 @property(nonatomic,assign) NSInteger pageNO;// 页数
 @property(nonatomic,strong) NSMutableArray *modelArr;
+@property (nonatomic,assign) BOOL isRefresh;
 
 
 @end
@@ -97,10 +98,13 @@
     [self.view addSubview:self.tableView];
     
     // 下拉刷新
-    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         [self headerRefresh];
     }];
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    self.tableView.mj_header = header;
     
     // 上拉刷新
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
@@ -131,7 +135,7 @@
 // 饮食文章列表
 - (void)getArticleListInfo
 {
-    if (self.pageNO == 1) {
+    if (!self.isRefresh) {
         [SVProgressHUD show];
 
     }
@@ -145,6 +149,7 @@
     
     [AFNetworking_RequestData requestMethodPOSTUrl:GetArticleListInfo dic:paramDic Succed:^(id responseObject) {
         
+        self.isRefresh = YES;
         [SVProgressHUD dismiss];
         [self.tableView.mj_header endRefreshing];
         [self.tableView.mj_footer endRefreshing];

@@ -397,11 +397,13 @@
     [self getUserScoreInfo];
     
     // 下拉刷新
-    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         [self headerRefresh];
     }];
-    
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    self.tableView.mj_header = header;
 }
 
 - (void)headerRefresh
@@ -859,7 +861,7 @@
     int contentOffsety = scrollView.contentOffset.y;
 //    NSLog(@"%ld",contentOffsety);
     
-    if (contentOffsety<=170) {
+    if (contentOffsety<170) {
         self.navView.headBgView.alpha = scrollView.contentOffset.y/170;
         self.navView.rightImageView=@"setting1";
 

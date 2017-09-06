@@ -34,14 +34,13 @@
         
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         //        button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
-        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         //        [button setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         self.backButton = button;
     }
 
-    
 
 }
 

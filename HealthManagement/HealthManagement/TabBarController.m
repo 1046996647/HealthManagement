@@ -42,8 +42,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tabBar.barTintColor = [UIColor colorWithHexString:@"#FEFEFE"];
-    self.tabBar.barStyle = UIBarStyleBlack;
+    self.tabBar.backgroundColor = [UIColor colorWithHexString:@"#FEFEFE"];
+    [self.tabBar setBackgroundImage:[[UIImage alloc]init]];
+    [self.tabBar setShadowImage:[[UIImage alloc]init]];
+//    self.tabBar.barStyle = UIBarStyleBlack;
     self.delegate = self;
     
     [self setChildViewController:[[DietArticleVC alloc]init] Title:@"饮食文章" Image:@"logo_5" SelectedImage:@"logo_6"];
@@ -83,7 +85,7 @@
      */
     childVC.title=title;
     childVC.tabBarItem.image=[UIImage imageNamed:image];
-    childVC.tabBarItem.selectedImage=[[UIImage imageNamed:selectedImage]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    childVC.tabBarItem.selectedImage=[[UIImage imageNamed:selectedImage] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     NavigationController *nav = [[NavigationController alloc]initWithRootViewController:childVC];
 //    nav.delegate = self;
     [self addChildViewController:nav];

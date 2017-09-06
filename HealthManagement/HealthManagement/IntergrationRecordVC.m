@@ -12,6 +12,10 @@
 @interface IntergrationRecordVC ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic,strong) UITableView *tableView;
+
+// 原始数据
+@property(nonatomic,strong) NSMutableArray *resourceArray;
+
 @property(nonatomic,strong) NSMutableArray *dataArray;
 @property(nonatomic,assign) NSInteger pageNO;// 页数
 //@property(nonatomic,strong) NSMutableArray *modelArr;
@@ -43,18 +47,13 @@
     
     [self.view addSubview:self.tableView];
     
-    self.dataArray = [NSMutableArray array];
+    self.resourceArray = [NSMutableArray array];
     
     self.pageNO = 1;
     [self getScoreList];
     
     // 上拉刷新
-    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        
-        // 获得积分记录
-        [self getScoreList];
-        
-    }];
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getScoreList)];
 }
 
 // 获得积分记录
@@ -71,19 +70,20 @@
     [AFNetworking_RequestData requestMethodPOSTUrl:GetScoreList dic:paramDic Succed:^(id responseObject) {
         
         [SVProgressHUD dismiss];
-        [self.tableView.mj_footer endRefreshing];
 
         NSLog(@"%@",responseObject);
         
         NSArray *arr = responseObject[@"ListData"];
         if ([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
 
+            // 添加刷新的数据，再重新分类
+            [self.resourceArray addObjectsFromArray:arr];
             
             NSMutableArray *arrM = [NSMutableArray array];
             NSMutableArray *arrM1 = [NSMutableArray array];
             
             // 去掉一样日期（如：2013-12）
-            for (NSDictionary *dic in arr) {
+            for (NSDictionary *dic in self.resourceArray) {
                 IntergrationRecordModel *model = [IntergrationRecordModel yy_modelWithJSON:dic];
                 if (![arrM containsObject:model.Time]) {
                     
@@ -98,7 +98,7 @@
             // 归类
             for (TimeModel *timeModel in arrM1) {
                 
-                for (NSDictionary *dic in arr) {
+                for (NSDictionary *dic in self.resourceArray) {
                     
                     IntergrationRecordModel *model = [IntergrationRecordModel yy_modelWithJSON:dic];
                     
@@ -108,7 +108,10 @@
                 }
                 
             }
-            [self.dataArray addObjectsFromArray:arrM1]; ;
+            
+            [self.tableView.mj_footer endRefreshing];
+
+            self.dataArray = arrM1;
             [self.tableView reloadData];
             
             self.pageNO++;

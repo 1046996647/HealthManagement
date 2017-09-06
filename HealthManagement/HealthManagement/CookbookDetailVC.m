@@ -76,9 +76,6 @@
         _collectionView.delegate = self;
         //        _collectionView.backgroundView = self.imageView;
         [_collectionView registerClass:[TLCollectionViewCell class] forCellWithReuseIdentifier:@"cellID"];
-//        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]
-//                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-//                                        animated:YES];
     }
     return _collectionView;
 }
@@ -159,7 +156,13 @@
             self.model = [arrM firstObject];
             
             _pageControl.numberOfPages = self.model.images.count;
+
+            
             [self.collectionView reloadData];
+//            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]
+//                                    atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+//                                            animated:YES];
+
             
             _lab4.text = self.model.name;
 

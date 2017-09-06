@@ -43,6 +43,7 @@
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height-49-25)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;// 滑动时收起键盘
         //        _tableView.backgroundColor = [UIColor redColor];
     }
     return _tableView;
@@ -74,10 +75,13 @@
     self.pageNO = 1;
     
     // 下拉刷新
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
         [self headerRefresh];
     }];
+    // 隐藏时间
+    header.lastUpdatedTimeLabel.hidden = YES;
+    self.tableView.mj_header = header;
     
     // 下订单成功通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRefresh) name:@"kAddOrderNotification" object:nil];
@@ -227,6 +231,8 @@
     _geocodesearch.delegate = self;
     
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
+    
     
     //带动画结果在切换tabBar的时候viewController会有闪动的效果不建议这样写
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -399,9 +405,9 @@
     return cell;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.view endEditing:YES];
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    [self.view endEditing:YES];
+//}
 
 @end
