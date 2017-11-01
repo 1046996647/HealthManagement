@@ -61,9 +61,9 @@
     CABasicAnimation *rotateAnimation = [CABasicAnimation animationWithKeyPath:axisArray[direction]];
     rotateAnimation.fromValue = [NSNumber numberWithFloat:0.0];
     rotateAnimation.toValue = [NSNumber numberWithFloat:degree];
-    rotateAnimation.autoreverses = autoreverses;
+//    rotateAnimation.autoreverses = autoreverses;
 //    rotateAnimation.fillMode = kCAFillModeForwards;
-    rotateAnimation.removedOnCompletion = YES;
+//    rotateAnimation.removedOnCompletion = YES;
     rotateAnimation.repeatCount = repeat;
     rotateAnimation.duration = duration;
     [view.layer addAnimation:rotateAnimation forKey:@"rotateAnimation"];

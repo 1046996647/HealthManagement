@@ -34,11 +34,16 @@
 //判断iphone6+
 #define IS_iPhone6Plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)
 
+//判断iphoneX
+#define Device_Is_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+
 
 //-------------------获取设备大小尺寸-------------------------
 
 //设备屏幕尺寸 屏幕Size
-#define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
+// iPhoneX适配(iPhone X状态条由20px变成了44px，UITabBar由49px变成了83px):减去24是我在代码里已经减去了64，减去34是49px变成了83px
+#define kScreen_Height (Device_Is_iPhoneX ? ([UIScreen mainScreen].bounds.size.height - 24 - 34):([UIScreen mainScreen].bounds.size.height))
+
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 
 #define scaleWidth  kScreen_Width/375

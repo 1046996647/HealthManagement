@@ -8,6 +8,8 @@
 
 
 #import "AFNetworking_RequestData.h"
+#import "LoginVC.h"
+#import "NavigationController.h"
 
 
 @implementation AFNetworking_RequestData
@@ -64,24 +66,41 @@ static const NSUInteger kDefaultTimeoutInterval = 20;
     //======POST=====
     if ([Method isEqualToString:@"POST"]) {
         
-        [dic  setValue:person.Token forKey:@"Token"];
-        [dic  setValue:person.UserId forKey:@"UserId"];
+        if (person) {
+            [dic  setValue:person.Token forKey:@"Token"];
+            [dic  setValue:person.UserId forKey:@"UserId"];
+        }
+
         
         [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-//            NSNumber *code = [responseObject objectForKey:@"HttpCode"];
-//            
-//            if (200 != [code integerValue] && 300 != [code integerValue]) {
-//                
-//                NSString *message = [responseObject objectForKey:@"Message"];
-//                
-//                if (message) {
-//                    [[UIApplication sharedApplication].keyWindow.rootViewController.view makeToast:message];
-//
-//                }
-//            }
+            NSNumber *code = [responseObject objectForKey:@"HttpCode"];
+            
+            if (700 == code.integerValue) {
+                
+                if ([[InfoCache getValueForKey:@"LoginedState"] integerValue]) {
+                    
+                    [[UIApplication sharedApplication].keyWindow makeToast:@"您已被挤下线!"];
+                    
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        
+                        LoginVC *loginVC = [[LoginVC alloc] init];
+                        NavigationController *nav = [[NavigationController alloc] initWithRootViewController:loginVC];
+                        
+                        [UIApplication sharedApplication].keyWindow.rootViewController = nav;
+                        
+                        [InfoCache saveValue:@0 forKey:@"LoginedState"];
+                    });
+                    
+
+                }
+                
+
+                
+
+            }
             
             Succed(responseObject);
             

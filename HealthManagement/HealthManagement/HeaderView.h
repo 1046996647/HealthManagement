@@ -12,6 +12,7 @@
 #import "RecommendDietView.h"
 #import "DietRecordView.h"
 #import "ArticleModel.h"
+#import "BSScrollingLabelView.h"
 
 
 @interface HeaderView : UIView<SDCycleScrollViewDelegate,UITextFieldDelegate>
@@ -33,7 +34,12 @@
 
 //----------------------
 @property(nonatomic,strong) UIButton *btn;
-@property(nonatomic,strong) UILabel *lab1;
+@property(nonatomic,strong) BSScrollingLabelView *scrollingLabelView;
+//@property(nonatomic,strong) UILabel *lab1;
+@property(nonatomic,strong) UIView *line1;
+
+
+
 @property(nonatomic,strong) UIImageView *imgView1;
 @property(nonatomic,strong) UIButton *btn1;
 

@@ -137,10 +137,12 @@
     btn2.frame = CGRectMake(0, 0, 18, 18);
     [btn2 addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
     [btn2 setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
-//    [btn2 setTitle:@"缴费记录" forState:UIControlStateNormal];
-//    btn2.titleLabel.font = [UIFont systemFontOfSize:15];
-//    [btn2 setTitleColor:[UIColor colorWithHexString:@"#0D60FA"] forState:UIControlStateNormal];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn2];
+
+    // 适配iOS11
+    UIView *view = [[UIView alloc] initWithFrame:btn2.bounds];
+    [view addSubview:btn2];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:view];
 }
 
 // 搜索

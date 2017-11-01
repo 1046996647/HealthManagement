@@ -55,7 +55,12 @@
     self.window.backgroundColor = [UIColor colorWithHexString:@"#EDEEEF"];
     [self.window makeKeyAndVisible];
     
-    
+    // 适配iOS11(iOS11后隐藏导航栏的MJRefresh下拉刷新控件会漏出来，但以下方法造成UIImagePickerController有问题)
+    //    if (@available(iOS 11.0, *)){
+    //        [[UIScrollView appearance] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+    //
+    //    }
+
     // ios8后，需要添加这个注册，才能得到授权
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationType type =  UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;

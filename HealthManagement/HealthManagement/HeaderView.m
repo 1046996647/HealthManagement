@@ -59,16 +59,17 @@
     
 
     
-    _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(_btn.right, _btn.top, 90, 18)];
-    _lab1.font = [UIFont boldSystemFontOfSize:11];
-//    _lab1.text = @"升级还需";
-//    _lab1.backgroundColor = [UIColor cyanColor];
-    _lab1.textColor = [UIColor colorWithHexString:@"#4F5152"];
-    [self addSubview:_lab1];
+//    _lab1 = [[UILabel alloc] initWithFrame:CGRectMake(_btn.right, _btn.top, 90, 18)];
+//    _lab1.font = [UIFont boldSystemFontOfSize:11];
+////    _lab1.text = @"升级还需";
+////    _lab1.backgroundColor = [UIColor cyanColor];
+//    _lab1.textColor = [UIColor colorWithHexString:@"#4F5152"];
+//    [self addSubview:_lab1];
+
     
     
     // 闹铃
-    _imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-15-10, _lab1.top, 15, 15)];
+    _imgView1 = [[UIImageView alloc] initWithFrame:CGRectMake(kScreen_Width-15-10, _btn.top, 15, 15)];
     _imgView1.image = [UIImage imageNamed:@"home_5"];
     _imgView1.userInteractionEnabled = YES;
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
@@ -98,6 +99,13 @@
     UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(_btn1.left-10, _btn.top, 1, 20)];
     line1.backgroundColor = [UIColor whiteColor];
     [self addSubview:line1];
+    self.line1 = line1;
+    
+    _scrollingLabelView = [[BSScrollingLabelView alloc] initWithFrame:CGRectZero];
+    _scrollingLabelView.font = [UIFont boldSystemFontOfSize:11];
+    _scrollingLabelView.textColor = [UIColor colorWithHexString:@"#4F5152"];
+    [self addSubview:_scrollingLabelView];
+//    _scrollingLabelView.backgroundColor = [UIColor redColor];
     
     [self isSported];
 
@@ -210,10 +218,10 @@
                 NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"升级还需%@积分",str1]];
                 NSRange range1 = {4,[str1 length]};
                 [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range1];
-                _lab1.attributedText = attStr;
+                _scrollingLabelView.attributedText = attStr;
                 
-                textSize = [NSString textLength:[NSString stringWithFormat:@"升级还需%@积分",str1] font:_lab1.font];
-                _lab1.frame = CGRectMake(_btn.right, _btn.top, textSize.width, 18);
+//                textSize = [NSString textLength:[NSString stringWithFormat:@"升级还需%@积分",str1] font:_scrollingLabelView.font];
+                _scrollingLabelView.frame = CGRectMake(_btn.right, _btn.top, self.line1.left-_btn.right, 18);
 
 
             }

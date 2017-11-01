@@ -16,6 +16,7 @@
 #import "IntergrationRecordVC.h"
 #import "CAAnimation+HCAnimation.h"
 #import "IntergrationModel.h"
+#import "IntergrationDesVC.h"
 
 
 @interface PersonalCenterVC ()<UITableViewDelegate,UITableViewDataSource,NavHeadTitleViewDelegate>
@@ -76,6 +77,13 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor whiteColor];
+        
+        // 适配iOS11(iOS11后隐藏导航栏的MJRefresh下拉刷新控件会漏出来)
+        if (@available(iOS 11.0, *)){
+            
+            [_tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+        }
+
     }
     return _tableView;
 }
@@ -84,9 +92,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 //    self.view.backgroundColor = [UIColor whiteColor];
-    
-    // 让内容置顶显示
-    self.edgesForExtendedLayout = UIRectEdgeNone;
     
     [self.view addSubview:self.tableView];
     
@@ -116,6 +121,10 @@
     //        _imgView.contentMode = UIViewContentModeScaleAspectFit;
     [self.headView addSubview:headImg];
     self.headImg = headImg;
+    headImg.userInteractionEnabled = YES;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
+    [headImg addGestureRecognizer:tap];
     
     UILabel *userNameLab = [[UILabel alloc] initWithFrame:CGRectMake(headImg.right+12, headImg.top+54/2, 150, 19)];
     userNameLab.font = [UIFont boldSystemFontOfSize:17];
@@ -320,6 +329,24 @@
     
 }
 
+- (void)stateAction
+
+{
+    IntergrationDesVC *vc = [[IntergrationDesVC alloc] init];
+    vc.title = @"积分规则";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)tapAction
+{
+    PersonModel *person = [InfoCache unarchiveObjectWithFile:Person];
+    
+    SettingVC *vc = [[SettingVC alloc] init];
+    vc.title = @"设置";
+    vc.person = person;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 - (void)addAction:(UIButton *)btn
 {
@@ -363,28 +390,38 @@
      stateLab.textAlignment = NSTextAlignmentLeft;
      [self.headView addSubview:stateLab];
     self.stateLab = stateLab;
-     
+    stateLab.userInteractionEnabled = YES;
+
+    
+    UITapGestureRecognizer *stateTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(stateAction)];
+    [stateLab addGestureRecognizer:stateTap];
+    
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(stateLab.right+10*scaleWidth, stateLab.top+8, 1, stateLab.height-16)];
      view.backgroundColor = [UIColor colorWithHexString:@"#EEEFEF"];
      [self.headView addSubview:view];
     
     
-    UILabel *jifenLab = [[UILabel alloc] initWithFrame:CGRectMake(view.right+12*scaleWidth, stateImg.center.y-15, kScreen_Width-view.right-12-30, 31)];
+    UILabel *jifenLab = [[UILabel alloc] initWithFrame:CGRectMake(view.right+12*scaleWidth, stateImg.center.y-15, kScreen_Width-view.right, 31)];
      jifenLab.font = [UIFont boldSystemFontOfSize:14];
      jifenLab.textAlignment = NSTextAlignmentLeft;
      //    _lab1.backgroundColor = [UIColor cyanColor];
      jifenLab.textColor = [UIColor colorWithHexString:@"#555555"];
      [self.headView addSubview:jifenLab];
     self.jifenLab = jifenLab;
+    jifenLab.userInteractionEnabled = YES;
+    jifenLab.text = @"积分记录";
     
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame = CGRectMake(kScreen_Width-50-10, stateImg.center.y-25, 50, 50);
-    [btn setImage:[UIImage imageNamed:@"assistor"] forState:UIControlStateNormal];
-    btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    btn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
-    [btn addTarget:self action:@selector(integrationAction) forControlEvents:UIControlEventTouchUpInside];
-    //    btn.backgroundColor = [UIColor redColor];
-    [self.headView addSubview:btn];
+    UITapGestureRecognizer *jifenTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(integrationAction)];
+    [jifenLab addGestureRecognizer:jifenTap];
+    
+//    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    btn.frame = CGRectMake(kScreen_Width-50-10, stateImg.center.y-25, 50, 50);
+//    [btn setImage:[UIImage imageNamed:@"assistor"] forState:UIControlStateNormal];
+//    btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+//    btn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+//    [btn addTarget:self action:@selector(integrationAction) forControlEvents:UIControlEventTouchUpInside];
+//    //    btn.backgroundColor = [UIColor redColor];
+//    [self.headView addSubview:btn];
     
     view = [[UIView alloc] initWithFrame:CGRectMake(0, stateImg.bottom+14, kScreen_Width, 1)];
     view.backgroundColor = [UIColor colorWithHexString:@"#EEEFEF"];
@@ -421,7 +458,8 @@
     
     [AFNetworking_RequestData requestMethodPOSTUrl:UserScoreInfo dic:paramDic Succed:^(id responseObject) {
         
-        
+        [self.tableView.mj_header endRefreshing];
+
         NSLog(@"%@",responseObject);
         NSNumber *code = [responseObject objectForKey:@"HttpCode"];
         
@@ -522,14 +560,14 @@
                 
                 self.stateLab.text = personModel.Current_Name;
                 
-                NSString *str1 = personModel.Current_Score;
-                NSString *str2 = personModel.Next_Score;
-                NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"积分%@  升级还需%@积分",str1,str2]];
-                NSRange range1 = {2,[str1 length]};
-                NSRange range2 = {attStr.length-[str2 length]-2,[str2 length]};
-                [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#5BA439"] range:range1];
-                [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#C5021A"] range:range2];
-                self.jifenLab.attributedText = attStr;
+//                NSString *str1 = personModel.Current_Score;
+//                NSString *str2 = personModel.Next_Score;
+//                NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"积分%@  升级还需%@积分",str1,str2]];
+//                NSRange range1 = {2,[str1 length]};
+//                NSRange range2 = {attStr.length-[str2 length]-2,[str2 length]};
+//                [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#5BA439"] range:range1];
+//                [attStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#C5021A"] range:range2];
+//                self.jifenLab.attributedText = attStr;
 
             }
 
@@ -714,7 +752,7 @@
     self.navView=[[NavgationBarView alloc]initWithFrame:CGRectMake(0, 0, kScreen_Width, 64)];
 //    self.navView.title=self.;
 //    self.navView.backTitleImage=@"error_head";
-    self.navView.rightImageView=@"setting1";
+//    self.navView.rightImageView=@"setting1";
     self.navView.delegate=self;
     [self.view addSubview:self.navView];
 }
@@ -779,15 +817,15 @@
 }
 
 
-- (void)setAction
-{
-    PersonModel *person = [InfoCache unarchiveObjectWithFile:Person];
-
-    SettingVC *vc = [[SettingVC alloc] init];
-    vc.title = @"设置";
-    vc.person = person;
-    [self.navigationController pushViewController:vc animated:YES];
-}
+//- (void)setAction
+//{
+//    PersonModel *person = [InfoCache unarchiveObjectWithFile:Person];
+//
+//    SettingVC *vc = [[SettingVC alloc] init];
+//    vc.title = @"设置";
+//    vc.person = person;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -820,7 +858,7 @@
 #pragma mark - NavHeadTitleViewDelegate
 -(void)navHeadToRight{
     
-    [self setAction];
+//    [self setAction];
 }
 
 
@@ -863,12 +901,12 @@
     
     if (contentOffsety<170) {
         self.navView.headBgView.alpha = scrollView.contentOffset.y/170;
-        self.navView.rightImageView=@"setting1";
+//        self.navView.rightImageView=@"setting1";
 
         
     }else{
         self.navView.headBgView.alpha=1;
-        self.navView.rightImageView=@"setting";
+//        self.navView.rightImageView=@"setting";
 
         
     }}

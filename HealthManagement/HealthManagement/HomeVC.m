@@ -45,6 +45,10 @@
         _tableView.dataSource = self;
         _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;// 滑动时收起键盘
         //        _tableView.backgroundColor = [UIColor redColor];
+        if (@available(iOS 11.0, *)){
+            
+            [_tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+        }
     }
     return _tableView;
 }

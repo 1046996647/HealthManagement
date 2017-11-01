@@ -66,7 +66,7 @@
         [self.contentView addSubview:_btn];
         [_btn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
         
-        _lab3 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+5, 200, 20)];
+        _lab3 = [[UILabel alloc] initWithFrame:CGRectMake(_lab2.left, _lab2.bottom+5, kScreen_Width-_lab2.left-(50+12)-5, 20)];
 //        _lab3.text = @"吉野家  2017年12月10日12:80:00";
         _lab3.textColor = [UIColor grayColor];
         _lab3.font = [UIFont systemFontOfSize:12];

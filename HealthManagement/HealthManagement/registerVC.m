@@ -343,7 +343,6 @@
     } else if ([self.title isEqualToString:@"忘记密码"])
     {
         registStr = ResetUserPassword;
-        
     }
     else {
         registStr = ModifyUserPassword;

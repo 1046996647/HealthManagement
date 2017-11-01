@@ -231,8 +231,14 @@
     UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     btn2.frame = CGRectMake(0, 0, 18, 18);
     [btn2 setImage:[UIImage imageNamed:@"setting"] forState:UIControlStateNormal];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn2];
     [btn2 addTarget:self action:@selector(setAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    // 适配iOS11
+    UIView *view = [[UIView alloc] initWithFrame:btn2.bounds];
+    [view addSubview:btn2];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:view];
+
     
     // 睡眠分析
     [self initSleepView];
@@ -373,8 +379,11 @@
 
     for (int i=0; i<7; i++) {
         
-        float per = [_model.weekValue[i] floatValue];
-//        float per = .600132;
+        float per = 0;
+        if (_model.weekValue.count > 0) {
+            per = [_model.weekValue[i] floatValue];
+
+        }
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(line2.left+i*(line2.width/7.0)+(line2.width/7.0)/2.0, fenxiView.top+(61.5-per*height-5.5), 3, per*height)];
         view.layer.cornerRadius = view.width/2;

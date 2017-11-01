@@ -4,5 +4,6 @@ target 'HealthManagement' do
     pod 'SDWebImage'
     pod 'AFNetworking'
     pod 'SVProgressHUD'
+    #pod 'MJRefresh'
 
 end

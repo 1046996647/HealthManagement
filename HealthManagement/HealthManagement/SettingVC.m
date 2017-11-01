@@ -87,6 +87,7 @@
 - (void)exitAction
 {
     [InfoCache saveValue:@0 forKey:@"LoginedState"];
+    [InfoCache archiveObject:nil toFile:Person];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     LoginVC *loginVC = [[LoginVC alloc] init];
@@ -143,9 +144,6 @@
             // 设置选择后的图片可以被编辑
             //            pickerController.allowsEditing=YES;
             
-            // 跳转到相册页面
-            [self presentViewController:pickerController animated:YES completion:nil];
-            
             if (indexRow == 0) {
                 
 
@@ -165,6 +163,9 @@
 
                 }
             }
+            
+            // 跳转到相册页面
+            [self presentViewController:pickerController animated:YES completion:nil];
         };
 
         
@@ -251,7 +252,6 @@
 //    NSData *data = [UIImage imageCompressForWidth:img targetWidth:100];
     
     NSData *data = [UIImage imageOrientation:img];
-    
 
     [self uploadImage:data];
     
